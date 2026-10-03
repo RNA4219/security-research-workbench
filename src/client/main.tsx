@@ -24,11 +24,26 @@ import {
 } from "../shared/example.js";
 import { request, download } from "./api.js";
 import "./style.css";
+import {
+  EvidencePanel,
+  ComparisonClaims,
+  ClaimChoice,
+  Trace,
+  ReviewControl,
+  reviewLabels,
+} from "./provenance.js";
 
 type Tab =
-  "sources" | "compare" | "requirements" | "export" | "history" | "settings";
+  | "sources"
+  | "evidence"
+  | "compare"
+  | "requirements"
+  | "export"
+  | "history"
+  | "settings";
 const tabs: [Tab, string, string][] = [
   ["sources", "01", "調査資料"],
+  ["evidence", "◎", "根拠と主張"],
   ["compare", "02", "OSS比較"],
   ["requirements", "03", "要件とレビュー"],
   ["export", "04", "出力"],
@@ -36,6 +51,7 @@ const tabs: [Tab, string, string][] = [
   ["settings", "⚙", "設定・連携"],
 ];
 const labels = {
+  ...reviewLabels,
   draft: "未レビュー",
   approved: "承認済み",
   needs_review: "再確認が必要",
@@ -175,6 +191,20 @@ function ProjectForm({
         label="対象利用者"
         value={v.audience}
         onChange={change("audience")}
+      />
+      <Field
+        label="対象範囲"
+        area
+        required={false}
+        value={v.scope ?? ""}
+        onChange={change("scope")}
+      />
+      <Field
+        label="対象外"
+        area
+        required={false}
+        value={v.outOfScope ?? ""}
+        onChange={change("outOfScope")}
       />
       <Field
         label="制約・対象外"
@@ -358,11 +388,13 @@ function CandidateEditor({
 function RequirementEditor({
   requirement,
   sources,
+  project,
   onSave,
   onClose,
 }: {
   requirement: Requirement;
   sources: Source[];
+  project: Project;
   onSave: (r: RequirementInput) => void;
   onClose: () => void;
 }) {
@@ -408,10 +440,10 @@ function RequirementEditor({
             ))}
           </select>
         </label>
-        <SourcesChoice
-          sources={sources}
-          selected={v.sourceIds}
-          onChange={(sourceIds) => set({ ...v, sourceIds })}
+        <ClaimChoice
+          p={project}
+          selected={v.claimIds}
+          onChange={(claimIds) => set({ ...v, claimIds, sourceIds: [] })}
         />
         <Field
           label="利用者判断・補足理由"
@@ -542,11 +574,33 @@ function App() {
       type: "sources",
       value: { schemaVersion: "1.0", sources: exampleSources },
     });
-    for (const [i, c] of exampleCandidates.entries())
+    for (const [i, c] of exampleCandidates.entries()) {
       await cmd({
         type: "candidate",
         value: { ...c, sourceIds: [current.sources[i].id] },
       });
+      await cmd({
+        type: "evidence",
+        value: {
+          sourceId: current.sources[i].id,
+          sourceType: "report",
+          excerpt: exampleSources[i].body,
+          verificationStatus: "unverified",
+        },
+      });
+      const eid = current.evidence.at(-1)!.id;
+      const cid = current.candidates.at(-1)!.id;
+      for (const claim of current.claims.filter(
+        (cl) => cl.candidateId === cid && cl.valueState === "known",
+      )) {
+        const { id: claimId, revision: _, ...value } = claim;
+        await cmd({
+          type: "claim",
+          claimId,
+          value: { ...value, evidenceIds: [eid] },
+        });
+      }
+    }
     await cmd({
       type: "reply",
       raw: JSON.stringify({
@@ -558,7 +612,16 @@ function App() {
             description:
               "採用候補の機能と導入条件を、公開資料の根拠とともに確認する。",
             priority: "high",
-            sourceIds: [current.sources[0].id, current.sources[1].id],
+            sourceIds: [],
+            claimIds: current.claims
+              .filter(
+                (c) =>
+                  c.field === "features" &&
+                  current.candidates
+                    .slice(0, 2)
+                    .some((x) => x.id === c.candidateId),
+              )
+              .map((c) => c.id),
             rationale: "導入前に人が採否を決める。",
             acceptance: [
               "候補を同じ項目で比較できる",
@@ -797,6 +860,9 @@ function App() {
             </section>
           </>
         )}
+        {tab === "evidence" && (
+          <EvidencePanel p={p} submit={(c) => run(() => mutate(c))} />
+        )}
         {tab === "compare" && (
           <>
             <div className="section-head">
@@ -819,7 +885,7 @@ function App() {
                 value={(() => {
                   const c = p.candidates.find((c) => c.id === candidateEdit);
                   if (!c) return blankCandidate;
-                  const { id: _, ...rest } = c;
+                  const { id: _, status: __, ...rest } = c;
                   return rest;
                 })()}
                 sources={p.sources}
@@ -892,6 +958,9 @@ function App() {
             )}
           </>
         )}
+        {tab === "compare" && (
+          <ComparisonClaims p={p} submit={(c) => run(() => mutate(c))} />
+        )}
         {tab === "requirements" && (
           <>
             <div className="section-head">
@@ -946,6 +1015,7 @@ function App() {
                   (r) => r.id === requirementEdit,
                 )!}
                 sources={p.sources}
+                project={p}
                 onClose={() => setRequirementEdit(null)}
                 onSave={(value) =>
                   void run(async () => {
@@ -999,6 +1069,13 @@ function App() {
                   })}
                   {r.rationale && <p>利用者判断: {r.rationale}</p>}
                 </div>
+                <Trace p={p} claimIds={r.claimIds} />
+                <ReviewControl
+                  p={p}
+                  entity="requirement"
+                  entityId={r.id}
+                  submit={(c) => run(() => mutate(c))}
+                />
                 <div className="card-footer">
                   <small>
                     {r.status === "needs_review"
@@ -1055,7 +1132,13 @@ function App() {
                 [
                   "contracts",
                   "実装タスク契約",
-                  "承認済み要件からagent-protocols v2のドラフトを生成",
+                  "承認済み要件・受入条件・主張・根拠を含む独立した版付き契約",
+                  "json",
+                ],
+                [
+                  "agent-protocols",
+                  "agent-protocols変換（任意）",
+                  "導入済みの場合にv2契約へ変換。未導入でも内部契約は利用できます。",
                   "json",
                 ],
               ].map(([format, title, description, extension]) => (
@@ -1122,8 +1205,14 @@ function App() {
                 {artifacts.map((a) => (
                   <details key={a.id}>
                     <summary>
-                      {a.kind === "prompt" ? "プロンプト" : "AI回答"} ·{" "}
-                      {a.created_at}
+                      {a.kind === "prompt"
+                        ? "プロンプト"
+                        : a.kind === "ai-response"
+                          ? "AI回答"
+                          : a.kind === "source-import"
+                            ? "取込原文"
+                            : "出力記録"}{" "}
+                      · {a.created_at}
                     </summary>
                     <pre>{a.body}</pre>
                   </details>
@@ -1144,6 +1233,8 @@ function App() {
                   objective: p.objective,
                   audience: p.audience,
                   constraints: p.constraints,
+                  scope: p.scope,
+                  outOfScope: p.outOfScope,
                 }}
                 button="設定を保存"
                 onSubmit={(value) =>

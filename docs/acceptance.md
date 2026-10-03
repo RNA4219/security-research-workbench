@@ -1,5 +1,23 @@
 # 検証記録
 
+## v0.2：Deep Research不足要件の検証（2026-10-04）
+
+| 要件 | 証跡 |
+|---|---|
+| FR-11 根拠グラフ | `tests/provenance.test.ts`で要件→Claim→複数Evidence→URLの閉じた参照を確認。E2EでEvidenceから関連要件への逆引き、項目から複数根拠の表示、Markdownへの全URL保持を確認 |
+| FR-12 比較状態 | 同じ項目のknown/unknown/emptyを保存。未確認に値を混ぜる不正入力、根拠のないverified、未知・重複参照を拒否。E2Eで未確認と値なしを切替え、再描画と出力を確認 |
+| FR-13 比較承認 | 未承認の比較からのプロンプト生成と、複数Evidenceの資料選択漏れを拒否。根拠確認→比較承認→プロンプト生成をE2Eで実行 |
+| FR-14 独立契約 | WorkbenchTaskContractのSchema検証・決定的出力・根拠保持を検証。`tests/optional-smoke.mjs`で両アダプター不在の別インストールから、ループバック起動・UI配信・編集・レビュー・プロンプト・Core全出力・失敗後の状態保持を確認。外部fetchは0件 |
+| FR-15 レビュー・移行 | 根拠不足・修正要求・却下・承認の理由と日時を記録。資料・Evidence・Claim・前提の変更による失効を検証。旧DBの原文と全既存revisionを変更せず移行し、再起動時の冪等性を確認 |
+
+ローカルで型検査、22件の単体/APIテスト、5件のE2E、production buildが成功。実際に使用していたv1 DBもバックアップ後に移行し、全資料本文・hash・旧スナップショットの一致と`/healthz`を確認した。比較画面のスクリーンショットを目視し、390px幅でもページ全体が横にはみ出さないことを検証した。
+
+任意依存なしの検証は、ビルド済みdist・package/lockfile・vendor・smoke scriptを別ディレクトリへ配置し、`npm ci --omit=dev --omit=optional --ignore-scripts`後に実行。親ディレクトリのnode_modulesへ解決されない場所を使用した。非対応agent-protocols APIのエラーも別テストで503に隔離し、内部契約と保存状態が変わらないことを確認した。
+
+CIは通常構成と任意runtime依存を省いた構成の2通りを検証する。既存v0.1の実memx確認記録は以下に保持する。今回memxの通信処理自体は変更していない。
+
+## v0.1の検証記録
+
 ## 実施環境と対象
 
 - Windows / Node.js 24.15.0

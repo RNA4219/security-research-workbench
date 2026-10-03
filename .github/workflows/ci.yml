@@ -4,6 +4,9 @@ permissions:
   contents: read
 jobs:
   verify:
+    strategy:
+      matrix:
+        optional: [included, omitted]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,4 +18,8 @@ jobs:
       - run: npm run check
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - if: matrix.optional == 'omitted'
+        run: npm ci --omit=dev --omit=optional --ignore-scripts
+      - if: matrix.optional == 'omitted'
+        run: node tests/optional-smoke.mjs
       - run: npm audit --omit=dev --audit-level=high

@@ -856,3 +856,38 @@ footer {
     margin-bottom: 45px;
   }
 }
+/* Evidence and claim editors share the app's bounded, responsive panels. */
+.claim-row {
+  padding: 12px 0;
+  border-bottom: 1px solid #dce4df;
+  overflow-wrap: anywhere;
+}
+.trace details {
+  margin: 8px 0;
+}
+.claim-editor form,
+.review-control,
+.panel form {
+  display: grid;
+  gap: 12px;
+}
+.claim-editor label,
+.review-control label {
+  display: grid;
+  gap: 6px;
+}
+.source-preview {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 300px;
+  overflow: auto;
+}
+.status.needs_evidence,
+.status.needs_revision {
+  background: #fff3da;
+  color: #734b13;
+}
+.status.rejected {
+  background: #f8e5e5;
+  color: #8b3030;
+}

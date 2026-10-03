@@ -3,6 +3,7 @@ import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { applyCommand, DomainError, newProject } from "./domain.js";
 import type { Command, Project, ProjectInput } from "../shared/model.js";
+import { migrateProject } from "./provenance.js";
 
 export class Store {
   db: DatabaseSync;
@@ -15,16 +16,39 @@ export class Store {
     const version = (
       this.db.prepare("PRAGMA user_version").get() as { user_version: number }
     ).user_version;
-    if (version > 1) {
+    if (version > 2) {
       this.db.close();
       throw new Error("未対応のDBバージョンです");
     }
-    this.db
-      .exec(`CREATE TABLE IF NOT EXISTS projects(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, data TEXT NOT NULL);
+    this.db.exec("BEGIN IMMEDIATE");
+    try {
+      this.db
+        .exec(`CREATE TABLE IF NOT EXISTS projects(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS revisions(project_id TEXT NOT NULL, revision INTEGER NOT NULL, data TEXT NOT NULL, PRIMARY KEY(project_id, revision));
       CREATE TABLE IF NOT EXISTS artifacts(id INTEGER PRIMARY KEY, project_id TEXT NOT NULL, kind TEXT NOT NULL, created_at TEXT NOT NULL, body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS memx(project_id TEXT NOT NULL, source_id TEXT NOT NULL, doc_id TEXT NOT NULL, revision INTEGER NOT NULL, PRIMARY KEY(project_id,source_id));
-      PRAGMA user_version=1;`);
+      `);
+      if (version < 2) {
+        const rows = this.db.prepare("SELECT id,data FROM projects").all() as {
+          id: string;
+          data: string;
+        }[];
+        for (const row of rows) {
+          const p = migrateProject(JSON.parse(row.data));
+          p.revision++;
+          p.updatedAt = new Date().toISOString();
+          this.db
+            .prepare("UPDATE projects SET revision=?,data=? WHERE id=?")
+            .run(p.revision, JSON.stringify(p), p.id);
+          this.snapshot(p);
+        }
+      }
+      this.db.exec("PRAGMA user_version=2; COMMIT;");
+    } catch (e) {
+      this.db.exec("ROLLBACK");
+      this.db.close();
+      throw e;
+    }
   }
   list() {
     return (
@@ -77,6 +101,8 @@ export class Store {
         .prepare("UPDATE projects SET revision=?,data=? WHERE id=?")
         .run(p.revision, JSON.stringify(p), id);
       this.snapshot(p);
+      if (command.type === "source" || command.type === "sources")
+        this.artifact(id, "source-import", JSON.stringify(command.value));
       this.db.exec("COMMIT");
       return p;
     } catch (e) {

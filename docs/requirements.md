@@ -1,4 +1,6 @@
-# 要件定義 v1
+# 要件定義 v2
+
+2026-10-04更新。利用者が提供したDeep Research本文「security-research-workbench 公開情報調査・要件定義案」を照合し、v0.1で不足していた根拠モデル・比較レビュー・独立契約を追加した。
 
 ## 目的と利用者
 
@@ -15,9 +17,14 @@
 | FR-05 | プロンプト作成 | 選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる |
 | FR-06 | 回答取込 | 不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する |
 | FR-07 | 要件レビュー | 優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる |
-| FR-08 | 出力 | Markdown・版付き全体JSON・有効なIntentContract/TaskSeedを出力できる |
+| FR-08 | 出力 | Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる |
 | FR-09 | 知識連携 | memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない |
 | FR-10 | 導入再現性 | 公開clone＋npm ciから起動可能。実データはGit対象外 |
+| FR-11 | 根拠グラフ | 要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる |
+| FR-12 | 項目単位の比較 | カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ |
+| FR-13 | 比較承認ゲート | 確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する |
+| FR-14 | 任意依存と契約 | objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない |
+| FR-15 | 判断履歴と移行 | draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する |
 
 ## 非機能要件
 
@@ -39,4 +46,4 @@
 
 ## 完了の定義
 
-FR-01〜10が検証され、CI成功と公開リポジトリへのpushが確認できること。残る制約はREADMEと検証記録へ明記する。
+FR-01〜15が検証され、CI成功と公開リポジトリへのpushが確認できること。残る制約はREADMEと検証記録へ明記する。

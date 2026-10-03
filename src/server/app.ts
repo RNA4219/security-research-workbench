@@ -5,8 +5,19 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { Store } from "./store.js";
 import { Memx } from "./memx.js";
-import { DomainError, contracts, markdown, prompt } from "./domain.js";
-import { id, projectInput, mutationSchema } from "../shared/model.js";
+import {
+  DomainError,
+  contracts,
+  internalContract,
+  markdown,
+  prompt,
+} from "./domain.js";
+import {
+  id,
+  projectInput,
+  mutationSchema,
+  internalTaskContractJsonSchema,
+} from "../shared/model.js";
 
 export async function createApp(
   options: {
@@ -43,29 +54,29 @@ export async function createApp(
   });
   app.setErrorHandler((error, req, reply) => {
     if (error instanceof ZodError)
-      return reply
-        .code(400)
-        .send({
-          error: "入力形式を確認してください",
-          issues: error.issues.map((i) => ({
-            path: i.path.join("."),
-            message: i.message,
-          })),
-        });
+      return reply.code(400).send({
+        error: "入力形式を確認してください",
+        issues: error.issues.map((i) => ({
+          path: i.path.join("."),
+          message: i.message,
+        })),
+      });
     if (error instanceof DomainError)
       return reply.code(error.status).send({ error: error.message });
     const e = error as { statusCode?: number };
     const code = e.statusCode && e.statusCode < 500 ? e.statusCode : 500;
-    return reply
-      .code(code)
-      .send({
-        error:
-          code === 500
-            ? "処理に失敗しました。入力は画面に保持されています。"
-            : "リクエスト形式またはサイズを確認してください",
-      });
+    return reply.code(code).send({
+      error:
+        code === 500
+          ? "処理に失敗しました。入力は画面に保持されています。"
+          : "リクエスト形式またはサイズを確認してください",
+    });
   });
   app.get("/healthz", async () => ({ status: "ok" }));
+  app.get(
+    "/api/schemas/task-contract",
+    async () => internalTaskContractJsonSchema,
+  );
   app.get("/api/config", async () => ({ memx: memx.enabled }));
   app.get("/api/projects", async () => store.list());
   app.post("/api/projects", async (req, reply) =>
@@ -91,13 +102,25 @@ export async function createApp(
   });
   app.get("/api/projects/:id/export/:format", async (req, reply) => {
     const { id: pid, format } = z
-      .object({ id, format: z.enum(["json", "markdown", "contracts"]) })
+      .object({
+        id,
+        format: z.enum(["json", "markdown", "contracts", "agent-protocols"]),
+      })
       .parse(req.params);
     const p = store.get(pid);
     const output =
       format === "markdown"
         ? markdown(p)
-        : JSON.stringify(format === "contracts" ? contracts(p) : p, null, 2);
+        : JSON.stringify(
+            format === "contracts"
+              ? internalContract(p)
+              : format === "agent-protocols"
+                ? await contracts(p)
+                : p,
+            null,
+            2,
+          );
+    store.artifact(pid, `export-${format}`, output);
     return reply
       .header(
         "Content-Disposition",

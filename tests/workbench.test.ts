@@ -4,15 +4,14 @@ import { DatabaseSync } from "node:sqlite";
 import { resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import { createServer } from "node:http";
-import {
-  safeParseContract,
-  validateContractGraph,
-} from "@rna4219/agent-protocols";
+const protocolsName = "@rna4219/agent-protocols";
+const protocols = await import(protocolsName).catch(() => null);
 import { createApp } from "../src/server/app.js";
 import { Store } from "../src/server/store.js";
 import {
   applyCommand,
   contracts,
+  internalContract,
   newProject,
   prompt,
 } from "../src/server/domain.js";
@@ -47,14 +46,33 @@ const requirement = (p: Project): RequirementInput => ({
 });
 const withRequirement = () => {
   const p = prepare();
-  return applyCommand(p, {
-    type: "reply",
-    raw: JSON.stringify({
-      schemaVersion: "1.0",
-      requirements: [requirement(p)],
+  return verifyProvenance(
+    applyCommand(p, {
+      type: "reply",
+      raw: JSON.stringify({
+        schemaVersion: "1.0",
+        requirements: [requirement(p)],
+      }),
     }),
-  });
+  );
 };
+function verifyProvenance(p: Project) {
+  for (const { id, revision: _, sourceRevision: __, ...value } of p.evidence)
+    p = applyCommand(p, {
+      type: "evidence",
+      evidenceId: id,
+      value: { ...value, verificationStatus: "verified" },
+    });
+  for (const { id, revision: _, ...value } of p.claims.filter(
+    (c) => c.valueState === "known",
+  ))
+    p = applyCommand(p, {
+      type: "claim",
+      claimId: id,
+      value: { ...value, verificationStatus: "verified" },
+    });
+  return p;
+}
 describe("要件と根拠の整合性", () => {
   it("資料の重複を防ぎ、更新で承認を失効させ、原文を保存する", () => {
     let p = withRequirement();
@@ -72,7 +90,7 @@ describe("要件と根拠の整合性", () => {
     });
     expect(p.sources[0].history[0].body).toBe(exampleSources[0].body);
     expect(p.requirements[0].status).toBe("needs_review");
-    expect(() => contracts(p)).toThrow("承認済み");
+    expect(() => internalContract(p)).toThrow("承認済み");
   });
   it("一括取込は不明出典・重複ID・既存ID・自動承認を拒否する", () => {
     const p = prepare();
@@ -107,28 +125,71 @@ describe("要件と根拠の整合性", () => {
       }),
     ).toThrow("既存");
   });
-  it("同じ版から決定的で有効な契約を生成し、承認要件だけを含める", () => {
-    const p = applyCommand(withRequirement(), {
-      type: "review",
-      requirementId: "REQ-001",
+  it.skipIf(!protocols)(
+    "同じ版から決定的で有効な契約を生成し、承認要件だけを含める",
+    async () => {
+      const p = applyCommand(withRequirement(), {
+        type: "review",
+        requirementId: "REQ-001",
+        status: "approved",
+      });
+      const result = await contracts(p);
+      expect(result).toHaveLength(2);
+      expect(result.every((r) => protocols.safeParseContract(r).success)).toBe(
+        true,
+      );
+      expect(protocols.validateContractGraph(result).valid).toBe(true);
+      expect(await contracts(p)).toEqual(result);
+      expect(result[1].lifecycle).toBe("draft");
+      expect(JSON.stringify(result)).toContain(exampleSources[0].url);
+      expect(
+        applyCommand(p, {
+          type: "project",
+          value: { ...exampleProject, constraints: "変更した制約" },
+        }).requirements[0].status,
+      ).toBe("needs_review");
+    },
+  );
+  it("プロンプトは選択資料だけを含み、出力形式を指定する", () => {
+    let p = prepare();
+    p = applyCommand(p, {
+      type: "candidate",
+      value: {
+        name: "候補",
+        url: exampleSources[0].url,
+        features: "比較",
+        license: "未確認",
+        maintenance: "未確認",
+        decision: "consider",
+        rationale: "比較用",
+        sourceIds: [],
+      },
+    });
+    p = applyCommand(p, {
+      type: "evidence",
+      value: {
+        sourceId: p.sources[0].id,
+        sourceType: "report",
+        excerpt: "比較",
+        verificationStatus: "verified",
+      },
+    });
+    const c = p.claims.find((c) => c.field === "features")!;
+    const { id: cid, revision: _, ...input } = c;
+    p = applyCommand(p, {
+      type: "claim",
+      claimId: cid,
+      value: {
+        ...input,
+        evidenceIds: [p.evidence[0].id],
+        verificationStatus: "verified",
+      },
+    });
+    p = applyCommand(p, {
+      type: "candidate-review",
+      candidateId: p.candidates[0].id,
       status: "approved",
     });
-    const result = contracts(p);
-    expect(result).toHaveLength(2);
-    expect(result.every((r) => safeParseContract(r).success)).toBe(true);
-    expect(validateContractGraph(result).valid).toBe(true);
-    expect(contracts(p)).toEqual(result);
-    expect(result[1].lifecycle).toBe("draft");
-    expect(JSON.stringify(result)).toContain(exampleSources[0].url);
-    expect(
-      applyCommand(p, {
-        type: "project",
-        value: { ...exampleProject, constraints: "変更した制約" },
-      }).requirements[0].status,
-    ).toBe("needs_review");
-  });
-  it("プロンプトは選択資料だけを含み、出力形式を指定する", () => {
-    const p = prepare();
     const value = prompt(p, [p.sources[0].id]);
     expect(value).toContain(JSON.stringify(p.sources[0].body));
     expect(value).not.toContain(p.sources[1].url);
@@ -154,7 +215,7 @@ describe("要件と根拠の整合性", () => {
     ).toThrow();
     expect(() =>
       replySchema.parse({
-        schemaVersion: "2.0",
+        schemaVersion: "99.0",
         requirements: [requirement(p)],
       }),
     ).toThrow();
@@ -240,6 +301,18 @@ describe("API", () => {
       }),
     });
     expect(p.requirements[0].status).toBe("draft");
+    for (const { id, revision: _, sourceRevision: __, ...value } of p.evidence)
+      await send({
+        type: "evidence",
+        evidenceId: id,
+        value: { ...value, verificationStatus: "verified" },
+      });
+    for (const { id, revision: _, ...value } of p.claims)
+      await send({
+        type: "claim",
+        claimId: id,
+        value: { ...value, verificationStatus: "verified" },
+      });
     await send({
       type: "review",
       requirementId: "REQ-001",
@@ -250,7 +323,7 @@ describe("API", () => {
       headers,
     });
     expect(c.statusCode, c.body).toBe(200);
-    expect(validateContractGraph(c.json()).valid).toBe(true);
+    expect(c.json().kind).toBe("WorkbenchTaskContract");
     const md = await app.inject({
       url: `/api/projects/${pid}/export/markdown`,
       headers,

@@ -1,6 +1,6 @@
 {
   "name": "security-research-workbench",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -19,12 +19,14 @@
   },
   "dependencies": {
     "@fastify/static": "10.1.5",
-    "@rna4219/agent-protocols": "file:vendor/rna4219-agent-protocols-2.0.0-beta.1.tgz",
     "fastify": "5.12.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-markdown": "10.1.0",
     "zod": "4.6.5"
+  },
+  "optionalDependencies": {
+    "@rna4219/agent-protocols": "file:vendor/rna4219-agent-protocols-2.0.0-beta.1.tgz"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
