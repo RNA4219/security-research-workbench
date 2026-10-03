@@ -1358,7 +1358,7 @@ function App() {
             <br />
             判断から、実装へ。
           </p>
-          <small>v0.1.0 · Open source</small>
+          <small>v0.2.0 · Open source</small>
         </div>
       </aside>
       <main>

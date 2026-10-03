@@ -1,0 +1,32 @@
+[
+  {
+    "file": "approved-provenance.jpg",
+    "sha256": "970b3c177c175ee0c2a34878b4d3bc4f4e9c6132ffa94c2ac3756ba5ded090e7",
+    "bytes": 156717
+  },
+  {
+    "file": "changed-coverage.json",
+    "sha256": "da2f7e38445045926345f57b714c1fa74c06f255dd37839398672f5a136f22d5",
+    "bytes": 1300
+  },
+  {
+    "file": "coverage-summary.json",
+    "sha256": "b5cde00100602e6c870d859e16f5c4472e43fbb2bdbb00930000165babded700",
+    "bytes": 5825
+  },
+  {
+    "file": "disconnected.jpg",
+    "sha256": "7463591e2c094ed665821561865b20d3375af16de1e803fca5d609396910a451",
+    "bytes": 87793
+  },
+  {
+    "file": "memx-failure.jpg",
+    "sha256": "ccd755aa76da3f67e59eb4fc7d09a67bf10faa910d5e55a393f39c11f3ff60f0",
+    "bytes": 96494
+  },
+  {
+    "file": "result.jpg",
+    "sha256": "222da7ebfec569850356242568de5f57e5c469e1b89df32660c66792c3c52a3d",
+    "bytes": 92893
+  }
+]

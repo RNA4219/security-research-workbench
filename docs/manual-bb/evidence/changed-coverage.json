@@ -1,0 +1,60 @@
+{
+  "baseline": "0d2faba8cc356f5c96f2bc28b316b95d2527cd8d",
+  "measuredBy": "Vitest V8 unit/API coverage only; E2E and manual execution are not merged",
+  "metric": "unique instrumented statement-start lines added or modified since baseline",
+  "excluded": "non-src files including PowerShell; lines with no instrumented statements",
+  "covered": 226,
+  "total": 348,
+  "percent": 64.94,
+  "files": [
+    {
+      "file": "src/client/api.ts",
+      "covered": 5,
+      "total": 5
+    },
+    {
+      "file": "src/client/main.tsx",
+      "covered": 0,
+      "total": 16
+    },
+    {
+      "file": "src/client/provenance.tsx",
+      "covered": 0,
+      "total": 74
+    },
+    {
+      "file": "src/client/style.css",
+      "status": "unmeasured"
+    },
+    {
+      "file": "src/server/agent-protocols.ts",
+      "covered": 20,
+      "total": 23
+    },
+    {
+      "file": "src/server/app.ts",
+      "covered": 4,
+      "total": 6
+    },
+    {
+      "file": "src/server/domain.ts",
+      "covered": 124,
+      "total": 140
+    },
+    {
+      "file": "src/server/provenance.ts",
+      "covered": 48,
+      "total": 56
+    },
+    {
+      "file": "src/server/store.ts",
+      "covered": 15,
+      "total": 18
+    },
+    {
+      "file": "src/shared/model.ts",
+      "covered": 10,
+      "total": 10
+    }
+  ]
+}
