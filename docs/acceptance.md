@@ -51,4 +51,11 @@ npm run test:memx
 
 ## 完了確認
 
-ローカル主要検証は実施済み。公開CIと新規cloneの最終結果は実装公開時に追記する。
+- 実装commit `0d2faba8cc356f5c96f2bc28b316b95d2527cd8d` を公開GitHubから新規cloneし、`npm ci`、型検査、11件の単体/APIテスト、ビルド、4件のE2Eが成功。cloneのGit差分はなし。
+- [GitHub CI run 37124427474](https://github.com/RNA4219/security-research-workbench/actions/runs/37124427474) は全step成功。Ubuntu / Node.js 24でも同じ検証が通った。
+- `npm audit` および `npm audit --omit=dev` は検証時点で0件。
+- 公開memxの上記固定commitをビルドし、専用ストアで `npm run test:memx` 相当の実連携テストが成功。
+- アプリ内ブラウザでサンプルの資料・要件レビュー画面を確認。E2Eでは390px幅の入口も確認。
+- 公開対象に実データ・環境変数ファイル・開発cacheがないことを確認。依存tgzのSHA256はTHIRD_PARTY_NOTICESと一致。
+
+Agent_toolsのREADME・HUB・案内スキル・repo map、およびworkflow-cookbookの既存責務台帳にローカル登録済み。これらは本リポジトリの配布物ではない。
