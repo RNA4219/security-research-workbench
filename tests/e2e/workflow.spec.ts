@@ -1,5 +1,6 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures.js";
 import { mkdirSync, readFileSync } from "node:fs";
+import { randomUUID } from "node:crypto";
 
 test("サンプルから根拠・プロンプト・レビュー・実装タスクへ", async ({
   page,
@@ -12,6 +13,12 @@ test("サンプルから根拠・プロンプト・レビュー・実装タス�
   await expect(
     page.getByRole("heading", { name: "Trivy / 公開概要" }),
   ).toBeVisible();
+  const projectTitle = `サンプル回帰-${randomUUID()}`;
+  await page.getByRole("button", { name: /設定・連携/ }).click();
+  await page.getByLabel("プロジェクト名", { exact: true }).fill(projectTitle);
+  await page.getByRole("button", { name: "設定を保存" }).click();
+  await expect(page.getByRole("status")).toContainText("保存しました");
+  await page.getByRole("button", { name: /01調査資料/ }).click();
   await page.getByRole("checkbox", { name: /Trivy/ }).check();
   await page
     .getByRole("button", { name: "プロンプトを作成", exact: true })
@@ -103,7 +110,7 @@ test("サンプルから根拠・プロンプト・レビュー・実装タス�
     "再確認が必要",
   );
   await page.reload();
-  await page.getByRole("button", { name: /◇\s*防御ツールの選定調査/ }).click();
+  await page.getByRole("button", { name: new RegExp(projectTitle) }).click();
   await page.getByRole("button", { name: /03要件とレビュー/ }).click();
   await expect(page.locator(".requirement-card .status")).toHaveText(
     "再確認が必要",

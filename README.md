@@ -52,6 +52,10 @@ Windowsでターミナルを閉じても使い続ける場合は、ビルド後�
 `npm run check` で型検査・テスト・ビルド、`npm run test:e2e` でブラウザテストを実行します。
 ブラウザテスト前に `npx playwright install chromium` を実行してください。
 
+`npm run test:quality` は単体・APIとブラウザーのカバレッジを統合し、全体の行・文・関数・分岐90%、ファイル別の行90%・分岐85%、変更行90%を下回ると失敗します。変更行の基準コミットを参照するため、shallow cloneでは先に`git fetch --unshallow`を実行してください。
+結果は`.cache/coverage-combined/index.html`、`gate.json`、`lcov.info`、実行対象のハッシュ付き`run-identity.json`、`.cache/quality/*junit.xml`に保存されます。画面の計測用ビルドは`.cache/coverage-build`、一時DBと待受はテスト専用の4318番を使用します。通常の製品ビルドには計測を含めません。
+テスト設計の範囲は[継続回帰テスト計画](docs/testing-plan.md)を参照してください。CIで同じカバレッジ条件と通常ビルドのブラウザーテストを実行し、レポートをartifactとして保存します。
+
 ## memx-resolver
 
 任意連携です。ローカルで専用のresolverストアを起動し、`MEMX_URL=http://127.0.0.1:7766` を設定して本アプリを起動します。

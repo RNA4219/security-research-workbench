@@ -82,14 +82,9 @@ function addSource(p: Project, value: SourceInput, sourceId?: string) {
   if (sourceId && !current) throw new DomainError("資料がありません", 404);
   if (current) {
     if (
-      JSON.stringify(value) ===
-      JSON.stringify({
-        title: current.title,
-        url: current.url,
-        retrievedAt: current.retrievedAt,
-        version: current.version,
-        body: current.body,
-      })
+      (["title", "url", "retrievedAt", "version", "body"] as const).every(
+        (key) => value[key] === current[key],
+      )
     )
       return;
     const { history, id, ...previous } = current;
