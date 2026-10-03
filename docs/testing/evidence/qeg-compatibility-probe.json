@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "qegVersion": "0.2",
+    "runId": "qeg:workbench-coverage-20261004",
+    "createdAt": "2026-10-03T18:04:38.384Z",
+    "profile": "standard",
+    "inputArtifacts": []
+  },
+  "verdict": "disqualified",
+  "reasons": [
+    "Gate input schema invalid: /graph/metadata must NOT have additional properties; /graph/metadata must NOT have additional properties; /graph/metadata must NOT have additional properties; /graph/metadata/qegVersion must be equal to constant; /graph/metadata/inputArtifacts/0 must have required property 'id'"
+  ],
+  "disqualifications": [
+    {
+      "code": "DQ-01",
+      "message": "Gate input schema invalid: /graph/metadata must NOT have additional properties; /graph/metadata must NOT have additional properties; /graph/metadata must NOT have additional properties; /graph/metadata/qegVersion must be equal to constant; /graph/metadata/inputArtifacts/0 must have required property 'id'",
+      "nodeIds": [],
+      "sourceRefs": [
+        {
+          "id": "qeg:schema-validation",
+          "path": "schemas/gate-input.schema.json"
+        }
+      ]
+    }
+  ],
+  "blockers": [],
+  "residualRisks": [],
+  "requiredHumanReview": [],
+  "testEvidenceAccounting": {
+    "countedTestIds": [],
+    "excludedMockTests": []
+  },
+  "reliability": {
+    "enabled": false
+  }
+}

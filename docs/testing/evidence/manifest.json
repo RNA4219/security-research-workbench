@@ -1,0 +1,18 @@
+{
+  "coverage-gate.json": {
+    "source": ".cache/coverage-combined/gate.json",
+    "sha256": "27a2536459017d3bed8367f6e9759be3ef7712a1d6b0d2a6f74188bbafb551ca"
+  },
+  "run-identity.json": {
+    "source": ".cache/coverage-combined/run-identity.json",
+    "sha256": "c1a06b8aad89bcbd291683ea1e83cae54398f91cc255f10aca2acccfac725650"
+  },
+  "hate-precheck.json": {
+    "source": ".cache/quality-chain/coverage/hate-final/p0a/precheck-decision.json",
+    "sha256": "fc0e7e11b5acef44db4f8d8dce2371db9955cfb0bd6fc99c27489c322afe3302"
+  },
+  "qeg-compatibility-probe.json": {
+    "source": ".cache/quality-chain/coverage/qeg/.qeg/gate-verdict.json",
+    "sha256": "aef347a4f4c0bfa2a084eac75352abedadb9c43de05b392d809fee58d553e0f1"
+  }
+}

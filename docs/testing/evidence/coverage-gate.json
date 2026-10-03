@@ -1,0 +1,110 @@
+{
+  "thresholds": {
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90
+  },
+  "metrics": {
+    "lines": {
+      "total": 833,
+      "covered": 808,
+      "skipped": 0,
+      "pct": 96.99
+    },
+    "statements": {
+      "total": 938,
+      "covered": 907,
+      "skipped": 0,
+      "pct": 96.69
+    },
+    "functions": {
+      "total": 368,
+      "covered": 355,
+      "skipped": 0,
+      "pct": 96.46
+    },
+    "branches": {
+      "total": 513,
+      "covered": 485,
+      "skipped": 0,
+      "pct": 94.54
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": "Unknown"
+    }
+  },
+  "changed": {
+    "baseline": "0d2faba8cc356f5c96f2bc28b316b95d2527cd8d",
+    "total": 349,
+    "covered": 346,
+    "pct": 99.14040114613181,
+    "files": [
+      {
+        "file": "src/client/api.ts",
+        "total": 5,
+        "covered": 5
+      },
+      {
+        "file": "src/client/main.tsx",
+        "total": 16,
+        "covered": 16
+      },
+      {
+        "file": "src/client/provenance.tsx",
+        "total": 74,
+        "covered": 73
+      },
+      {
+        "file": "src/server/agent-protocols.ts",
+        "total": 23,
+        "covered": 23
+      },
+      {
+        "file": "src/server/app.ts",
+        "total": 6,
+        "covered": 6
+      },
+      {
+        "file": "src/server/domain.ts",
+        "total": 141,
+        "covered": 140
+      },
+      {
+        "file": "src/server/index.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/memx.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/provenance.ts",
+        "total": 56,
+        "covered": 55
+      },
+      {
+        "file": "src/server/store.ts",
+        "total": 18,
+        "covered": 18
+      },
+      {
+        "file": "src/shared/example.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/shared/model.ts",
+        "total": 10,
+        "covered": 10
+      }
+    ]
+  },
+  "failures": [],
+  "verdict": "pass"
+}
