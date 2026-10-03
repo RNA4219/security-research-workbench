@@ -1,6 +1,15 @@
 import type { ApiError } from "../shared/model.js";
+async function connectedFetch(url: string, options: RequestInit) {
+  try {
+    return await fetch(url, options);
+  } catch {
+    throw new Error(
+      "ローカルサーバーに接続できません。サーバーを起動してから、もう一度操作してください。",
+    );
+  }
+}
 export async function request<T>(path: string, body?: unknown): Promise<T> {
-  const response = await fetch(`/api${path}`, {
+  const response = await connectedFetch(`/api${path}`, {
     method: body === undefined ? "GET" : "POST",
     headers: {
       "X-Workbench": "1",
@@ -20,7 +29,9 @@ export async function request<T>(path: string, body?: unknown): Promise<T> {
   return response.json() as Promise<T>;
 }
 export async function download(path: string, filename: string) {
-  const r = await fetch(`/api${path}`, { headers: { "X-Workbench": "1" } });
+  const r = await connectedFetch(`/api${path}`, {
+    headers: { "X-Workbench": "1" },
+  });
   if (!r.ok) throw new Error(((await r.json()) as ApiError).error);
   const url = URL.createObjectURL(await r.blob());
   const a = document.createElement("a");

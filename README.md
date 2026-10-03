@@ -14,6 +14,17 @@ npm start
 
 http://127.0.0.1:4317 を開きます。APIキーは不要です。データは `.data/` に保存され、Gitには含まれません。
 
+Windowsでターミナルを閉じても使い続ける場合は、ビルド後にPowerShellで次を実行します。起動したシェルの終了後もバックグラウンドで動きます。PC再起動後は再びstartを実行してください。
+
+```powershell
+./scripts/local-server.ps1 start
+./scripts/local-server.ps1 status
+# 使用後に停止
+./scripts/local-server.ps1 stop
+```
+
+この起動方法はポート4317とリポジトリ内の`.data/workbench.db`を使用します。ログとプロセス情報は`.cache/runtime/`に保存されます。接続エラー時はstatusで状態を確認し、停止していればstartを実行します。プロセスのID・起動時刻・実行ファイル・引数が一致する場合のみ、stopが停止を行います。
+
 ## 使い方
 
 1. プロジェクトの目的・利用者・制約を入力します。
