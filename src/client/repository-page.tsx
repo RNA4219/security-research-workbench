@@ -12,18 +12,45 @@ const statusLabels = {
   unsupported: "対応するlockfileなし",
 };
 
-export function RepositoryPage() {
+export interface ResearchClient {
+  list(): Promise<ResearchSummary[]>;
+  research(url: string): Promise<{ report: ResearchReport; warning?: string }>;
+  read(id: string): Promise<ResearchReport>;
+  download(report: ResearchReport): Promise<void>;
+  clear?(): Promise<void>;
+  storageLabel: string;
+}
+const localClient: ResearchClient = {
+  list: () => request<ResearchSummary[]>("/research"),
+  research: async (repoUrl) => ({
+    report: await request<ResearchReport>("/research", { repoUrl }),
+  }),
+  read: (id) => request<ResearchReport>(`/research/${id}`),
+  download: (report) =>
+    download(`/research/${report.id}/markdown`, "repository-research.md"),
+  storageLabel: "このPC",
+};
+
+export function RepositoryPage({
+  client = localClient,
+}: {
+  client?: ResearchClient;
+}) {
   const [url, setUrl] = useState("");
   const [report, setReport] = useState<ResearchReport>();
   const [history, setHistory] = useState<ResearchSummary[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("all");
-  const loadHistory = async () =>
-    setHistory(await request<ResearchSummary[]>("/research"));
+  const [storageWarning, setStorageWarning] = useState("");
+  const loadHistory = async () => setHistory(await client.list());
   useEffect(() => {
-    void loadHistory().catch(() =>
-      setError("調査履歴を読み込めません。再読込してください。"),
+    void loadHistory().catch((e: unknown) =>
+      setError(
+        e instanceof Error
+          ? `調査履歴を読み込めません。${e.message}`
+          : "調査履歴を読み込めません。再読込してください。",
+      ),
     );
   }, []);
   const run = async (operation: () => Promise<void>) => {
@@ -53,12 +80,11 @@ export function RepositoryPage() {
         onSubmit={(event) => {
           event.preventDefault();
           void run(async () => {
-            const next = await request<ResearchReport>("/research", {
-              repoUrl: url,
-            });
-            setReport(next);
+            const next = await client.research(url);
+            setReport(next.report);
+            setStorageWarning(next.warning ?? "");
             setFilter("all");
-            await loadHistory();
+            if (!next.warning) await loadHistory();
           });
         }}
       >
@@ -82,8 +108,9 @@ export function RepositoryPage() {
           {busy ? "公開情報を調査中…" : "このOSSを調べる"}
         </button>
         <p className="muted">
-          APIキー不要。結果はこのPCに保存します。依存関係の照合はルートのnpm
-          lockfile v2/3に対応。GitHubとOSVへ公開情報を問い合わせます。
+          APIキー不要。結果は{client.storageLabel}
+          に保存します。依存関係の照合はルートのnpm lockfile
+          v2/3に対応。GitHubとOSVへ公開情報を問い合わせます。
         </p>
       </form>
       {busy && (
@@ -111,19 +138,18 @@ export function RepositoryPage() {
               </h2>
               <p>{report.repository.description}</p>
               <p className="muted">
-                取得: {report.collectedAt} · ローカル保存済み
+                取得: {report.collectedAt} ·{" "}
+                {storageWarning ? "未保存" : "ローカル保存済み"}
               </p>
+              {storageWarning && (
+                <p className="alert" role="alert">
+                  {storageWarning}
+                </p>
+              )}
             </div>
             <button
               disabled={busy}
-              onClick={() =>
-                void run(() =>
-                  download(
-                    `/research/${report.id}/markdown`,
-                    "repository-research.md",
-                  ),
-                )
-              }
+              onClick={() => void run(() => client.download(report))}
             >
               調査結果をダウンロード
             </button>
@@ -319,10 +345,9 @@ export function RepositoryPage() {
               disabled={busy}
               onClick={() =>
                 void run(async () => {
-                  const saved = await request<ResearchReport>(
-                    `/research/${item.id}`,
-                  );
+                  const saved = await client.read(item.id);
                   setReport(saved);
+                  setStorageWarning("");
                   setUrl(saved.repository.url);
                   setFilter("all");
                 })
@@ -332,6 +357,33 @@ export function RepositoryPage() {
             </button>
           ))}
         </section>
+      )}
+      {client.clear && (
+        <details className="panel">
+          <summary>このブラウザの保存について</summary>
+          <p>
+            履歴は最新20件・合計2
+            MiBまで保存し、上限を超えると古い結果から削除します。他の端末とは共有されません。残したい結果はMarkdownでダウンロードしてください。
+          </p>
+          <p>
+            サイトデータの消去やプライベート閲覧の終了で履歴が消えることがあります。
+          </p>
+          <button
+            disabled={busy}
+            onClick={() =>
+              void run(async () => {
+                await client.clear!();
+                setHistory([]);
+                if (report)
+                  setStorageWarning(
+                    "履歴を削除しました。画面の結果はダウンロードできます。",
+                  );
+              })
+            }
+          >
+            このブラウザの履歴を削除
+          </button>
+        </details>
       )}
     </section>
   );

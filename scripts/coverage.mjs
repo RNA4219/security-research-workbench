@@ -32,6 +32,8 @@ const sourceFiles = git(
   "vite.config.ts",
   "vitest.config.ts",
   "playwright.config.ts",
+  "playwright.pages.config.ts",
+  "pages",
 ).split(/\r?\n/);
 const sourceHashes = Object.fromEntries(
   [...new Set(sourceFiles)]
@@ -76,6 +78,12 @@ run("node_modules/typescript/bin/tsc", ["-p", "tsconfig.server.json"]);
 run("node_modules/vitest/vitest.mjs", ["run", "--coverage"]);
 run("node_modules/vite/bin/vite.js", ["build", "--mode", "coverage"]);
 run("node_modules/@playwright/test/cli.js", ["test"]);
+run("node_modules/vite/bin/vite.js", ["build", "--mode", "pages-coverage"]);
+run("node_modules/@playwright/test/cli.js", [
+  "test",
+  "-c",
+  "playwright.pages.config.ts",
+]);
 const map = coverage.createCoverageMap(
   JSON.parse(readFileSync(".cache/coverage/coverage-final.json", "utf8")),
 );

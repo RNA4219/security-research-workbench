@@ -1,5 +1,4 @@
-import { createHash } from "node:crypto";
-import { DomainError } from "./domain.js";
+import { DomainError } from "../shared/domain-error.js";
 
 export function parseRepositoryUrl(value: string) {
   const match =
@@ -29,13 +28,18 @@ export async function researchJson(
   const response = await fetcher(url, {
     method: body === undefined ? "GET" : "POST",
     redirect: "error",
+    credentials: "omit",
+    referrerPolicy: "no-referrer",
     signal: AbortSignal.any([signal, AbortSignal.timeout(8_000)]),
     headers: {
       Accept: "application/json",
-      "User-Agent": "security-research-workbench",
       ...(body === undefined ? {} : { "Content-Type": "application/json" }),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
+  }).catch(() => {
+    throw new Error(
+      "公開APIに接続できませんでした。通信環境を確認し、時間をおいて再試行してください。",
+    );
   });
   if (response.status === 404) return null;
   if (response.status === 403 || response.status === 429)
@@ -67,9 +71,17 @@ export async function researchJson(
   } finally {
     reader.releaseLock();
   }
-  const bytes = Buffer.concat(chunks, size);
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.length;
+  }
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
   return {
-    value: JSON.parse(bytes.toString("utf8")) as unknown,
-    sha256: createHash("sha256").update(bytes).digest("hex"),
+    value: JSON.parse(new TextDecoder().decode(bytes)) as unknown,
+    sha256: Array.from(new Uint8Array(digest), (b) =>
+      b.toString(16).padStart(2, "0"),
+    ).join(""),
   };
 }

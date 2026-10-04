@@ -5,15 +5,15 @@ import { join } from "node:path";
 import {
   researchRepository,
   researchMarkdown,
-} from "../src/server/repository-research.js";
+} from "../src/research/repository-research.js";
 import {
   parseRepositoryUrl,
   researchJson,
-} from "../src/server/research-http.js";
+} from "../src/research/research-http.js";
 import {
   parseLockfile,
   queryDependencies,
-} from "../src/server/research-dependencies.js";
+} from "../src/research/research-dependencies.js";
 import { createApp } from "../src/server/app.js";
 import {
   researchFetcher,

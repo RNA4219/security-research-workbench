@@ -21,7 +21,10 @@ import {
 } from "../shared/model.js";
 import { cveId } from "../shared/vulnerability.js";
 import { researchInput } from "../shared/repository-research.js";
-import { researchRepository, researchMarkdown } from "./repository-research.js";
+import {
+  researchRepository,
+  researchMarkdown,
+} from "../research/repository-research.js";
 
 export async function createApp(
   options: {

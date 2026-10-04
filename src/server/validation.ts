@@ -1,13 +1,7 @@
 import type { Project } from "../shared/model.js";
 import { claimReady } from "./provenance.js";
-export class DomainError extends Error {
-  constructor(
-    message: string,
-    public status = 400,
-  ) {
-    super(message);
-  }
-}
+import { DomainError } from "../shared/domain-error.js";
+export { DomainError } from "../shared/domain-error.js";
 export function checkRefs(
   ids: string[],
   existing: { id: string }[],

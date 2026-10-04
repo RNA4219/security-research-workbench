@@ -9,6 +9,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.server.json && vite build",
+    "build:pages": "vite build --mode pages",
+    "test:pages": "playwright test -c playwright.pages.config.ts",
     "typecheck": "tsc --noEmit",
     "start": "node dist/server/index.js",
     "test": "vitest run",

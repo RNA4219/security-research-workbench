@@ -1,0 +1,41 @@
+.public-workbench {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 28px 30px;
+}
+.public-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 24px 0;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #d2ddd6;
+}
+.public-header span {
+  font-weight: 700;
+}
+.public-workbench main {
+  margin: 0;
+  padding: 0;
+}
+.public-footer {
+  margin-top: 36px;
+  color: #536d64;
+  border-top: 1px solid #d2ddd6;
+  padding-top: 22px;
+}
+@media (max-width: 600px) {
+  .public-workbench {
+    padding: 0 16px 24px;
+  }
+  .public-header {
+    font-size: 12px;
+    margin-bottom: 26px;
+  }
+  .public-header span {
+    order: -1;
+    width: 100%;
+  }
+}

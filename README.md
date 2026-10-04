@@ -1,6 +1,8 @@
 # Security Research Workbench
 
-**使いたいOSSのGitHub URLを入れると、保守状況・依存関係・既知の問題を調べ、「採用する前に何を確認すべきか」を返すローカルWebアプリです。**
+**使いたいOSSのGitHub URLを入れると、保守状況・依存関係・既知の問題を調べ、「採用する前に何を確認すべきか」を返すWebアプリです。**
+
+[ブラウザで使う →](https://rna4219.com/open/security-research-workbench/) · [公開ツール一覧](https://rna4219.com/open/)
 
 導入候補を見つけたとき、GitHubの更新履歴、ライセンス、ロックファイル、脆弱性情報を一つずつ開いて転記する作業を引き受けます。資料や比較表を先に手入力する必要はありません。
 
@@ -22,6 +24,12 @@
 依存関係の照合は、現在**ルートの `npm-shrinkwrap.json` / `package-lock.json`（v2/3）**に対応しています。保守情報は言語を問いません。製品コードの問題、実行環境での影響、他の言語やサブディレクトリの依存関係は調査しません。採用の可否は、用途との適合と調査できなかった範囲も含めて判断してください。
 
 ## まず触ってみる
+
+[公開版](https://rna4219.com/open/security-research-workbench/)を開き、公開GitHub URLを入力してください。インストール・APIキーは不要です。調査処理はブラウザで実行し、GitHubとOSVへ直接問い合わせます。履歴はこのブラウザに最新20件・合計2 MiBまで保存します。端末間の同期はありません。残したい結果はMarkdownでダウンロードしてください。
+
+公開版はURLからのOSS調査に対応しています。資料の整理・比較・要件レビューも利用する場合は、次のローカル版を使います。
+
+### ローカル版
 
 Node.js 24を用意し、リポジトリで次を実行します。
 
@@ -59,6 +67,7 @@ JSONの形式、レビュー状態、任意のagent-protocols・memx連携は以
 ## ドキュメント
 
 - [URLからの調査仕様・対象範囲・テスト設計](docs/repository-research.md)
+- [GitHub Pages版の構成・公開・検証](docs/pages.md)
 - [自動調査の実測・検証結果](docs/testing/2026-10-04-repository-research.md)
 - [要件定義](docs/requirements.md)
 - [調査と設計判断](docs/research.md)

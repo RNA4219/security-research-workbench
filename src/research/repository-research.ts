@@ -1,7 +1,6 @@
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import type { ResearchReport } from "../shared/repository-research.js";
-import { DomainError } from "./domain.js";
+import { DomainError } from "../shared/domain-error.js";
 import { parseRepositoryUrl, researchJson } from "./research-http.js";
 import { parseLockfile, queryDependencies } from "./research-dependencies.js";
 
@@ -34,7 +33,7 @@ export async function researchRepository(
   const base = `https://api.github.com/repos/${target.name}`;
   const signal = AbortSignal.timeout(45_000);
   const report: ResearchReport = {
-    id: randomUUID(),
+    id: crypto.randomUUID(),
     collectedAt: new Date().toISOString(),
     repository: {
       name: target.name,
@@ -148,7 +147,9 @@ export async function researchRepository(
         report.dependencies.lockfile = filename;
         const file = fileSchema.parse(raw);
         const lock = JSON.parse(
-          Buffer.from(file.content, "base64").toString("utf8"),
+          new TextDecoder().decode(
+            Uint8Array.from(atob(file.content), (c) => c.charCodeAt(0)),
+          ),
         );
         const parsed = parseLockfile(lock);
         const queried = await queryDependencies(parsed, fetcher, signal);
