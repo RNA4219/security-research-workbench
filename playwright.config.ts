@@ -6,6 +6,7 @@ const reportDir =
     : ".cache/e2e-report";
 export default defineConfig({
   testDir: "tests/e2e",
+  outputDir: "test-results/local",
   workers: 1,
   timeout: 30000,
   reporter: [

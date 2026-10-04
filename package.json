@@ -22,6 +22,7 @@
     "test:memx": "node tests/memx-live.mjs"
   },
   "dependencies": {
+    "@babel/parser": "7.29.9",
     "@fastify/static": "10.1.5",
     "fastify": "5.12.5",
     "react": "19.3.0",

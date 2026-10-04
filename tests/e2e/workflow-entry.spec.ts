@@ -5,6 +5,7 @@ test("URL調査から採用判断へ進み、案件を開き直しても原文�
   request,
 }) => {
   await page.goto("/");
+  await page.getByText("OSS採用前調査（補助機能）").click();
   await page
     .getByLabel("公開GitHubリポジトリのURL")
     .fill("https://github.com/example/research-fixture");

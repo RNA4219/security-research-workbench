@@ -8,6 +8,7 @@ import {
   registerWorkflowRoutes,
   type WorkflowRouteOptions,
 } from "./workflow-routes.js";
+import { registerDiagnosticRoutes } from "./diagnostic-routes.js";
 import { Memx } from "./memx.js";
 import { lookupVulnerability } from "./vulnerability.js";
 import {
@@ -38,6 +39,9 @@ export async function createApp(
     staticRoot?: string;
     vulnerabilityFetch?: typeof fetch;
     researchFetch?: typeof fetch;
+    diagnosticsRepositories?: Record<string, string>;
+    diagnosticsFetch?: typeof fetch;
+    diagnosticsScheduleIntervalMs?: number;
   } = {},
 ) {
   const app = Fastify({ logger: false, bodyLimit: 2 * 1024 * 1024 });
@@ -92,6 +96,11 @@ export async function createApp(
   );
   app.get("/api/config", async () => ({ memx: memx.enabled }));
   await registerWorkflowRoutes(app, store, options);
+  registerDiagnosticRoutes(app, store, {
+    repositories: options.diagnosticsRepositories,
+    fetcher: options.diagnosticsFetch,
+    scheduleIntervalMs: options.diagnosticsScheduleIntervalMs,
+  });
   let researching = false;
   app.get("/api/research", async () => store.listResearch());
   app.get("/api/research/:id", async (req) =>

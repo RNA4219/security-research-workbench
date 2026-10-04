@@ -1,0 +1,414 @@
+.product-diagnostics {
+  max-width: 1180px;
+  margin: 0 auto 34px;
+}
+.diagnostics-hero {
+  padding: 18px 0 22px;
+  border-bottom: 1px solid #dce5dc;
+}
+.diagnostics-hero-copy {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.diagnostics-hero h1 {
+  margin-bottom: 8px;
+  font-size: clamp(28px, 3vw, 38px);
+}
+.diagnostics-hero-copy p {
+  color: #64776c;
+  max-width: 760px;
+  margin-bottom: 0;
+}
+.diagnostics-hero-copy button {
+  white-space: nowrap;
+}
+.diagnostics-empty {
+  margin: 20px 0;
+  padding: 22px 24px;
+  border: 1px dashed #bacbc0;
+  border-radius: 9px;
+  background: #f8faf7;
+}
+.diagnostics-empty h2,
+.diagnostics-empty h3 {
+  margin-bottom: 6px;
+}
+.diagnostics-empty p {
+  margin-bottom: 0;
+  color: #68796e;
+}
+.diagnostics-create {
+  margin-top: 22px;
+}
+.diagnostics-create .section-head {
+  align-items: flex-end;
+}
+.diagnostics-create .section-head h2 {
+  margin-bottom: 0;
+}
+.diagnostics-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin: 16px 0;
+  padding: 13px;
+  border: 1px solid #dbe5dc;
+  border-radius: 7px;
+  background: #f8faf7;
+}
+.diagnostics-check input {
+  flex: 0 0 auto;
+  margin-top: 4px;
+}
+.diagnostics-check span {
+  display: grid;
+  gap: 3px;
+}
+.diagnostics-check small {
+  color: #68796e;
+  line-height: 1.5;
+}
+.diagnostics-schedule {
+  border: 1px solid #dbe5dc;
+  border-radius: 7px;
+  margin: 18px 0;
+  padding: 4px 14px 12px;
+}
+.diagnostics-schedule legend {
+  padding: 0 6px;
+  color: #4e6759;
+  font-weight: 600;
+  font-size: 12px;
+}
+.diagnostics-schedule .field {
+  max-width: 300px;
+  margin: 8px 0 0 28px;
+}
+.diagnostics-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 245px) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+.product-list {
+  align-self: start;
+  position: sticky;
+  top: 20px;
+  border: 1px solid #d9e2d8;
+  background: #fff;
+  border-radius: 9px;
+  padding: 14px;
+}
+.product-list h2 {
+  margin: 2px 4px 10px;
+  font-size: 14px;
+}
+.product-list button {
+  display: grid;
+  width: 100%;
+  text-align: left;
+  gap: 4px;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.product-list button.selected {
+  background: #eaf2ea;
+  border-color: #8daa94;
+}
+.product-list small {
+  color: #728278;
+  font-weight: 400;
+}
+.diagnostics-detail {
+  min-width: 0;
+}
+.diagnostics-product-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 2px 0 18px;
+}
+.diagnostics-product-head h2 {
+  margin-bottom: 4px;
+}
+.diagnostics-product-head p {
+  margin-bottom: 0;
+}
+.diagnostics-run-start {
+  padding: 20px 22px;
+}
+.diagnostics-run-start h3 {
+  margin: 0;
+}
+.diagnostics-run-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+.diagnostics-run-form .field {
+  flex: 1;
+  margin: 4px 0 0;
+}
+.diagnostics-run-form button {
+  min-height: 42px;
+  margin-bottom: 16px;
+  white-space: nowrap;
+}
+.diagnostic-counts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 18px 0 0;
+}
+.diagnostic-counts div {
+  background: #f5f8f4;
+  border: 1px solid #e1e8df;
+  border-radius: 7px;
+  padding: 9px 11px;
+}
+.diagnostic-counts dt {
+  color: #718074;
+  font-size: 11px;
+}
+.diagnostic-counts dd {
+  margin: 2px 0 0;
+  color: #255541;
+  font-size: 21px;
+  font-weight: 600;
+}
+.diagnostic-run {
+  margin: 20px 0;
+}
+.diagnostic-run .section-head {
+  align-items: center;
+}
+.diagnostic-run .section-head h3 {
+  margin: 6px 0 0;
+}
+.diagnostic-status,
+.delta,
+.severity {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.diagnostic-status {
+  background: #e7eee7;
+  color: #426450;
+}
+.diagnostic-status-running,
+.diagnostic-status-queued {
+  background: #edf1d9;
+  color: #6a6428;
+}
+.diagnostic-status-failed {
+  background: #f8e7e4;
+  color: #8b3a2f;
+}
+.diagnostic-metadata {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+.diagnostic-metadata div {
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid #e4eae3;
+  border-radius: 6px;
+}
+.diagnostic-metadata dt {
+  color: #708074;
+  font-size: 10px;
+}
+.diagnostic-metadata dd {
+  margin: 3px 0 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.diagnostic-progress {
+  border-left: 3px solid #8cae8e;
+  padding: 7px 11px;
+  color: #4d6655;
+  background: #f4f8f3;
+}
+.diagnostic-coverage {
+  margin: 24px 0;
+}
+.diagnostic-coverage h4,
+.diagnostic-findings h4 {
+  margin-bottom: 10px;
+}
+.diagnostic-coverage article {
+  margin: 8px 0;
+  padding: 13px 15px;
+  border: 1px solid #dfe6de;
+  border-radius: 7px;
+  background: #fafbf9;
+}
+.diagnostic-coverage h5 {
+  margin: 0 0 7px;
+  font-size: 12px;
+}
+.diagnostic-coverage p {
+  color: #68796e;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+.diagnostic-coverage ul {
+  margin: 5px 0 0;
+  font-size: 11px;
+}
+.diagnostic-findings {
+  margin: 24px 0;
+}
+.diagnostic-finding {
+  margin: 12px 0;
+  padding: 16px;
+  border: 1px solid #dce5dc;
+  border-radius: 8px;
+}
+.diagnostic-finding header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.diagnostic-finding header small {
+  color: #78867c;
+  margin-left: auto;
+}
+.diagnostic-finding h5 {
+  margin: 12px 0 4px;
+  font-size: 15px;
+}
+.diagnostic-finding p {
+  font-size: 12px;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.diagnostic-location {
+  color: #67796d;
+}
+.delta-new {
+  color: #7c3d2e;
+  background: #f7e7e0;
+}
+.delta-continuing {
+  color: #485f82;
+  background: #e7eef7;
+}
+.delta-needs_review {
+  color: #795e25;
+  background: #f5efd9;
+}
+.delta-not_observed {
+  color: #57645b;
+  background: #e8eee9;
+}
+.severity-high {
+  color: #89392e;
+  background: #fae8e4;
+}
+.severity-medium {
+  color: #745e27;
+  background: #f6f0dd;
+}
+.severity-low {
+  color: #48664f;
+  background: #e8f1e8;
+}
+.diagnostic-caution {
+  padding: 9px 11px;
+  border-left: 3px solid #b6a05a;
+  background: #fbf8ed;
+  color: #675b36;
+}
+.diagnostics-history,
+.diagnostics-settings,
+.diagnostic-technical-details {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border: 1px solid #d9e2d8;
+  border-radius: 8px;
+  background: #fff;
+}
+.diagnostics-history ol {
+  list-style: none;
+  padding: 0;
+}
+.diagnostics-history li button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  margin: 5px 0;
+  font-size: 12px;
+}
+.diagnostics-history li button.active {
+  background: #eaf2ea;
+  border-color: #8daa94;
+}
+.diagnostics-history li small {
+  color: #728278;
+}
+.diagnostics-settings form {
+  margin-top: 14px;
+}
+.diagnostics-settings .muted {
+  display: block;
+  margin-top: 10px;
+}
+.auxiliary-research {
+  margin: 30px 0;
+  border-top: 1px solid #dce5dc;
+  padding-top: 12px;
+}
+.auxiliary-research > summary {
+  font-size: 13px;
+}
+@media (max-width: 1000px) {
+  .diagnostics-layout {
+    grid-template-columns: 1fr;
+  }
+  .product-list {
+    position: static;
+  }
+  .product-list nav {
+    display: flex;
+    overflow-x: auto;
+  }
+  .product-list button {
+    min-width: 180px;
+  }
+}
+@media (max-width: 680px) {
+  .diagnostics-hero-copy,
+  .diagnostics-product-head,
+  .diagnostics-run-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .diagnostics-hero-copy button,
+  .diagnostics-run-form button {
+    width: 100%;
+  }
+  .diagnostics-run-form button {
+    margin: 0;
+  }
+  .diagnostic-counts,
+  .diagnostic-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .diagnostic-finding header small {
+    margin-left: 0;
+  }
+}

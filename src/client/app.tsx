@@ -13,6 +13,7 @@ import { SourcesPage } from "./sources-page.js";
 import { VulnerabilityPage } from "./vulnerability-page.js";
 import { RepositoryPage } from "./repository-page.js";
 import { WorkflowPage } from "./workflow-page.js";
+import { ProductDiagnosticsPage } from "./product-diagnostics-page.js";
 import {
   exampleCandidates,
   exampleProject,
@@ -234,6 +235,9 @@ export type ActiveWorkbench = Workbench & { p: Project };
 
 export function App() {
   const ctx = useWorkbench();
+  const [workflowPrefill, setWorkflowPrefill] = useState<
+    { projectId: string; query: string } | undefined
+  >();
   const {
     projects,
     p,
@@ -278,21 +282,21 @@ export function App() {
   else if (!p)
     content = (
       <>
-        <RepositoryPage
-          onAdopt={async (report) => {
-            const next = await request<Project>(
-              `/research/${report.id}/adopt`,
-              {},
-            );
-            await refresh();
-            await select(next.id);
-            setTab("workflow");
-          }}
+        <ProductDiagnosticsPage
+          onOpenWorkflow={(projectId, question) =>
+            void run(async () => {
+              setWorkflowPrefill(
+                question ? { projectId, query: question } : undefined,
+              );
+              await select(projectId);
+              setTab("workflow");
+            })
+          }
         />
         <section className="panel manual-workspace">
-          <h2>利用条件と過去の判断を、次の調査に引き継ぐ</h2>
+          <h2>知識管理と手動レビュー</h2>
           <p className="muted">
-            案件に資料と判断を残し、承認済みの知識で確認を進めます。修正が必要な問題は、確認証跡がそろうまで追跡できます。
+            製品診断に結び付く仕様・判断・修正確認を管理します。単独の案件を作る場合はこちらから始めてください。
           </p>
           <div className="actions">
             <button onClick={() => setCreating(true)}>
@@ -301,6 +305,20 @@ export function App() {
             <button onClick={() => void run(sample)}>サンプルで試す</button>
           </div>
         </section>
+        <details className="auxiliary-research">
+          <summary>OSS採用前調査（補助機能）</summary>
+          <RepositoryPage
+            onAdopt={async (report) => {
+              const next = await request<Project>(
+                `/research/${report.id}/adopt`,
+                {},
+              );
+              await refresh();
+              await select(next.id);
+              setTab("workflow");
+            }}
+          />
+        </details>
       </>
     );
   else
@@ -347,7 +365,18 @@ export function App() {
             </button>
           ))}
         </nav>
-        {tab === "workflow" && <WorkflowPage key={p.id} projectId={p.id} />}
+        {tab === "workflow" && (
+          <WorkflowPage
+            key={p.id}
+            projectId={p.id}
+            initialQuery={
+              workflowPrefill?.projectId === p.id
+                ? workflowPrefill.query
+                : undefined
+            }
+            onInitialQueryApplied={() => setWorkflowPrefill(undefined)}
+          />
+        )}
         <SourcesPage ctx={{ ...ctx, p }} />
         <VulnerabilityPage ctx={{ ...ctx, p }} />
         <EvidencePage ctx={{ ...ctx, p }} />
@@ -398,9 +427,9 @@ export function App() {
         <div className="sidebar-bottom">
           <span className="dot" /> LOCAL WORKSPACE
           <p>
-            URLから調べる。
+            製品を継続診断。
             <br />
-            次に確認することがわかる。
+            変更と修正を確認する。
           </p>
           <small>v0.2.0 · Open source</small>
         </div>

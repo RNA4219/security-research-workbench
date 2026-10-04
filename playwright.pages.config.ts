@@ -3,6 +3,7 @@ const mode =
   process.env.WORKBENCH_COVERAGE === "1" ? "pages-coverage" : "pages";
 export default defineConfig({
   testDir: "tests/pages",
+  outputDir: "test-results/pages",
   workers: 1,
   reporter: [
     ["list"],

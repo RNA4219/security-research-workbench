@@ -122,7 +122,15 @@ function hasCurrentDocumentEvidence(
   );
 }
 
-export function WorkflowPage({ projectId }: { projectId: string }) {
+export function WorkflowPage({
+  projectId,
+  initialQuery,
+  onInitialQueryApplied,
+}: {
+  projectId: string;
+  initialQuery?: string;
+  onInitialQueryApplied?: () => void;
+}) {
   const [state, setState] = useState<WorkflowState>();
   const [runs, setRuns] = useState<WorkflowRun[]>([]);
   const [providers, setProviders] = useState<WorkflowProviderSummary[]>([]);
@@ -210,6 +218,13 @@ export function WorkflowPage({ projectId }: { projectId: string }) {
     rightReviewTime: "",
   });
   const [comparison, setComparison] = useState<WorkflowRunComparison>();
+  useEffect(() => {
+    if (!initialQuery) return;
+    setRunQuery(initialQuery);
+    setQueryClassification("local");
+    setRunProvider("manual");
+    onInitialQueryApplied?.();
+  }, [initialQuery, onInitialQueryApplied]);
   const updateComparisonForm = (value: typeof comparisonForm) => {
     setComparison(undefined);
     setComparisonForm(value);

@@ -3,6 +3,7 @@
 このアプリはMITです。依存OSSのライセンスはそれぞれの配布物に従います。
 
 - React / React DOM: MIT
+- @babel/parser: MIT。製品コードを実行せず、JavaScript / TypeScriptを構文解析する実行依存。
 - Vite / Fastify / @fastify/static / react-markdown / Zod: MIT
 - TypeScript: Apache-2.0（開発依存）
 - Vitest: MIT（開発依存）

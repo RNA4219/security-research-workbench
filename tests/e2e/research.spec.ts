@@ -1,6 +1,10 @@
 import { test, expect } from "./fixtures.js";
 import type { ResearchReport } from "../../src/shared/repository-research.js";
 
+async function openOssResearch(page: import("@playwright/test").Page) {
+  await page.getByText("OSS採用前調査（補助機能）").click();
+}
+
 test("未取得・部分照合・0件を区別し、外部文字列をHTMLとして実行しない", async ({
   page,
   request,
@@ -41,6 +45,7 @@ test("未取得・部分照合・0件を区別し、外部文字列をHTMLとし
       : route.continue(),
   );
   await page.goto("/");
+  await openOssResearch(page);
   await page
     .getByLabel("公開GitHubリポジトリのURL")
     .fill("https://github.com/example/research-fixture");
@@ -86,11 +91,13 @@ test("履歴の初期読込失敗を表示し、ページ再読込で復帰す�
     route.fulfill({ status: 503, json: { error: "unavailable" } }),
   );
   await page.goto("/");
+  await openOssResearch(page);
   await expect(page.getByRole("alert")).toContainText(
     "調査履歴を読み込めません",
   );
   await page.unroute("**/api/research");
   await page.reload();
+  await openOssResearch(page);
   await expect(
     page.getByRole("button", { name: "このOSSを調べる" }),
   ).toBeVisible();
@@ -101,6 +108,7 @@ test("URL入力だけで調査し、根拠・修正版・履歴・ファイル�
   page,
 }) => {
   await page.goto("/");
+  await openOssResearch(page);
   await page
     .getByLabel("公開GitHubリポジトリのURL")
     .fill("https://github.com/example/research-fixture");
@@ -133,6 +141,7 @@ test("URL入力だけで調査し、根拠・修正版・履歴・ファイル�
   await page.getByRole("button", { name: "調査結果をダウンロード" }).click();
   expect((await downloaded).suggestedFilename()).toBe("repository-research.md");
   await page.reload();
+  await openOssResearch(page);
   await page
     .getByRole("button", { name: /example\/research-fixture ·/ })
     .first()
@@ -142,6 +151,7 @@ test("URL入力だけで調査し、根拠・修正版・履歴・ファイル�
 
 test("失敗してもURLと前の結果を保ち、手動で再試行できる", async ({ page }) => {
   await page.goto("/");
+  await openOssResearch(page);
   await page
     .getByLabel("公開GitHubリポジトリのURL")
     .fill("https://github.com/example/research-fixture");

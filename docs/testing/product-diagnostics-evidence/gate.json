@@ -1,0 +1,310 @@
+{
+  "thresholds": {
+    "lines": 90,
+    "statements": 90,
+    "functions": 90,
+    "branches": 90
+  },
+  "metrics": {
+    "lines": {
+      "total": 3950,
+      "covered": 3789,
+      "skipped": 0,
+      "pct": 95.92
+    },
+    "statements": {
+      "total": 4286,
+      "covered": 4071,
+      "skipped": 0,
+      "pct": 94.98
+    },
+    "functions": {
+      "total": 1267,
+      "covered": 1207,
+      "skipped": 0,
+      "pct": 95.26
+    },
+    "branches": {
+      "total": 3156,
+      "covered": 2842,
+      "skipped": 0,
+      "pct": 90.05
+    },
+    "branchesTrue": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": "Unknown"
+    }
+  },
+  "changed": {
+    "baseline": "0d2faba8cc356f5c96f2bc28b316b95d2527cd8d",
+    "total": 2573,
+    "covered": 2466,
+    "pct": 95.84143023707735,
+    "files": [
+      {
+        "file": "src/client/api.ts",
+        "total": 5,
+        "covered": 5
+      },
+      {
+        "file": "src/client/app.tsx",
+        "total": 120,
+        "covered": 120
+      },
+      {
+        "file": "src/client/claim-editor.tsx",
+        "total": 14,
+        "covered": 14
+      },
+      {
+        "file": "src/client/compare-page.tsx",
+        "total": 16,
+        "covered": 16
+      },
+      {
+        "file": "src/client/constants.ts",
+        "total": 5,
+        "covered": 5
+      },
+      {
+        "file": "src/client/evidence-page.tsx",
+        "total": 3,
+        "covered": 3
+      },
+      {
+        "file": "src/client/export-page.tsx",
+        "total": 5,
+        "covered": 5
+      },
+      {
+        "file": "src/client/forms.tsx",
+        "total": 53,
+        "covered": 52
+      },
+      {
+        "file": "src/client/history-page.tsx",
+        "total": 6,
+        "covered": 6
+      },
+      {
+        "file": "src/client/main.tsx",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/client/pages-main.tsx",
+        "total": 14,
+        "covered": 14
+      },
+      {
+        "file": "src/client/product-diagnostics-page.tsx",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/client/provenance.tsx",
+        "total": 61,
+        "covered": 60
+      },
+      {
+        "file": "src/client/repository-page.tsx",
+        "total": 55,
+        "covered": 55
+      },
+      {
+        "file": "src/client/requirements-page.tsx",
+        "total": 25,
+        "covered": 25
+      },
+      {
+        "file": "src/client/settings-page.tsx",
+        "total": 12,
+        "covered": 12
+      },
+      {
+        "file": "src/client/sources-page.tsx",
+        "total": 19,
+        "covered": 19
+      },
+      {
+        "file": "src/client/vulnerability-page.tsx",
+        "total": 24,
+        "covered": 24
+      },
+      {
+        "file": "src/client/workflow-fields.tsx",
+        "total": 12,
+        "covered": 11
+      },
+      {
+        "file": "src/client/workflow-page.tsx",
+        "total": 341,
+        "covered": 311
+      },
+      {
+        "file": "src/research/browser-storage.ts",
+        "total": 28,
+        "covered": 27
+      },
+      {
+        "file": "src/research/repository-research.ts",
+        "total": 86,
+        "covered": 85
+      },
+      {
+        "file": "src/research/research-dependencies.ts",
+        "total": 91,
+        "covered": 91
+      },
+      {
+        "file": "src/research/research-http.ts",
+        "total": 37,
+        "covered": 37
+      },
+      {
+        "file": "src/server/agent-protocols.ts",
+        "total": 23,
+        "covered": 23
+      },
+      {
+        "file": "src/server/app.ts",
+        "total": 26,
+        "covered": 26
+      },
+      {
+        "file": "src/server/diagnostic-engine.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/diagnostic-routes.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/diagnostic-service.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/diagnostic-store.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/domain.ts",
+        "total": 89,
+        "covered": 89
+      },
+      {
+        "file": "src/server/exports.ts",
+        "total": 55,
+        "covered": 55
+      },
+      {
+        "file": "src/server/index.ts",
+        "total": 11,
+        "covered": 11
+      },
+      {
+        "file": "src/server/memx.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/server/provenance.ts",
+        "total": 56,
+        "covered": 55
+      },
+      {
+        "file": "src/server/store.ts",
+        "total": 26,
+        "covered": 26
+      },
+      {
+        "file": "src/server/validation.ts",
+        "total": 13,
+        "covered": 12
+      },
+      {
+        "file": "src/server/vulnerability.ts",
+        "total": 107,
+        "covered": 105
+      },
+      {
+        "file": "src/server/workflow-domain.ts",
+        "total": 482,
+        "covered": 447
+      },
+      {
+        "file": "src/server/workflow-providers.ts",
+        "total": 69,
+        "covered": 63
+      },
+      {
+        "file": "src/server/workflow-routes.ts",
+        "total": 97,
+        "covered": 94
+      },
+      {
+        "file": "src/server/workflow-runner.ts",
+        "total": 370,
+        "covered": 347
+      },
+      {
+        "file": "src/server/workflow-store.ts",
+        "total": 83,
+        "covered": 82
+      },
+      {
+        "file": "src/shared/diagnostic-engine.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/shared/domain-error.ts",
+        "total": 2,
+        "covered": 2
+      },
+      {
+        "file": "src/shared/example.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/shared/model.ts",
+        "total": 11,
+        "covered": 11
+      },
+      {
+        "file": "src/shared/product-diagnostics.ts",
+        "total": 0,
+        "covered": 0
+      },
+      {
+        "file": "src/shared/repository-research.ts",
+        "total": 1,
+        "covered": 1
+      },
+      {
+        "file": "src/shared/vulnerability.ts",
+        "total": 1,
+        "covered": 1
+      },
+      {
+        "file": "src/shared/workflow-run.ts",
+        "total": 5,
+        "covered": 5
+      },
+      {
+        "file": "src/shared/workflow.ts",
+        "total": 14,
+        "covered": 14
+      }
+    ]
+  },
+  "failures": [],
+  "verdict": "pass"
+}

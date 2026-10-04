@@ -1,0 +1,22 @@
+{
+  "unit-junit.xml": {
+    "tests": 236,
+    "failures": 0,
+    "errors": 0,
+    "time": 63.4098035
+  },
+  "e2e-junit.xml": {
+    "tests": 40,
+    "failures": 0,
+    "skipped": 0,
+    "errors": 0,
+    "time": 73.031365
+  },
+  "pages-junit.xml": {
+    "tests": 4,
+    "failures": 0,
+    "skipped": 0,
+    "errors": 0,
+    "time": 4.542166
+  }
+}
