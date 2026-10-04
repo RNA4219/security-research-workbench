@@ -276,16 +276,16 @@ export function App() {
   else if (!p)
     content = (
       <section className="welcome">
-        <p className="eyebrow">FROM RESEARCH TO REQUIREMENTS</p>
+        <p className="eyebrow">OSS選定から要件定義へ</p>
         <h1>
-          根拠を残して、
+          使うOSSを決め、
           <br />
-          次の実装へ。
+          作る機能を定める。
         </h1>
         <p>
-          公開OSSの調査を整理し、比較から要件、
+          セキュリティツール開発で、公開OSSの役割と採否を出典付きで比較。
           <br />
-          実装タスクまでをひとつの場所でつなぎます。
+          判断の理由を要件・実装タスクに残します。
         </p>
         <div className="actions">
           <button className="primary" onClick={() => setCreating(true)}>
@@ -293,11 +293,14 @@ export function App() {
           </button>
           <button onClick={() => void run(sample)}>サンプルで試す</button>
         </div>
+        <p className="muted">
+          サンプルではTrivy・OSV-Scanner・DefectDojoを比べます。採否と要件は未レビューから始まります。
+        </p>
         <div className="welcome-grid">
           {[
-            ["01", "集める", "資料の出典と版を保存"],
-            ["02", "比べる", "OSSの機能と採否を整理"],
-            ["03", "定義する", "要件をレビューして実装へ"],
+            ["01", "調べる", "公開資料と出典を登録"],
+            ["02", "決める", "OSSを使う理由・見送る理由を記録"],
+            ["03", "作る", "要件と実装タスクを書き出す"],
           ].map(([n, title, body]) => (
             <article key={n}>
               <span>{n}</span>
@@ -400,9 +403,9 @@ export function App() {
         <div className="sidebar-bottom">
           <span className="dot" /> LOCAL WORKSPACE
           <p>
-            資料から、判断へ。
+            使うOSSを決める。
             <br />
-            判断から、実装へ。
+            作る機能を定める。
           </p>
           <small>v0.2.0 · Open source</small>
         </div>
