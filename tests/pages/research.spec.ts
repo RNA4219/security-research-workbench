@@ -32,6 +32,9 @@ test("静的サブパスだけで調査・履歴・再読込・Markdown・履歴
     if (new URL(r.url()).pathname.startsWith("/api/")) api.push(r.url());
   });
   await page.goto("./");
+  await page
+    .getByText("OSS採用前調査（実データ・補助機能）", { exact: true })
+    .click();
   await expect(
     page.getByText("結果はこのブラウザに保存します。", { exact: false }),
   ).toBeVisible();
@@ -42,6 +45,9 @@ test("静的サブパスだけで調査・履歴・再読込・Markdown・履歴
   await page.getByRole("button", { name: "このOSSを調べる" }).click();
   await expect(page.locator(".research-findings")).toContainText("4.17.21");
   await page.reload();
+  await page
+    .getByText("OSS採用前調査（実データ・補助機能）", { exact: true })
+    .click();
   await page
     .getByRole("button", { name: /example\/research-fixture ·/ })
     .click();
@@ -60,6 +66,9 @@ test("静的サブパスだけで調査・履歴・再読込・Markdown・履歴
   );
   await expect(page.getByRole("alert")).toContainText("履歴を削除しました");
   await page.reload();
+  await page
+    .getByText("OSS採用前調査（実データ・補助機能）", { exact: true })
+    .click();
   await expect(page.getByRole("heading", { name: "過去の調査" })).toHaveCount(
     0,
   );
@@ -73,6 +82,9 @@ test("保存不能でも調査結果を失わず、ダウンロードできる",
     };
   });
   await page.goto("./");
+  await page
+    .getByText("OSS採用前調査（実データ・補助機能）", { exact: true })
+    .click();
   await page.getByLabel("公開GitHubリポジトリのURL").fill(repo);
   await page.getByRole("button", { name: "このOSSを調べる" }).click();
   await expect(page.getByRole("alert")).toContainText("保存できませんでした");
@@ -89,6 +101,9 @@ test("破損した履歴を削除して復帰し、API制限や未取得を画�
   await page.goto("./");
   await page.evaluate((key) => localStorage.setItem(key, "broken"), storageKey);
   await page.reload();
+  await page
+    .getByText("OSS採用前調査（実データ・補助機能）", { exact: true })
+    .click();
   await expect(page.getByRole("alert")).toContainText("履歴を読み込めません");
   await page.getByText("このブラウザの保存について", { exact: true }).click();
   await page.getByRole("button", { name: "このブラウザの履歴を削除" }).click();
@@ -113,6 +128,9 @@ test("破損した履歴を削除して復帰し、API制限や未取得を画�
 test("スマートフォン幅で横にはみ出さずに入力できる", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("./");
+  await page
+    .getByText("OSS採用前調査（実データ・補助機能）", { exact: true })
+    .click();
   await page.getByLabel("公開GitHubリポジトリのURL").fill(repo);
   await page.getByRole("button", { name: "このOSSを調べる" }).click();
   await expect(
