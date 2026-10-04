@@ -1,0 +1,577 @@
+{
+  "schemaVersion": "model-review-category-recalculation/v1",
+  "runId": "model-review-1791143455115",
+  "manifestId": "eval:20261005-model-review-04",
+  "split": "development",
+  "conditions": [
+    "A",
+    "B",
+    "C"
+  ],
+  "repetitions": 3,
+  "sourceFiles": {
+    "records": {
+      "path": "evaluations/model-review/results/development-abc-20261005-04/records.jsonl",
+      "bytes": 1930257,
+      "sha256": "sha256:ef746b39469095533b0c72250a48f80315c79ba1762601e21c7d1890f9121e90"
+    },
+    "gold": {
+      "path": "evaluations/model-review/gold/development.json",
+      "bytes": 2402,
+      "sha256": "sha256:c877db9cce5dbf0f7b188db5364bf2c31d0436a4c8454a720caac3ede2a2534a"
+    },
+    "summary": {
+      "path": "evaluations/model-review/results/development-abc-20261005-04/summary.json",
+      "bytes": 39878,
+      "sha256": "sha256:4958e07c5c446c7b6657513b8496bdd0bf5c90753a3101182c10beb22ade4a80"
+    },
+    "artifact": {
+      "path": "evaluations/model-review/results/development-abc-20261005-04/artifact.json",
+      "bytes": 39711,
+      "sha256": "sha256:920dec90bb4747c440f2a58b952027d4374bbb8f0a37636176863c83550912e0"
+    },
+    "manifest": {
+      "path": "evaluations/model-review/results/development-abc-20261005-04/manifest.json",
+      "bytes": 4966,
+      "sha256": "sha256:afb8e7b501b10624b19d70da847888d942f84554d073a57ba960c9db746fc360"
+    },
+    "runner": {
+      "path": "scripts/model-review-evaluation.mjs",
+      "bytes": 67779,
+      "sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37"
+    }
+  },
+  "matching": {
+    "key": "normalized path + category + lineStart-lineEnd + normalized anchor",
+    "duplicateHandling": "duplicate predictions remain false positives",
+    "labels": [
+      "truePositives",
+      "falsePositives",
+      "falseNegatives"
+    ],
+    "implementation": "scripts/model-review-evaluation.mjs#matchFindings"
+  },
+  "method": {
+    "reason": "凍結runnerがカテゴリbucketのsuccessfulRecordsを加算していないため、同じ成功recordをカテゴリbucketにも加算してevaluationRateだけを再集計した。",
+    "changed": [
+      "byCondition.*.byCategory.*.successfulRecords",
+      "byCondition.*.byCategory.*.evaluationRate"
+    ],
+    "unchanged": [
+      "matching",
+      "labels",
+      "truePositives",
+      "falsePositives",
+      "falseNegatives",
+      "global metrics",
+      "condition metrics"
+    ]
+  },
+  "globalImpact": {
+    "unchanged": true,
+    "fields": [
+      "truePositives",
+      "falsePositives",
+      "falseNegatives"
+    ],
+    "note": "カテゴリsuccessfulRecordsの補正はglobal A/B/CのTP/FP/FNおよび見逃し数を変更しない。",
+    "original": {
+      "global": {
+        "truePositives": 54,
+        "falsePositives": 0,
+        "falseNegatives": 9,
+        "records": 81,
+        "successfulRecords": 81
+      },
+      "byCondition": {
+        "A": {
+          "truePositives": 12,
+          "falsePositives": 0,
+          "falseNegatives": 9,
+          "records": 27,
+          "successfulRecords": 27
+        },
+        "B": {
+          "truePositives": 21,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "records": 27,
+          "successfulRecords": 27
+        },
+        "C": {
+          "truePositives": 21,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "records": 27,
+          "successfulRecords": 27
+        }
+      }
+    },
+    "independentlyRecalculated": {
+      "global": {
+        "truePositives": 54,
+        "falsePositives": 0,
+        "falseNegatives": 9,
+        "records": 81,
+        "successfulRecords": 81
+      },
+      "byCondition": {
+        "A": {
+          "truePositives": 12,
+          "falsePositives": 0,
+          "falseNegatives": 9,
+          "records": 27,
+          "successfulRecords": 27
+        },
+        "B": {
+          "truePositives": 21,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "records": 27,
+          "successfulRecords": 27
+        },
+        "C": {
+          "truePositives": 21,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "records": 27,
+          "successfulRecords": 27
+        }
+      }
+    }
+  },
+  "categoryMetrics": {
+    "originalFrozenSummary": {
+      "A": {
+        "authorization": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "cryptography": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "input-validation": {
+          "truePositives": 0,
+          "falsePositives": 0,
+          "falseNegatives": 3,
+          "duplicateCount": 0,
+          "predictedFindingCount": 0,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "pii-logging": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "state-transition": {
+          "truePositives": 0,
+          "falsePositives": 0,
+          "falseNegatives": 3,
+          "duplicateCount": 0,
+          "predictedFindingCount": 0,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "tenant-isolation": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 3,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 6,
+          "records": 6,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        }
+      },
+      "B": {
+        "authorization": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "cryptography": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "input-validation": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "pii-logging": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "state-transition": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "tenant-isolation": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 6,
+          "goldFindingCount": 6,
+          "records": 6,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        }
+      },
+      "C": {
+        "authorization": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "cryptography": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "input-validation": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "pii-logging": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "state-transition": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        },
+        "tenant-isolation": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 6,
+          "goldFindingCount": 6,
+          "records": 6,
+          "successfulRecords": 0,
+          "evaluationRate": 0
+        }
+      }
+    },
+    "correctedIndependentRecalculation": {
+      "A": {
+        "authorization": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "cryptography": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "input-validation": {
+          "truePositives": 0,
+          "falsePositives": 0,
+          "falseNegatives": 3,
+          "duplicateCount": 0,
+          "predictedFindingCount": 0,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "pii-logging": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "state-transition": {
+          "truePositives": 0,
+          "falsePositives": 0,
+          "falseNegatives": 3,
+          "duplicateCount": 0,
+          "predictedFindingCount": 0,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "tenant-isolation": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 3,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 6,
+          "records": 6,
+          "successfulRecords": 6,
+          "evaluationRate": 1
+        }
+      },
+      "B": {
+        "authorization": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "cryptography": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "input-validation": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "pii-logging": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "state-transition": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "tenant-isolation": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 6,
+          "goldFindingCount": 6,
+          "records": 6,
+          "successfulRecords": 6,
+          "evaluationRate": 1
+        }
+      },
+      "C": {
+        "authorization": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "cryptography": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "input-validation": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "pii-logging": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "state-transition": {
+          "truePositives": 3,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 3,
+          "goldFindingCount": 3,
+          "records": 3,
+          "successfulRecords": 3,
+          "evaluationRate": 1
+        },
+        "tenant-isolation": {
+          "truePositives": 6,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "duplicateCount": 0,
+          "predictedFindingCount": 6,
+          "goldFindingCount": 6,
+          "records": 6,
+          "successfulRecords": 6,
+          "evaluationRate": 1
+        }
+      }
+    }
+  },
+  "missingness": {
+    "recheckUnavailableCount": {
+      "original": {
+        "A": 27,
+        "B": 27,
+        "C": 27
+      },
+      "independentlyObserved": {
+        "A": 27,
+        "B": 27,
+        "C": 27
+      },
+      "interpretation": "CのrecheckUnavailableCount=27はモデルがrecheckPriorDecisionを返していない欠測であり、補完・推定しない。"
+    }
+  },
+  "validation": {
+    "originalFilesUnmodified": true,
+    "modelInvocations": 0,
+    "goldOrMatchingChanged": false
+  }
+}

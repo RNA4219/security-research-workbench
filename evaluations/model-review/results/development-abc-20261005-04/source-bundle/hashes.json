@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "files": [
+    {
+      "role": "runner",
+      "source_path": "scripts/model-review-evaluation.mjs",
+      "bundle_path": "source-bundle/runner/model-review-evaluation.mjs",
+      "source_sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37",
+      "bundle_sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37",
+      "bytes": 67779
+    },
+    {
+      "role": "adapter",
+      "source_path": "scripts/model-review-production-adapter.mjs",
+      "bundle_path": "source-bundle/adapter/model-review-production-adapter.mjs",
+      "source_sha256": "sha256:3b512e670a3e71c7697d2929d44d85a7767c5a200fe0e5c54f02225f09de40fc",
+      "bundle_sha256": "sha256:3b512e670a3e71c7697d2929d44d85a7767c5a200fe0e5c54f02225f09de40fc",
+      "bytes": 1085
+    },
+    {
+      "role": "engine",
+      "source_path": "dist/server/model-review.js",
+      "bundle_path": "source-bundle/engine/model-review.js",
+      "source_sha256": "sha256:5d0579daab5b738ba9404d425d74bd6a42637deca7c961ff5d146f3966ae3b0e",
+      "bundle_sha256": "sha256:5d0579daab5b738ba9404d425d74bd6a42637deca7c961ff5d146f3966ae3b0e",
+      "bytes": 35026
+    },
+    {
+      "role": "provider",
+      "source_path": "dist/server/workflow-providers.js",
+      "bundle_path": "source-bundle/provider/workflow-providers.js",
+      "source_sha256": "sha256:ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec",
+      "bundle_sha256": "sha256:ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec",
+      "bytes": 8409
+    },
+    {
+      "role": "shared-diagnostic-engine",
+      "source_path": "dist/shared/diagnostic-engine.js",
+      "bundle_path": "source-bundle/shared/diagnostic-engine.js",
+      "source_sha256": "sha256:e715ca04e39e2b07f2fb288674211e8c669d48047783534caac41322d60e54aa",
+      "bundle_sha256": "sha256:e715ca04e39e2b07f2fb288674211e8c669d48047783534caac41322d60e54aa",
+      "bytes": 2662
+    },
+    {
+      "role": "shared-model-review",
+      "source_path": "dist/shared/model-review.js",
+      "bundle_path": "source-bundle/shared/model-review.js",
+      "source_sha256": "sha256:b2a74fc1f692dc464685b06682870fd19ad18850824293ebfbb953630983a9d0",
+      "bundle_sha256": "sha256:b2a74fc1f692dc464685b06682870fd19ad18850824293ebfbb953630983a9d0",
+      "bytes": 8923
+    },
+    {
+      "role": "shared-model",
+      "source_path": "dist/shared/model.js",
+      "bundle_path": "source-bundle/shared/model.js",
+      "source_sha256": "sha256:791c8e1324c7e9633f573a0c8c31500764eac332f867e0b31aa23d6ccd5cd1b1",
+      "bundle_sha256": "sha256:791c8e1324c7e9633f573a0c8c31500764eac332f867e0b31aa23d6ccd5cd1b1",
+      "bytes": 6475
+    },
+    {
+      "role": "shared-domain-error",
+      "source_path": "dist/shared/domain-error.js",
+      "bundle_path": "source-bundle/shared/domain-error.js",
+      "source_sha256": "sha256:8ffebc888bdc2f885ab9d83eecd2a7a282dac844efa21f0ab9ca68e6a42fccd8",
+      "bundle_sha256": "sha256:8ffebc888bdc2f885ab9d83eecd2a7a282dac844efa21f0ab9ca68e6a42fccd8",
+      "bytes": 196
+    },
+    {
+      "role": "package-lock",
+      "source_path": "package-lock.json",
+      "bundle_path": "source-bundle/package-lock.json",
+      "source_sha256": "sha256:ce89fb15d25b9f6e8b1b7576595cd40a7c7740eb4156c8db03e0568bb7ec3d56",
+      "bundle_sha256": "sha256:ce89fb15d25b9f6e8b1b7576595cd40a7c7740eb4156c8db03e0568bb7ec3d56",
+      "bytes": 160970
+    }
+  ]
+}
