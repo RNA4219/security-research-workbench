@@ -1,0 +1,51 @@
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 66-69, 97-102, 112, 116-127
+~					46 text 01
++					116 text 調査資料
++			117 heading 要件とレビュー, Value: 2
++				118 text 要件とレビュー
++			119 text 受入条件と根拠を確認し、実装へ渡す要件を決めます。
++			120 text 1  /  1  承認済み
++			121 button (collapsed) ChatGPTの回答JSONを取り込む, Secondary Actions: Expand
++				122 text ChatGPTの回答JSONを取り込む
++			123 container
++				124 text REQ-FINAL 承認済み high
++				125 button 編集
++				126 heading 比較結果を保存する, Value: 3
++					127 text 比較結果を保存する
++				128 text 根拠付きで比較できる
++				129 heading 受入条件, Value: 4
++					130 text 受入条件
++				131 content list
++					132 container
++						133 AXListMarker • 
++						134 text 根拠を追跡できる
++				135 heading 実装タスク, Value: 4
++					136 text 実装タスク
++				137 content list
++					138 container
++						139 AXListMarker 1. 
++						140 text 比較画面を作成
++				141 text 根拠
++				142 link Description: 合成資料A · v1 ↗, Value: example.org/final-a
++				143 button (collapsed) 機能: 比較機能 · 確認済み, Secondary Actions: Expand
++					144 text 機能
++					145 text :
++					146 text 比較機能
++					147 text · 
++					148 text 確認済み
++				149 button (collapsed) レビュー状態と判断履歴, Secondary Actions: Expand
++					150 text レビュー状態と判断履歴
++				151 text 承認はこの要件と現在の資料の版に対して記録されます。
++				152 button 未レビューに戻す
+The focused UI element is 54 button 03要件とレビュー
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~				143 button (expanded) 機能: 比較機能 · 確認済み, Secondary Actions: Collapse
++				153 text Claim:  67f1e364-a153-4dba-b505-f8e686afd870
++				154 container
++					155 text Evidence:  比較機能を提供する 確認済み  · 資料の版 1  / 現在  1
++					156 link Description: 合成資料A ↗, Value: example.org/final-a
++					157 text 792798dc-180b-4459-9ccc-f52ed55a5479  · 取得  2026-10-04T00:00:00Z  ·  official
+The focused UI element is 143 button (expanded) 機能: 比較機能 · 確認済み, Secondary Actions: Collapse

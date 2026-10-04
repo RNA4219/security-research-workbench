@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites><testsuite name="tests/bootstrap.test.ts" timestamp="2026-10-04T01:42:25.833Z" hostname="DESKTOP-HCPVLHM" tests="6" failures="0" errors="0" skipped="0" time="0.0258873">
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT 1023 では待受しない" time="0.0176049" file="tests/bootstrap.test.ts">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT 65536 では待受しない" time="0.0010319" file="tests/bootstrap.test.ts">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT abc では待受しない" time="0.000718" file="tests/bootstrap.test.ts">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT 4317.5 では待受しない" time="0.000709" file="tests/bootstrap.test.ts">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="PORT undefined でループバックにbindし、終了時にDBを閉じる" time="0.002963" file="tests/bootstrap.test.ts">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="PORT 4319 でループバックにbindし、終了時にDBを閉じる" time="0.0008813" file="tests/bootstrap.test.ts">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/client-api.test.ts" timestamp="2026-10-04T01:42:25.837Z" hostname="DESKTOP-HCPVLHM" tests="1" failures="0" errors="0" skipped="0" time="0.0083943">
+        <testcase classname="tests/client-api.test.ts" name="通信が切れた取得・保存・ダウンロードに復旧案内を表示し、自動再送しない" time="0.0065375" file="tests/client-api.test.ts">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/provenance.test.ts" timestamp="2026-10-04T01:42:25.838Z" hostname="DESKTOP-HCPVLHM" tests="11" failures="0" errors="0" skipped="0" time="0.1923645">
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 非対応アダプターの失敗を隔離し、内部契約と保存データを維持する" time="0.0255814" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 複数Evidenceの参照を内部契約・Markdown・逆参照で保持する" time="0.0043872" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 未確認と値なしを区別し、不整合な値と根拠なしの検証済みを拒否する" time="0.0035673" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 比較レビューをAPI側で強制し、根拠の欠落したプロンプトを拒否する" time="0.0019977" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; sourceの更新で比較と要件を再確認対象にする" time="0.0016025" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; evidenceの更新で比較と要件を再確認対象にする" time="0.0010031" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; claimの更新で比較と要件を再確認対象にする" time="0.0009828" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; projectの更新で比較と要件を再確認対象にする" time="0.0007903" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 根拠不足・修正要求・却下を保存し、承認時刻と理由を記録する" time="0.0012532" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; v1 DBを原本・既存履歴を変更せず移行し、再起動でも移行を繰り返さない" time="0.0301407" file="tests/provenance.test.ts">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 内部Schemaを公開し、外部通信なしで保存・再読込・出力できる" time="0.1188297" file="tests/provenance.test.ts">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/quality-chain.test.mjs" timestamp="2026-10-04T01:42:25.840Z" hostname="DESKTOP-HCPVLHM" tests="9" failures="0" errors="0" skipped="0" time="0.0064319">
+        <testcase classname="tests/quality-chain.test.mjs" name="同一ビルドの完全な証跡だけを受け付ける" time="0.0031301" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="古い手動結果を拒否してGateの成功を捏造しない" time="0.0003531" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="改変された要件を拒否してGateの成功を捏造しない" time="0.0001694" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="自動テスト失敗を拒否してGateの成功を捏造しない" time="0.0001588" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="手動ケース不足を拒否してGateの成功を捏造しない" time="0.0001819" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="静的指摘未解決を拒否してGateの成功を捏造しない" time="0.0001962" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="低カバレッジを拒否してGateの成功を捏造しない" time="0.0001469" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="実行後の未確定変更を拒否してGateの成功を捏造しない" time="0.0001447" file="tests/quality-chain.test.mjs">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="HATEの重複結果を拒否してGateの成功を捏造しない" time="0.0001973" file="tests/quality-chain.test.mjs">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/regression.test.ts" timestamp="2026-10-04T01:42:25.841Z" hostname="DESKTOP-HCPVLHM" tests="32" failures="0" errors="0" skipped="0" time="0.3342678">
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 0 文字" time="0.0045278" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 1 文字" time="0.0003963" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 199 文字" time="0.000199" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 200 文字" time="0.000194" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 201 文字" time="0.0002624" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 0 文字" time="0.0014725" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 1 文字" time="0.0002383" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 999999 文字" time="0.000163" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 1000000 文字" time="0.0001974" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 1000001 文字" time="0.0007217" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 値状態 known と空文字の整合" time="0.0016123" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 値状態 unknown と空文字の整合" time="0.0001885" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 値状態 empty と空文字の整合" time="0.0002323" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 変更なし・タイトル変更は根拠の承認を失効させない" time="0.0127893" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 候補編集は関連承認を失効し、変更していないClaimと原本を維持する" time="0.0013746" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 要件編集・再レビューと旧形式の同じ出典からの再正規化" time="0.0019377" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; Claimの所属変更・項目重複を拒否する" time="0.001372" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; Evidence unverified では確認済みClaimを保存できない" time="0.0018889" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; Evidence disputed では確認済みClaimを保存できない" time="0.0009517" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 要件は未確認Claimを事実扱いせず、資料版不一致を出力しない" time="0.0008907" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 不明IDをどの編集入口からも拒否し、元データを維持する" time="0.0017499" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; v1候補移行で既知・未確認・値なしを区別し、v2は独立したコピーを返す" time="0.0023816" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-01/07/15 APIとトランザクション &gt; 不正入力の詳細、一覧、履歴、不明ID、サーバー内部例外を区別する" time="0.1217597" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-01/07/15 APIとトランザクション &gt; 一括取込の途中失敗・競合時も状態と履歴を変更せず、失敗原本は残す" time="0.0205886" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-01/07/15 APIとトランザクション &gt; 不正な旧プロジェクトが混在すると移行全体をロールバックする" time="0.0232595" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 0 を隔離し、同期済みとして記録しない" time="0.0349156" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 1 を隔離し、同期済みとして記録しない" time="0.0127601" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 2 を隔離し、同期済みとして記録しない" time="0.0228391" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 3 を隔離し、同期済みとして記録しない" time="0.006168" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 途中成功後の再試行は未同期分だけ送る。各APIの結果を返す" time="0.0379335" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-14 任意アダプターの不適合 &gt; missing-method の失敗後も内部契約を生成できる" time="0.0100416" file="tests/regression.test.ts">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-14 任意アダプターの不適合 &gt; invalid-graph の失敗後も内部契約を生成できる" time="0.0057227" file="tests/regression.test.ts">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workbench.test.ts" timestamp="2026-10-04T01:42:25.846Z" hostname="DESKTOP-HCPVLHM" tests="11" failures="0" errors="0" skipped="0" time="0.3483995">
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 資料の重複を防ぎ、更新で承認を失効させ、原文を保存する" time="0.0151379" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 一括取込は不明出典・重複ID・既存ID・自動承認を拒否する" time="0.0049506" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 同じ版から決定的で有効な契約を生成し、承認要件だけを含める" time="0.1374862" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; プロンプトは選択資料だけを含み、出力形式を指定する" time="0.0017072" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 受入条件・文字数・URLと未知フィールドを検証する" time="0.0026253" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="永続化と履歴 &gt; 再起動で復元し、古いrevisionでの上書きを拒否する" time="0.0158502" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="永続化と履歴 &gt; 将来版のDBを上書きしない" time="0.0086131" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="API &gt; 作成→資料→要件→承認→出力。誤入力と接続失敗はデータを壊さない" time="0.0967196" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="API &gt; Host・Origin・必須ヘッダー・サイズの制限" time="0.0121558" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="memxアダプター &gt; ループバックのみを受け付ける" time="0.0003573" file="tests/workbench.test.ts">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="memxアダプター &gt; 同期・検索・参照・読了・鮮度の契約と再試行を確認する" time="0.0506162" file="tests/workbench.test.ts">
+        </testcase>
+    </testsuite>
+<testsuite name="regression.spec.ts" timestamp="2026-10-04T01:42:27.650Z" hostname="" tests="8" failures="0" skipped="0" time="9.778" errors="0">
+<testcase name="接続失敗でも入力を保持し、自動再送せず手動再試行で1件保存" classname="regression.spec.ts" time="1.196" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="2画面の保存競合は上書きせず、編集内容を残す" classname="regression.spec.ts" time="1.394" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="ファイル上限・不正JSON・API入力エラーから修正して保存できる" classname="regression.spec.ts" time="1.174" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="根拠を新規登録・編集し、比較レビューと要件編集へ反映する" classname="regression.spec.ts" time="2.239" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="未設定連携・出力失敗・全データ出力と履歴閲覧" classname="regression.spec.ts" time="1.288" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="memxの画面操作契約と失敗表示（依存APIをスタブ）" classname="regression.spec.ts" time="1.005" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="初期読込失敗を表示し、再読込で復帰する" classname="regression.spec.ts" time="0.453" file="tests/e2e/regression.spec.ts">
+</testcase>
+<testcase name="回答ファイルの上限と修正取込、保存済みプロジェクトの再読込" classname="regression.spec.ts" time="1.029" file="tests/e2e/regression.spec.ts">
+</testcase>
+</testsuite>
+<testsuite name="workflow.spec.ts" timestamp="2026-10-04T01:42:27.650Z" hostname="" tests="5" failures="0" skipped="0" time="10.89" errors="0">
+<testcase name="サンプルから根拠・プロンプト・レビュー・実装タスクへ" classname="workflow.spec.ts" time="5.37" file="tests/e2e/workflow.spec.ts">
+</testcase>
+<testcase name="新規作成・資料取込・不正回答・編集・履歴を保持" classname="workflow.spec.ts" time="1.326" file="tests/e2e/workflow.spec.ts">
+</testcase>
+<testcase name="狭い画面で作業入口を操作できる" classname="workflow.spec.ts" time="0.372" file="tests/e2e/workflow.spec.ts">
+</testcase>
+<testcase name="ファイル取込と比較候補の追加・編集" classname="workflow.spec.ts" time="1.315" file="tests/e2e/workflow.spec.ts">
+</testcase>
+<testcase name="比較値の未確認・値なし、複数Evidence、逆参照とオフライン操作" classname="workflow.spec.ts" time="2.507" file="tests/e2e/workflow.spec.ts">
+</testcase>
+</testsuite>
+</testsuites>

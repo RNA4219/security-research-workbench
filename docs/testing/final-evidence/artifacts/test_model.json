@@ -1,0 +1,247 @@
+{
+  "feature_id": "WORKBENCH-FINAL",
+  "coverage_items": [
+    {
+      "id": "COV-FINAL-01",
+      "dimension": "regression",
+      "technique": "checklist_based",
+      "applicability": "applicable",
+      "mandatory": true,
+      "coverage_criterion": "each_item",
+      "source_refs": [
+        {
+          "id": "FR-02",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-04",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-05",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-13",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        }
+      ]
+    },
+    {
+      "id": "COV-FINAL-02",
+      "dimension": "regression",
+      "technique": "checklist_based",
+      "applicability": "applicable",
+      "mandatory": true,
+      "coverage_criterion": "each_item",
+      "source_refs": [
+        {
+          "id": "FR-03",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-07",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-08",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-11",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-12",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-14",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-15",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        }
+      ]
+    },
+    {
+      "id": "COV-FINAL-03",
+      "dimension": "regression",
+      "technique": "checklist_based",
+      "applicability": "applicable",
+      "mandatory": true,
+      "coverage_criterion": "each_item",
+      "source_refs": [
+        {
+          "id": "FR-01",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-02",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-15",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        }
+      ]
+    },
+    {
+      "id": "COV-FINAL-04",
+      "dimension": "regression",
+      "technique": "checklist_based",
+      "applicability": "applicable",
+      "mandatory": true,
+      "coverage_criterion": "each_item",
+      "source_refs": [
+        {
+          "id": "FR-01",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-15",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        }
+      ]
+    }
+  ],
+  "flows": [],
+  "data_partitions": [],
+  "rule_columns": [],
+  "states": [],
+  "role_matrix": [],
+  "regression_edges": [],
+  "checklist_models": [
+    {
+      "id": "CHECK-FINAL",
+      "version": "1",
+      "scope": "Windows・Node 24・通常ビルドを専用DBと4320番で操作する。自動テストの全要件被覆に加え、画面分割で影響を受ける承認・失効・保存障害・競合を確認する。",
+      "objective": "保存と根拠の承認に関する画面回帰",
+      "coverage_criterion": "applicable_items",
+      "source_refs": [
+        {
+          "id": "FR-01",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-02",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-03",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-04",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-05",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-06",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-07",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-08",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-09",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-10",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-11",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-12",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-13",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-14",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        },
+        {
+          "id": "FR-15",
+          "kind": "spec",
+          "excerpt": "docs/requirements.md"
+        }
+      ],
+      "items": [
+        {
+          "id": "TC-FINAL-01",
+          "question": "未承認比較からの生成拒否とエラー回復",
+          "applicable": true,
+          "reason": "画面分割が操作と状態表示に影響する",
+          "priority": "P0"
+        },
+        {
+          "id": "TC-FINAL-02",
+          "question": "承認済み根拠の資料更新と失効・履歴・出力",
+          "applicable": true,
+          "reason": "画面分割が操作と状態表示に影響する",
+          "priority": "P0"
+        },
+        {
+          "id": "TC-FINAL-03",
+          "question": "通信断後の入力保持・明示再試行・再起動永続化",
+          "applicable": true,
+          "reason": "画面分割が操作と状態表示に影響する",
+          "priority": "P0"
+        },
+        {
+          "id": "TC-FINAL-04",
+          "question": "2タブの競合拒否と編集値保持",
+          "applicable": true,
+          "reason": "画面分割が操作と状態表示に影響する",
+          "priority": "P0"
+        }
+      ]
+    }
+  ]
+}

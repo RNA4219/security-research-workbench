@@ -1,0 +1,26 @@
+{
+  "producerArtifact": {
+    "id": "hate",
+    "path": "artifacts/hate-test-results.ndjson",
+    "revision": "c3d96d55126f8982b78818989f8456d7d6c280b0"
+  },
+  "sourceRecord": {
+    "records": [
+      "test-result-final-c3d96d55126f-1-71-1",
+      "test-result-final-c3d96d55126f-1-72-2",
+      "test-result-final-c3d96d55126f-1-73-json-api",
+      "test-result-final-c3d96d55126f-1-74",
+      "test-result-final-c3d96d55126f-1-75",
+      "test-result-final-c3d96d55126f-1-76-memx-api",
+      "test-result-final-c3d96d55126f-1-77",
+      "test-result-final-c3d96d55126f-1-78",
+      "test-result-final-c3d96d55126f-1-79",
+      "test-result-final-c3d96d55126f-1-80",
+      "test-result-final-c3d96d55126f-1-81",
+      "test-result-final-c3d96d55126f-1-82",
+      "test-result-final-c3d96d55126f-1-83-evidence"
+    ],
+    "dependencyDoubles": "個別テストのスタブはテスト名と原文を参照。アプリ実行自体は実測"
+  },
+  "bridgeVersion": "workbench-bridge/1:sha256:b105b9aa046c52a2da501688fdc7b6d679e77a3b350dad6b33c00ea784cdf4f7"
+}

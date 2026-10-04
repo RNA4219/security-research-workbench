@@ -1,0 +1,54 @@
+{
+  "version": "ctg/v1",
+  "generated_at": "2026-10-04T01:43:26.844Z",
+  "run_id": "readiness-20261004014326844-1cb0900af57e437aa0e26de9d6ae1b77",
+  "repo": {
+    "root": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench",
+    "revision": "c3d96d55126f",
+    "branch": "main",
+    "dirty": false
+  },
+  "tool": {
+    "name": "code-to-gate",
+    "version": "1.6.1",
+    "policy_id": "ci-release-readiness",
+    "plugin_versions": []
+  },
+  "artifact": "release-readiness",
+  "schema": "release-readiness@v1",
+  "status": "passed",
+  "completeness": "complete",
+  "summary": "All policy conditions met, release ready",
+  "counts": {
+    "findings": 0,
+    "critical": 0,
+    "high": 0,
+    "risks": 0,
+    "testSeeds": 0,
+    "unsupportedClaims": 0
+  },
+  "selfAnalysis": {
+    "rawCritical": 0,
+    "rawHigh": 0,
+    "rawMedium": 0,
+    "rawLow": 0,
+    "suppressedCritical": 0,
+    "suppressedHigh": 0,
+    "suppressedMedium": 0,
+    "suppressedLow": 0,
+    "broadSuppressions": 0,
+    "acceptedExceptionsByClass": {
+      "self-reference": 0,
+      "fixture-intentional": 0,
+      "generated-artifact": 0,
+      "accepted-design": 0,
+      "temporary-debt": 0
+    }
+  },
+  "failedConditions": [],
+  "recommendedActions": [],
+  "artifactRefs": {
+    "findings": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\.cache\\final-run\\ctg\\findings.json",
+    "riskRegister": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\.cache\\final-run\\ctg\\risk-register.yaml"
+  }
+}

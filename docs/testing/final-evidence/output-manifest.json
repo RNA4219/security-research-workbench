@@ -1,0 +1,30 @@
+{
+  "manifestVersion": "qeg-output/v1",
+  "runId": "workbench-final-c3d96d55126f",
+  "files": [
+    {
+      "path": "qeg.bundle.json",
+      "contentHash": "sha256:7c48d61260bea238a12ef47eb13b7b43d6dff3b3b683fd4785381f5a320512a9"
+    },
+    {
+      "path": "test-placement-plan.json",
+      "contentHash": "sha256:24ecee5dd1dbb11b7874a442480c63d50d18dc9e7a00db2f63a40f131cfc07ed"
+    },
+    {
+      "path": "gate-verdict.json",
+      "contentHash": "sha256:33e53c9ff2759d85f53b27b56292c3d6bab47d2f291674c37b7f344425b4767b"
+    },
+    {
+      "path": "quality-evidence-record.md",
+      "contentHash": "sha256:32bdef62bbdd21e638dfe43089e2177bdca6279296f5709dca4decc0b60cfca9"
+    },
+    {
+      "path": "quality-evidence-record.json",
+      "contentHash": "sha256:c26341cd0ee4ee2e2d2c624ea731fee5efeefaedd16cfb8959e5543473b3e441"
+    },
+    {
+      "path": "output-record.json",
+      "contentHash": "sha256:c26341cd0ee4ee2e2d2c624ea731fee5efeefaedd16cfb8959e5543473b3e441"
+    }
+  ]
+}

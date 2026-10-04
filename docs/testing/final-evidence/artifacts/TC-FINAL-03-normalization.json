@@ -1,0 +1,27 @@
+{
+  "producerArtifact": {
+    "id": "manual-TC-FINAL-03",
+    "path": "artifacts/TC-FINAL-03.json",
+    "revision": "c3d96d55126f8982b78818989f8456d7d6c280b0"
+  },
+  "sourceRecord": {
+    "tc_id": "TC-FINAL-03",
+    "result": "pass",
+    "timestamp": "2026-10-04T01:51:57.627Z",
+    "actual": [
+      "4320の専用サーバー停止時に日本語の接続エラーと入力保持を確認",
+      "再起動後も別タブはREV10・資料1件のままで自動再送なし。明示保存でREV11・資料2件となり新規資料は1件だけ",
+      "再度再起動してREV11・資料2件とREV1〜11の履歴を画面で確認。4317の通常サーバーは稼働継続"
+    ],
+    "attachments": [
+      "tc03-before.txt",
+      "tc03-disconnected.txt",
+      "tc03-no-auto-retry.txt",
+      "tc03-retained.txt",
+      "tc03-saved.txt",
+      "tc03-restored.txt",
+      "tc03-history.txt"
+    ]
+  },
+  "bridgeVersion": "workbench-bridge/1:sha256:b105b9aa046c52a2da501688fdc7b6d679e77a3b350dad6b33c00ea784cdf4f7"
+}

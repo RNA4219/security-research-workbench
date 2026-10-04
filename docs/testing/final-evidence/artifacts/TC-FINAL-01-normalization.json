@@ -1,0 +1,20 @@
+{
+  "producerArtifact": {
+    "id": "manual-TC-FINAL-01",
+    "path": "artifacts/TC-FINAL-01.json",
+    "revision": "c3d96d55126f8982b78818989f8456d7d6c280b0"
+  },
+  "sourceRecord": {
+    "tc_id": "TC-FINAL-01",
+    "result": "pass",
+    "timestamp": "2026-10-04T01:51:57.627Z",
+    "actual": [
+      "資料3件・候補3件、未承認の要件1件を確認した",
+      "未承認でプロンプト生成を拒否。エラーを閉じて工程を往復してもREV18の資料が保持され、プロンプトは生成されない"
+    ],
+    "attachments": [
+      "tc01.txt"
+    ]
+  },
+  "bridgeVersion": "workbench-bridge/1:sha256:b105b9aa046c52a2da501688fdc7b6d679e77a3b350dad6b33c00ea784cdf4f7"
+}

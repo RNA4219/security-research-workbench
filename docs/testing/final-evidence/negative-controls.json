@@ -1,0 +1,52 @@
+[
+  {
+    "name": "positive",
+    "expected": "go",
+    "actual": "go",
+    "exitCode": 0,
+    "dqCodes": [],
+    "blockers": 0
+  },
+  {
+    "name": "hash-mismatch",
+    "expected": "disqualified",
+    "actual": "disqualified",
+    "exitCode": 2,
+    "dqCodes": [
+      "DQ-06",
+      "DQ-05"
+    ],
+    "blockers": 0
+  },
+  {
+    "name": "stale-build",
+    "expected": "disqualified",
+    "actual": "disqualified",
+    "exitCode": 2,
+    "dqCodes": [
+      "DQ-06",
+      "DQ-05",
+      "DQ-12"
+    ],
+    "blockers": 0
+  },
+  {
+    "name": "latest-failure",
+    "expected": "no_go",
+    "actual": "no_go",
+    "exitCode": 2,
+    "dqCodes": [],
+    "blockers": 1
+  },
+  {
+    "name": "missing-manual",
+    "expected": "disqualified",
+    "actual": "disqualified",
+    "exitCode": 2,
+    "dqCodes": [
+      "DQ-06",
+      "DQ-05"
+    ],
+    "blockers": 0
+  }
+]

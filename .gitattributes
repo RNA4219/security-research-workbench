@@ -1,0 +1,2 @@
+# Frozen evidence hashes must survive checkout byte-for-byte on Windows and Linux.
+docs/testing/final-evidence/** -text

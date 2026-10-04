@@ -1,0 +1,1094 @@
+{
+  "schema_version": "2.0",
+  "document_id": "rand:document:security-research-workbench",
+  "summary": "15要件監査。go=0, conditional_go=15, no_go=0.15件conditional_goあり。補強後に再監査推奨。",
+  "requirements": [
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-01",
+      "original_text": "プロジェクト管理",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L13-L13",
+          "summary": "| FR-01 | プロジェクト管理 | 目的・利用者・制約を保存し、再起動後も復元できる |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "high",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L13-L13",
+        "line_start": 13,
+        "line_end": 13,
+        "excerpt": "| FR-01 | プロジェクト管理 | 目的・利用者・制約を保存し、再起動後も復元できる |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L13-L13"
+      ],
+      "acceptance_criteria": [
+        "目的・利用者・制約を保存し、再起動後も復元できる"
+      ],
+      "findings": [],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-01:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-01",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "目的・利用者・制約を保存し、再起動後も復元できる"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L13-L13"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-02",
+      "original_text": "資料取込",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14",
+          "summary": "| FR-02 | 資料取込 | Markdown/text/JSONを取り込み、資料ID・URL・取得日・版・SHA256を保持する |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14",
+        "line_start": 14,
+        "line_end": 14,
+        "excerpt": "| FR-02 | 資料取込 | Markdown/text/JSONを取り込み、資料ID・URL・取得日・版・SHA256を保持する |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14"
+      ],
+      "acceptance_criteria": [
+        "Markdown/text/JSONを取り込み、資料ID・URL・取得日・版・SHA256を保持する"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-02:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-02",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-02:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-02",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "Markdown/text/JSONを取り込み、資料ID・URL・取得日・版・SHA256を保持する"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-03",
+      "original_text": "重複・更新",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L15-L15",
+          "summary": "| FR-03 | 重複・更新 | 同一内容を重複登録せず、更新履歴を保存し、関連要件を再確認状態にする |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "high",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L15-L15",
+        "line_start": 15,
+        "line_end": 15,
+        "excerpt": "| FR-03 | 重複・更新 | 同一内容を重複登録せず、更新履歴を保存し、関連要件を再確認状態にする |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L15-L15"
+      ],
+      "acceptance_criteria": [
+        "同一内容を重複登録せず、更新履歴を保存し、関連要件を再確認状態にする"
+      ],
+      "findings": [],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-03:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-03",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "同一内容を重複登録せず、更新履歴を保存し、関連要件を再確認状態にする"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L15-L15"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-04",
+      "original_text": "OSS比較",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16",
+          "summary": "| FR-04 | OSS比較 | 名称・URL・機能・ライセンス・保守状況・採否理由・出典を編集できる |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16",
+        "line_start": 16,
+        "line_end": 16,
+        "excerpt": "| FR-04 | OSS比較 | 名称・URL・機能・ライセンス・保守状況・採否理由・出典を編集できる |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16"
+      ],
+      "acceptance_criteria": [
+        "名称・URL・機能・ライセンス・保守状況・採否理由・出典を編集できる"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-04:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-04",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-04:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-04",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "名称・URL・機能・ライセンス・保守状況・採否理由・出典を編集できる"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-05",
+      "original_text": "プロンプト作成",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17",
+          "summary": "| FR-05 | プロンプト作成 | 選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17",
+        "line_start": 17,
+        "line_end": 17,
+        "excerpt": "| FR-05 | プロンプト作成 | 選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17"
+      ],
+      "acceptance_criteria": [
+        "選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-05:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-05",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-05:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-05",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-06",
+      "original_text": "回答取込",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L18-L18",
+          "summary": "| FR-06 | 回答取込 | 不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "high",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L18-L18",
+        "line_start": 18,
+        "line_end": 18,
+        "excerpt": "| FR-06 | 回答取込 | 不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L18-L18"
+      ],
+      "acceptance_criteria": [
+        "不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する"
+      ],
+      "findings": [],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-06:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-06",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L18-L18"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-07",
+      "original_text": "要件レビュー",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19",
+          "summary": "| FR-07 | 要件レビュー | 優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19",
+        "line_start": 19,
+        "line_end": 19,
+        "excerpt": "| FR-07 | 要件レビュー | 優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19"
+      ],
+      "acceptance_criteria": [
+        "優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-07:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-07",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-07:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-07",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-08",
+      "original_text": "出力",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20",
+          "summary": "| FR-08 | 出力 | Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20",
+        "line_start": 20,
+        "line_end": 20,
+        "excerpt": "| FR-08 | 出力 | Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20"
+      ],
+      "acceptance_criteria": [
+        "Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-08:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-08",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-08:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-08",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-09",
+      "original_text": "知識連携",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L21-L21",
+          "summary": "| FR-09 | 知識連携 | memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "high",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L21-L21",
+        "line_start": 21,
+        "line_end": 21,
+        "excerpt": "| FR-09 | 知識連携 | memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L21-L21"
+      ],
+      "acceptance_criteria": [
+        "memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない"
+      ],
+      "findings": [],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-09:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-09",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L21-L21"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-10",
+      "original_text": "導入再現性",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22",
+          "summary": "| FR-10 | 導入再現性 | 公開clone＋npm ciから起動可能。実データはGit対象外 |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22",
+        "line_start": 22,
+        "line_end": 22,
+        "excerpt": "| FR-10 | 導入再現性 | 公開clone＋npm ciから起動可能。実データはGit対象外 |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22"
+      ],
+      "acceptance_criteria": [
+        "公開clone＋npm ciから起動可能。実データはGit対象外"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-10:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-10",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-10:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-10",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "公開clone＋npm ciから起動可能。実データはGit対象外"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-11",
+      "original_text": "根拠グラフ",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23",
+          "summary": "| FR-11 | 根拠グラフ | 要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23",
+        "line_start": 23,
+        "line_end": 23,
+        "excerpt": "| FR-11 | 根拠グラフ | 要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23"
+      ],
+      "acceptance_criteria": [
+        "要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-11:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-11",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-11:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-11",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-12",
+      "original_text": "項目単位の比較",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24",
+          "summary": "| FR-12 | 項目単位の比較 | カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24",
+        "line_start": 24,
+        "line_end": 24,
+        "excerpt": "| FR-12 | 項目単位の比較 | カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24"
+      ],
+      "acceptance_criteria": [
+        "カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-12:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-12",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-12:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-12",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-13",
+      "original_text": "比較承認ゲート",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L25-L25",
+          "summary": "| FR-13 | 比較承認ゲート | 確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "high",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L25-L25",
+        "line_start": 25,
+        "line_end": 25,
+        "excerpt": "| FR-13 | 比較承認ゲート | 確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L25-L25"
+      ],
+      "acceptance_criteria": [
+        "確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する"
+      ],
+      "findings": [],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-13:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-13",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L25-L25"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-14",
+      "original_text": "任意依存と契約",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L26-L26",
+          "summary": "| FR-14 | 任意依存と契約 | objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "high",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L26-L26",
+        "line_start": 26,
+        "line_end": 26,
+        "excerpt": "| FR-14 | 任意依存と契約 | objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L26-L26"
+      ],
+      "acceptance_criteria": [
+        "objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない"
+      ],
+      "findings": [],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-14:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-14",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L26-L26"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-15",
+      "original_text": "判断履歴と移行",
+      "kano_estimate": "questionable",
+      "confidence": 0.0,
+      "evidence": [
+        {
+          "evidence_id": "EV-AUDIT-001-rand:req:securit",
+          "source_type": "requirements_document",
+          "source_tier": "document",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27",
+          "summary": "| FR-15 | 判断履歴と移行 | draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する |",
+          "weight": 0.0,
+          "freshness_days": null,
+          "locale": "und"
+        }
+      ],
+      "testability": "medium",
+      "implementation_alignment": "unknown",
+      "risks": [],
+      "issues": [
+        "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。"
+      ],
+      "suggested_action": "補強。受入条件、KPI、根拠、実装リスクの確認。",
+      "gate_verdict": "conditional_go",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27",
+        "line_start": 27,
+        "line_end": 27,
+        "excerpt": "| FR-15 | 判断履歴と移行 | draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する |"
+      },
+      "source_refs": [
+        "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27"
+      ],
+      "acceptance_criteria": [
+        "draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する"
+      ],
+      "findings": [
+        {
+          "finding_id": "rand:req:security-research-workbench:FR-15:finding:DA003",
+          "requirement_id": "rand:req:security-research-workbench:FR-15",
+          "code": "DA003",
+          "severity": "warning",
+          "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+          "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27",
+          "review_required": true
+        }
+      ],
+      "suggested_tests": [
+        {
+          "test_id": "rand:req:security-research-workbench:FR-15:test:draft",
+          "requirement_id": "rand:req:security-research-workbench:FR-15",
+          "status": "draft",
+          "focus": [
+            "原文の受入条件に対する観測方法と判定基準をレビューする。"
+          ],
+          "acceptance_criteria": [
+            "draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する"
+          ],
+          "source_refs": [
+            "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27"
+          ],
+          "review_required": true
+        }
+      ],
+      "review_required": true
+    }
+  ],
+  "gate_summary": {
+    "go": 0,
+    "conditional_go": 15,
+    "no_go": 0,
+    "total": 15,
+    "verdict_distribution": {
+      "conditional_go": [
+        "rand:req:security-research-workbench:FR-01",
+        "rand:req:security-research-workbench:FR-02",
+        "rand:req:security-research-workbench:FR-03",
+        "rand:req:security-research-workbench:FR-04",
+        "rand:req:security-research-workbench:FR-05",
+        "rand:req:security-research-workbench:FR-06",
+        "rand:req:security-research-workbench:FR-07",
+        "rand:req:security-research-workbench:FR-08",
+        "rand:req:security-research-workbench:FR-09",
+        "rand:req:security-research-workbench:FR-10",
+        "rand:req:security-research-workbench:FR-11",
+        "rand:req:security-research-workbench:FR-12",
+        "rand:req:security-research-workbench:FR-13",
+        "rand:req:security-research-workbench:FR-14",
+        "rand:req:security-research-workbench:FR-15"
+      ]
+    },
+    "overall_assessment": "conditional_go",
+    "overall_reason": "15件conditional_goあり。補強後に再監査推奨。"
+  },
+  "source_refs": [
+    "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md"
+  ],
+  "assumptions": [
+    "Markdownに明記された構造と定義済み規則だけを監査した。",
+    "実装整合およびKano分類は未評価である。"
+  ],
+  "parser_version": "1",
+  "findings": [
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-02:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-02",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-04:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-04",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-05:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-05",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-07:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-07",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-08:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-08",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-10:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-10",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-11:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-11",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-12:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-12",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24",
+      "review_required": true
+    },
+    {
+      "finding_id": "rand:req:security-research-workbench:FR-15:finding:DA003",
+      "requirement_id": "rand:req:security-research-workbench:FR-15",
+      "code": "DA003",
+      "severity": "warning",
+      "message": "受入条件に定義済みの観測構文を検出できない。判定方法の具体化をレビューする。",
+      "source_ref": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27",
+      "review_required": true
+    }
+  ],
+  "review_required": true,
+  "limitations": [
+    "語や構文の検出は意味的正しさ、受入条件の十分性、実装済みの証明ではない。",
+    "テスト候補は未実行の草案であり、期待結果は原文の受入条件に限定する。"
+  ],
+  "id": "rand:document-audit:security-research-workbench:8bac64f82eca7c1c1fcb",
+  "type": "requirements_audit_packet",
+  "producer": {
+    "name": "RanD",
+    "version": "0.3.0"
+  },
+  "created_at": "2026-10-04T01:43:25.040526+00:00",
+  "input_refs": [
+    "rand:document-snapshot:security-research-workbench:8bac64f82eca7c1c1fcb"
+  ],
+  "status": "ok",
+  "downstream_allowed_uses": [
+    "review",
+    "analysis",
+    "test_design"
+  ]
+}

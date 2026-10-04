@@ -1,0 +1,818 @@
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 37
++			113 text 操作を完了できませんでした
++			114 text 対象のOSS比較をレビューして承認してからプロンプトを作成してください
++			115 button 閉じる
+~						104 checkbox (settable, integer) Description: Trivy / 公開概要 v2026-10-03, Value: 1
+~				112 button プロンプトを作成
+The focused UI element is 0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+	1 container root
+		2 container
+			3 link Description: ホーム, Value: 127.0.0.1:4320/
+			4 text PROJECTS
+			5 button 新しいプロジェクト
+			6 container プロジェクト
+				34 button ◇ 防御ツールの選定調査
+					35 text ◇
+					36 text 防御ツールの選定調査
+			7 text  LOCAL WORKSPACE 資料から、判断へ。
+			8 text 判断から、実装へ。 v0.2.0 · Open source
+		9 container
+			10 text SECURITY RESEARCH / DEVELOPMENT
+			11 button 再読込 ↻
+			38 container
+				39 text RESEARCH WORKSPACE  / REV  18
+				40 heading 防御ツールの選定調査, Value: 1
+					41 text 防御ツールの選定調査
+				42 text 依存関係の検査から修正管理までの構成を、公開OSSの根拠から要件化する。 ● ローカル保存
+			43 text 3  調査資料 3  OSS候補 1  要件 0  承認済み
+			44 container 作業工程
+				45 button 01調査資料
+					46 text 01
+					47 text 調査資料
+				48 button ◎根拠と主張
+					49 text ◎
+					50 text 根拠と主張
+				51 button 02OSS比較
+					52 text 02
+					53 text OSS比較
+				54 button 03要件とレビュー
+					55 text 03
+					56 text 要件とレビュー
+				57 button 04出力
+					58 text 04
+					59 text 出力
+				60 button ↺履歴
+					61 text ↺
+					62 text 履歴
+				63 button ⚙設定・連携
+					64 text ⚙
+					65 text 設定・連携
+			66 heading OSSを比較する, Value: 2
+				67 text OSSを比較する
+			68 text 確認した事実と採否の判断を分けて記録します。
+			69 button ＋ 候補を追加
+			70 table
+				71 row
+					72 cell
+						73 text OSS / 出典
+					74 cell
+						75 text 主な機能
+					76 cell
+						77 text ライセンス・保守
+					78 cell
+						79 text 判断
+					80 cell
+						81 text 操作
+				82 row
+					83 cell
+						84 link Description: Trivy ↗, Value: github.com/aquasecurity/trivy
+						85 text Trivy / 公開概要
+					86 cell
+						87 text 依存関係・設定・SBOMを横断して確認
+					88 cell
+						89 text Apache-2.0
+						90 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+					91 cell
+						92 text 検討中
+						93 text 横断的な検査の候補。初版は比較資料として扱う。
+					94 cell
+						95 button 編集
+				96 row
+					97 cell
+						98 link Description: OSV-Scanner ↗, Value: github.com/google/osv-scanner
+						99 text OSV-Scanner / 公開概要
+					100 cell
+						101 text OSVによる依存関係の脆弱性検査
+					102 cell
+						103 text Apache-2.0
+						104 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+					105 cell
+						106 text 検討中
+						107 text 依存関係を中心にした小さな構成の候補。
+					108 cell
+						109 button 編集
+				110 row
+					111 cell
+						112 link Description: DefectDojo ↗, Value: github.com/DefectDojo/django-DefectDojo
+						113 text DefectDojo / 公開概要
+					114 cell
+						115 text 複数の検査結果を集約し修正を管理
+					116 cell
+						117 text BSD-3-Clause
+						118 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+					119 cell
+						120 text 検討中
+						121 text 管理層の候補。サーバー運用負担を調べる必要がある。
+					122 cell
+						123 button 編集
+			124 container
+				125 heading 項目ごとの根拠と比較レビュー, Value: 2
+					126 text 項目ごとの根拠と比較レビュー
+				127 text 既知の値はEvidenceを確認してから承認します。未確認と値なしはそのまま区別して記録します。
+				128 table 項目別比較
+					129 text 項目別比較
+					130 row
+						131 cell
+							132 text 比較項目
+						133 cell
+							134 text Trivy
+						135 cell
+							136 text OSV-Scanner
+						137 cell
+							138 text DefectDojo
+					139 row
+						140 cell
+							141 text カテゴリ
+						142 cell
+							143 button (collapsed) カテゴリ: 値なし · 未検証, Secondary Actions: Expand
+								144 text カテゴリ
+								145 text :
+								146 text 値なし
+								147 text · 
+								148 text 未検証
+						149 cell
+							150 button (collapsed) カテゴリ: 値なし · 未検証, Secondary Actions: Expand
+								151 text カテゴリ
+								152 text :
+								153 text 値なし
+								154 text · 
+								155 text 未検証
+						156 cell
+							157 button (collapsed) カテゴリ: 値なし · 未検証, Secondary Actions: Expand
+								158 text カテゴリ
+								159 text :
+								160 text 値なし
+								161 text · 
+								162 text 未検証
+					163 row
+						164 cell
+							165 text 用途
+						166 cell
+							167 button (collapsed) 用途: 値なし · 未検証, Secondary Actions: Expand
+								168 text 用途
+								169 text :
+								170 text 値なし
+								171 text · 
+								172 text 未検証
+						173 cell
+							174 button (collapsed) 用途: 値なし · 未検証, Secondary Actions: Expand
+								175 text 用途
+								176 text :
+								177 text 値なし
+								178 text · 
+								179 text 未検証
+						180 cell
+							181 button (collapsed) 用途: 値なし · 未検証, Secondary Actions: Expand
+								182 text 用途
+								183 text :
+								184 text 値なし
+								185 text · 
+								186 text 未検証
+					187 row
+						188 cell
+							189 text 機能
+						190 cell
+							191 button (collapsed) 機能: 依存関係・設定・SBOMを横断して確認 · 未検証, Secondary Actions: Expand
+								192 text 機能
+								193 text :
+								194 text 依存関係・設定・SBOMを横断して確認
+								195 text · 
+								196 text 未検証
+						197 cell
+							198 button (collapsed) 機能: OSVによる依存関係の脆弱性検査 · 未検証, Secondary Actions: Expand
+								199 text 機能
+								200 text :
+								201 text OSVによる依存関係の脆弱性検査
+								202 text · 
+								203 text 未検証
+						204 cell
+							205 button (collapsed) 機能: 複数の検査結果を集約し修正を管理 · 未検証, Secondary Actions: Expand
+								206 text 機能
+								207 text :
+								208 text 複数の検査結果を集約し修正を管理
+								209 text · 
+								210 text 未検証
+					211 row
+						212 cell
+							213 text ライセンス
+						214 cell
+							215 button (collapsed) ライセンス: Apache-2.0 · 未検証, Secondary Actions: Expand
+								216 text ライセンス
+								217 text :
+								218 text Apache-2.0
+								219 text · 
+								220 text 未検証
+						221 cell
+							222 button (collapsed) ライセンス: Apache-2.0 · 未検証, Secondary Actions: Expand
+								223 text ライセンス
+								224 text :
+								225 text Apache-2.0
+								226 text · 
+								227 text 未検証
+						228 cell
+							229 button (collapsed) ライセンス: BSD-3-Clause · 未検証, Secondary Actions: Expand
+								230 text ライセンス
+								231 text :
+								232 text BSD-3-Clause
+								233 text · 
+								234 text 未検証
+					235 row
+						236 cell
+							237 text リリース
+						238 cell
+							239 button (collapsed) リリース: 値なし · 未検証, Secondary Actions: Expand
+								240 text リリース
+								241 text :
+								242 text 値なし
+								243 text · 
+								244 text 未検証
+						245 cell
+							246 button (collapsed) リリース: 値なし · 未検証, Secondary Actions: Expand
+								247 text リリース
+								248 text :
+								249 text 値なし
+								250 text · 
+								251 text 未検証
+						252 cell
+							253 button (collapsed) リリース: 値なし · 未検証, Secondary Actions: Expand
+								254 text リリース
+								255 text :
+								256 text 値なし
+								257 text · 
+								258 text 未検証
+					259 row
+						260 cell
+							261 text コミット
+						262 cell
+							263 button (collapsed) コミット: 値なし · 未検証, Secondary Actions: Expand
+								264 text コミット
+								265 text :
+								266 text 値なし
+								267 text · 
+								268 text 未検証
+						269 cell
+							270 button (collapsed) コミット: 値なし · 未検証, Secondary Actions: Expand
+								271 text コミット
+								272 text :
+								273 text 値なし
+								274 text · 
+								275 text 未検証
+						276 cell
+							277 button (collapsed) コミット: 値なし · 未検証, Secondary Actions: Expand
+								278 text コミット
+								279 text :
+								280 text 値なし
+								281 text · 
+								282 text 未検証
+					283 row
+						284 cell
+							285 text アーカイブ状態
+						286 cell
+							287 button (collapsed) アーカイブ状態: 値なし · 未検証, Secondary Actions: Expand
+								288 text アーカイブ状態
+								289 text :
+								290 text 値なし
+								291 text · 
+								292 text 未検証
+						293 cell
+							294 button (collapsed) アーカイブ状態: 値なし · 未検証, Secondary Actions: Expand
+								295 text アーカイブ状態
+								296 text :
+								297 text 値なし
+								298 text · 
+								299 text 未検証
+						300 cell
+							301 button (collapsed) アーカイブ状態: 値なし · 未検証, Secondary Actions: Expand
+								302 text アーカイブ状態
+								303 text :
+								304 text 値なし
+								305 text · 
+								306 text 未検証
+					307 row
+						308 cell
+							309 text Issue・PR活動
+						310 cell
+							311 button (collapsed) Issue・PR活動: 値なし · 未検証, Secondary Actions: Expand
+								312 text Issue・PR活動
+								313 text :
+								314 text 値なし
+								315 text · 
+								316 text 未検証
+						317 cell
+							318 button (collapsed) Issue・PR活動: 値なし · 未検証, Secondary Actions: Expand
+								319 text Issue・PR活動
+								320 text :
+								321 text 値なし
+								322 text · 
+								323 text 未検証
+						324 cell
+							325 button (collapsed) Issue・PR活動: 値なし · 未検証, Secondary Actions: Expand
+								326 text Issue・PR活動
+								327 text :
+								328 text 値なし
+								329 text · 
+								330 text 未検証
+					331 row
+						332 cell
+							333 text 統合方式
+						334 cell
+							335 button (collapsed) 統合方式: 値なし · 未検証, Secondary Actions: Expand
+								336 text 統合方式
+								337 text :
+								338 text 値なし
+								339 text · 
+								340 text 未検証
+						341 cell
+							342 button (collapsed) 統合方式: 値なし · 未検証, Secondary Actions: Expand
+								343 text 統合方式
+								344 text :
+								345 text 値なし
+								346 text · 
+								347 text 未検証
+						348 cell
+							349 button (collapsed) 統合方式: 値なし · 未検証, Secondary Actions: Expand
+								350 text 統合方式
+								351 text :
+								352 text 値なし
+								353 text · 
+								354 text 未検証
+					355 row
+						356 cell
+							357 text 入力・出力
+						358 cell
+							359 button (collapsed) 入力・出力: 値なし · 未検証, Secondary Actions: Expand
+								360 text 入力・出力
+								361 text :
+								362 text 値なし
+								363 text · 
+								364 text 未検証
+						365 cell
+							366 button (collapsed) 入力・出力: 値なし · 未検証, Secondary Actions: Expand
+								367 text 入力・出力
+								368 text :
+								369 text 値なし
+								370 text · 
+								371 text 未検証
+						372 cell
+							373 button (collapsed) 入力・出力: 値なし · 未検証, Secondary Actions: Expand
+								374 text 入力・出力
+								375 text :
+								376 text 値なし
+								377 text · 
+								378 text 未検証
+					379 row
+						380 cell
+							381 text 運用形態
+						382 cell
+							383 button (collapsed) 運用形態: 値なし · 未検証, Secondary Actions: Expand
+								384 text 運用形態
+								385 text :
+								386 text 値なし
+								387 text · 
+								388 text 未検証
+						389 cell
+							390 button (collapsed) 運用形態: 値なし · 未検証, Secondary Actions: Expand
+								391 text 運用形態
+								392 text :
+								393 text 値なし
+								394 text · 
+								395 text 未検証
+						396 cell
+							397 button (collapsed) 運用形態: 値なし · 未検証, Secondary Actions: Expand
+								398 text 運用形態
+								399 text :
+								400 text 値なし
+								401 text · 
+								402 text 未検証
+					403 row
+						404 cell
+							405 text 保守状況
+						406 cell
+							407 button (collapsed) 保守状況: 公開リポジトリを2026-10-03確認。採用前に再確認。 · 未検証, Secondary Actions: Expand
+								408 text 保守状況
+								409 text :
+								410 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+								411 text · 
+								412 text 未検証
+						413 cell
+							414 button (collapsed) 保守状況: 公開リポジトリを2026-10-03確認。採用前に再確認。 · 未検証, Secondary Actions: Expand
+								415 text 保守状況
+								416 text :
+								417 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+								418 text · 
+								419 text 未検証
+						420 cell
+							421 button (collapsed) 保守状況: 公開リポジトリを2026-10-03確認。採用前に再確認。 · 未検証, Secondary Actions: Expand
+								422 text 保守状況
+								423 text :
+								424 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+								425 text · 
+								426 text 未検証
+				427 container Trivyの根拠
+					428 heading Trivy, Value: 3
+						429 text Trivy
+					430 container
+						431 text 比較:  再確認が必要
+					432 button (collapsed) カテゴリ: 値なし · 未検証, Secondary Actions: Expand
+						433 text カテゴリ
+						434 text :
+						435 text 値なし
+						436 text · 
+						437 text 未検証
+					438 button (collapsed) カテゴリを編集, Secondary Actions: Expand
+						439 text カテゴリ
+						440 text を編集
+					441 button (collapsed) 用途: 値なし · 未検証, Secondary Actions: Expand
+						442 text 用途
+						443 text :
+						444 text 値なし
+						445 text · 
+						446 text 未検証
+					447 button (collapsed) 用途を編集, Secondary Actions: Expand
+						448 text 用途
+						449 text を編集
+					450 button (collapsed) 機能: 依存関係・設定・SBOMを横断して確認 · 未検証, Secondary Actions: Expand
+						451 text 機能
+						452 text :
+						453 text 依存関係・設定・SBOMを横断して確認
+						454 text · 
+						455 text 未検証
+					456 button (collapsed) 機能を編集, Secondary Actions: Expand
+						457 text 機能
+						458 text を編集
+					459 button (collapsed) ライセンス: Apache-2.0 · 未検証, Secondary Actions: Expand
+						460 text ライセンス
+						461 text :
+						462 text Apache-2.0
+						463 text · 
+						464 text 未検証
+					465 button (collapsed) ライセンスを編集, Secondary Actions: Expand
+						466 text ライセンス
+						467 text を編集
+					468 button (collapsed) リリース: 値なし · 未検証, Secondary Actions: Expand
+						469 text リリース
+						470 text :
+						471 text 値なし
+						472 text · 
+						473 text 未検証
+					474 button (collapsed) リリースを編集, Secondary Actions: Expand
+						475 text リリース
+						476 text を編集
+					477 button (collapsed) コミット: 値なし · 未検証, Secondary Actions: Expand
+						478 text コミット
+						479 text :
+						480 text 値なし
+						481 text · 
+						482 text 未検証
+					483 button (collapsed) コミットを編集, Secondary Actions: Expand
+						484 text コミット
+						485 text を編集
+					486 button (collapsed) アーカイブ状態: 値なし · 未検証, Secondary Actions: Expand
+						487 text アーカイブ状態
+						488 text :
+						489 text 値なし
+						490 text · 
+						491 text 未検証
+					492 button (collapsed) アーカイブ状態を編集, Secondary Actions: Expand
+						493 text アーカイブ状態
+						494 text を編集
+					495 button (collapsed) Issue・PR活動: 値なし · 未検証, Secondary Actions: Expand
+						496 text Issue・PR活動
+						497 text :
+						498 text 値なし
+						499 text · 
+						500 text 未検証
+					501 button (collapsed) Issue・PR活動を編集, Secondary Actions: Expand
+						502 text Issue・PR活動
+						503 text を編集
+					504 button (collapsed) 統合方式: 値なし · 未検証, Secondary Actions: Expand
+						505 text 統合方式
+						506 text :
+						507 text 値なし
+						508 text · 
+						509 text 未検証
+					510 button (collapsed) 統合方式を編集, Secondary Actions: Expand
+						511 text 統合方式
+						512 text を編集
+					513 button (collapsed) 入力・出力: 値なし · 未検証, Secondary Actions: Expand
+						514 text 入力・出力
+						515 text :
+						516 text 値なし
+						517 text · 
+						518 text 未検証
+					519 button (collapsed) 入力・出力を編集, Secondary Actions: Expand
+						520 text 入力・出力
+						521 text を編集
+					522 button (collapsed) 運用形態: 値なし · 未検証, Secondary Actions: Expand
+						523 text 運用形態
+						524 text :
+						525 text 値なし
+						526 text · 
+						527 text 未検証
+					528 button (collapsed) 運用形態を編集, Secondary Actions: Expand
+						529 text 運用形態
+						530 text を編集
+					531 button (collapsed) 保守状況: 公開リポジトリを2026-10-03確認。採用前に再確認。 · 未検証, Secondary Actions: Expand
+						532 text 保守状況
+						533 text :
+						534 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+						535 text · 
+						536 text 未検証
+					537 button (collapsed) 保守状況を編集, Secondary Actions: Expand
+						538 text 保守状況
+						539 text を編集
+					540 button 比較を承認
+					541 button (collapsed) レビュー状態と判断履歴, Secondary Actions: Expand
+						542 text レビュー状態と判断履歴
+				543 container OSV-Scannerの根拠
+					544 heading OSV-Scanner, Value: 3
+						545 text OSV-Scanner
+					546 container
+						547 text 比較:  再確認が必要
+					548 button (collapsed) カテゴリ: 値なし · 未検証, Secondary Actions: Expand
+						549 text カテゴリ
+						550 text :
+						551 text 値なし
+						552 text · 
+						553 text 未検証
+					554 button (collapsed) カテゴリを編集, Secondary Actions: Expand
+						555 text カテゴリ
+						556 text を編集
+					557 button (collapsed) 用途: 値なし · 未検証, Secondary Actions: Expand
+						558 text 用途
+						559 text :
+						560 text 値なし
+						561 text · 
+						562 text 未検証
+					563 button (collapsed) 用途を編集, Secondary Actions: Expand
+						564 text 用途
+						565 text を編集
+					566 button (collapsed) 機能: OSVによる依存関係の脆弱性検査 · 未検証, Secondary Actions: Expand
+						567 text 機能
+						568 text :
+						569 text OSVによる依存関係の脆弱性検査
+						570 text · 
+						571 text 未検証
+					572 button (collapsed) 機能を編集, Secondary Actions: Expand
+						573 text 機能
+						574 text を編集
+					575 button (collapsed) ライセンス: Apache-2.0 · 未検証, Secondary Actions: Expand
+						576 text ライセンス
+						577 text :
+						578 text Apache-2.0
+						579 text · 
+						580 text 未検証
+					581 button (collapsed) ライセンスを編集, Secondary Actions: Expand
+						582 text ライセンス
+						583 text を編集
+					584 button (collapsed) リリース: 値なし · 未検証, Secondary Actions: Expand
+						585 text リリース
+						586 text :
+						587 text 値なし
+						588 text · 
+						589 text 未検証
+					590 button (collapsed) リリースを編集, Secondary Actions: Expand
+						591 text リリース
+						592 text を編集
+					593 button (collapsed) コミット: 値なし · 未検証, Secondary Actions: Expand
+						594 text コミット
+						595 text :
+						596 text 値なし
+						597 text · 
+						598 text 未検証
+					599 button (collapsed) コミットを編集, Secondary Actions: Expand
+						600 text コミット
+						601 text を編集
+					602 button (collapsed) アーカイブ状態: 値なし · 未検証, Secondary Actions: Expand
+						603 text アーカイブ状態
+						604 text :
+						605 text 値なし
+						606 text · 
+						607 text 未検証
+					608 button (collapsed) アーカイブ状態を編集, Secondary Actions: Expand
+						609 text アーカイブ状態
+						610 text を編集
+					611 button (collapsed) Issue・PR活動: 値なし · 未検証, Secondary Actions: Expand
+						612 text Issue・PR活動
+						613 text :
+						614 text 値なし
+						615 text · 
+						616 text 未検証
+					617 button (collapsed) Issue・PR活動を編集, Secondary Actions: Expand
+						618 text Issue・PR活動
+						619 text を編集
+					620 button (collapsed) 統合方式: 値なし · 未検証, Secondary Actions: Expand
+						621 text 統合方式
+						622 text :
+						623 text 値なし
+						624 text · 
+						625 text 未検証
+					626 button (collapsed) 統合方式を編集, Secondary Actions: Expand
+						627 text 統合方式
+						628 text を編集
+					629 button (collapsed) 入力・出力: 値なし · 未検証, Secondary Actions: Expand
+						630 text 入力・出力
+						631 text :
+						632 text 値なし
+						633 text · 
+						634 text 未検証
+					635 button (collapsed) 入力・出力を編集, Secondary Actions: Expand
+						636 text 入力・出力
+						637 text を編集
+					638 button (collapsed) 運用形態: 値なし · 未検証, Secondary Actions: Expand
+						639 text 運用形態
+						640 text :
+						641 text 値なし
+						642 text · 
+						643 text 未検証
+					644 button (collapsed) 運用形態を編集, Secondary Actions: Expand
+						645 text 運用形態
+						646 text を編集
+					647 button (collapsed) 保守状況: 公開リポジトリを2026-10-03確認。採用前に再確認。 · 未検証, Secondary Actions: Expand
+						648 text 保守状況
+						649 text :
+						650 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+						651 text · 
+						652 text 未検証
+					653 button (collapsed) 保守状況を編集, Secondary Actions: Expand
+						654 text 保守状況
+						655 text を編集
+					656 button 比較を承認
+					657 button (collapsed) レビュー状態と判断履歴, Secondary Actions: Expand
+						658 text レビュー状態と判断履歴
+				659 container DefectDojoの根拠
+					660 heading DefectDojo, Value: 3
+						661 text DefectDojo
+					662 container
+						663 text 比較:  再確認が必要
+					664 button (collapsed) カテゴリ: 値なし · 未検証, Secondary Actions: Expand
+						665 text カテゴリ
+						666 text :
+						667 text 値なし
+						668 text · 
+						669 text 未検証
+					670 button (collapsed) カテゴリを編集, Secondary Actions: Expand
+						671 text カテゴリ
+						672 text を編集
+					673 button (collapsed) 用途: 値なし · 未検証, Secondary Actions: Expand
+						674 text 用途
+						675 text :
+						676 text 値なし
+						677 text · 
+						678 text 未検証
+					679 button (collapsed) 用途を編集, Secondary Actions: Expand
+						680 text 用途
+						681 text を編集
+					682 button (collapsed) 機能: 複数の検査結果を集約し修正を管理 · 未検証, Secondary Actions: Expand
+						683 text 機能
+						684 text :
+						685 text 複数の検査結果を集約し修正を管理
+						686 text · 
+						687 text 未検証
+					688 button (collapsed) 機能を編集, Secondary Actions: Expand
+						689 text 機能
+						690 text を編集
+					691 button (collapsed) ライセンス: BSD-3-Clause · 未検証, Secondary Actions: Expand
+						692 text ライセンス
+						693 text :
+						694 text BSD-3-Clause
+						695 text · 
+						696 text 未検証
+					697 button (collapsed) ライセンスを編集, Secondary Actions: Expand
+						698 text ライセンス
+						699 text を編集
+					700 button (collapsed) リリース: 値なし · 未検証, Secondary Actions: Expand
+						701 text リリース
+						702 text :
+						703 text 値なし
+						704 text · 
+						705 text 未検証
+					706 button (collapsed) リリースを編集, Secondary Actions: Expand
+						707 text リリース
+						708 text を編集
+					709 button (collapsed) コミット: 値なし · 未検証, Secondary Actions: Expand
+						710 text コミット
+						711 text :
+						712 text 値なし
+						713 text · 
+						714 text 未検証
+					715 button (collapsed) コミットを編集, Secondary Actions: Expand
+						716 text コミット
+						717 text を編集
+					718 button (collapsed) アーカイブ状態: 値なし · 未検証, Secondary Actions: Expand
+						719 text アーカイブ状態
+						720 text :
+						721 text 値なし
+						722 text · 
+						723 text 未検証
+					724 button (collapsed) アーカイブ状態を編集, Secondary Actions: Expand
+						725 text アーカイブ状態
+						726 text を編集
+					727 button (collapsed) Issue・PR活動: 値なし · 未検証, Secondary Actions: Expand
+						728 text Issue・PR活動
+						729 text :
+						730 text 値なし
+						731 text · 
+						732 text 未検証
+					733 button (collapsed) Issue・PR活動を編集, Secondary Actions: Expand
+						734 text Issue・PR活動
+						735 text を編集
+					736 button (collapsed) 統合方式: 値なし · 未検証, Secondary Actions: Expand
+						737 text 統合方式
+						738 text :
+						739 text 値なし
+						740 text · 
+						741 text 未検証
+					742 button (collapsed) 統合方式を編集, Secondary Actions: Expand
+						743 text 統合方式
+						744 text を編集
+					745 button (collapsed) 入力・出力: 値なし · 未検証, Secondary Actions: Expand
+						746 text 入力・出力
+						747 text :
+						748 text 値なし
+						749 text · 
+						750 text 未検証
+					751 button (collapsed) 入力・出力を編集, Secondary Actions: Expand
+						752 text 入力・出力
+						753 text を編集
+					754 button (collapsed) 運用形態: 値なし · 未検証, Secondary Actions: Expand
+						755 text 運用形態
+						756 text :
+						757 text 値なし
+						758 text · 
+						759 text 未検証
+					760 button (collapsed) 運用形態を編集, Secondary Actions: Expand
+						761 text 運用形態
+						762 text を編集
+					763 button (collapsed) 保守状況: 公開リポジトリを2026-10-03確認。採用前に再確認。 · 未検証, Secondary Actions: Expand
+						764 text 保守状況
+						765 text :
+						766 text 公開リポジトリを2026-10-03確認。採用前に再確認。
+						767 text · 
+						768 text 未検証
+					769 button (collapsed) 保守状況を編集, Secondary Actions: Expand
+						770 text 保守状況
+						771 text を編集
+					772 button 比較を承認
+					773 button (collapsed) レビュー状態と判断履歴, Secondary Actions: Expand
+						774 text レビュー状態と判断履歴
+			33 text Security Research Workbench 根拠と判断を、あなたの手元に。
+
+The focused UI element is 51 button 02OSS比較
+
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 72-774
+~			66 heading 調査資料, Value: 2
+~				67 text 調査資料
+~			68 text 必要な資料だけを取り込み、出典と版を残します。
+~			69 button ＋ 資料を追加
+~			70 container
+~				71 text SOURCE · v 2026-10-03
++				72 button 編集
++				73 heading Trivy / 公開概要, Value: 3
++					74 text Trivy / 公開概要
++				75 link Description: github.com ↗, Value: github.com/aquasecurity/trivy
++				76 text 取得:  2026-10-03  · 履歴  0 件
++				77 button (collapsed) 本文・出典IDを見る, Secondary Actions: Expand
++					78 text 本文・出典IDを見る
++			79 container
++				80 text SOURCE · v 2026-10-03
++				81 button 編集
++				82 heading OSV-Scanner / 公開概要, Value: 3
++					83 text OSV-Scanner / 公開概要
++				84 link Description: github.com ↗, Value: github.com/google/osv-scanner
++				85 text 取得:  2026-10-03  · 履歴  0 件
++				86 button (collapsed) 本文・出典IDを見る, Secondary Actions: Expand
++					87 text 本文・出典IDを見る
++			88 container
++				89 text SOURCE · v 2026-10-03
++				90 button 編集
++				91 heading DefectDojo / 公開概要, Value: 3
++					92 text DefectDojo / 公開概要
++				93 link Description: github.com ↗, Value: github.com/DefectDojo/django-DefectDojo
++				94 text 取得:  2026-10-03  · 履歴  0 件
++				95 button (collapsed) 本文・出典IDを見る, Secondary Actions: Expand
++					96 text 本文・出典IDを見る
++			97 container
++				98 heading ChatGPTへの受け渡し, Value: 2
++					99 text ChatGPTへの受け渡し
++				100 text 資料を選んでプロンプトを作成します。内容を確認してChatGPTに貼り付けてください。
++				101 container 出典資料
++					102 text 出典資料
++					103 container
++						104 checkbox (settable, integer) Description: Trivy / 公開概要 v2026-10-03, Value: 1
++						105 text Trivy / 公開概要 v 2026-10-03
++					106 container
++						107 checkbox (settable, integer) Description: OSV-Scanner / 公開概要 v2026-10-03, Value: 0
++						108 text OSV-Scanner / 公開概要 v 2026-10-03
++					109 container
++						110 checkbox (settable, integer) Description: DefectDojo / 公開概要 v2026-10-03, Value: 0
++						111 text DefectDojo / 公開概要 v 2026-10-03
++				112 button プロンプトを作成
+The focused UI element is 45 button 01調査資料

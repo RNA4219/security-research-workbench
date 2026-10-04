@@ -46,6 +46,7 @@ Windowsでターミナルを閉じても使い続ける場合は、ビルド後�
 - [APIとデータ形式](docs/interfaces.md)
 - [検証記録](docs/acceptance.md)
 - [テスト拡充とカバレッジ](docs/testing/2026-10-04-coverage.md)
+- [最終検証・QEG Go判定](docs/testing/2026-10-04-final-gate.md)
 - [依存OSS・再ビルド](THIRD_PARTY_NOTICES.md)
 
 ## 開発コマンド

@@ -1,0 +1,88 @@
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+	1 container root
+		2 container
+			3 link Description: ホーム, Value: 127.0.0.1:4320/
+			4 text PROJECTS
+			5 button 新しいプロジェクト
+			6 container プロジェクト
+				7 button ◇ 最終検証・承認と保存
+					8 text ◇
+					9 text 最終検証・承認と保存
+				10 button ◇ 防御ツールの選定調査
+					11 text ◇
+					12 text 防御ツールの選定調査
+			13 text  LOCAL WORKSPACE 資料から、判断へ。
+			14 text 判断から、実装へ。 v0.2.0 · Open source
+		15 container
+			16 text SECURITY RESEARCH / DEVELOPMENT
+			17 button 再読込 ↻
+			136 text 操作を完了できませんでした
+			137 text 根拠不足です。参照する主張とEvidenceを確認してください
+			138 button 閉じる
+			18 container
+				19 text RESEARCH WORKSPACE  / REV  9
+				20 heading 最終検証・承認と保存, Value: 1
+					21 text 最終検証・承認と保存
+				22 text 合成資料の根拠を確認 ● ローカル保存
+			23 text 1  調査資料 1  OSS候補 1  要件 0  承認済み
+			24 container 作業工程
+				25 button 01調査資料
+					26 text 01
+					27 text 調査資料
+				28 button ◎根拠と主張
+					29 text ◎
+					30 text 根拠と主張
+				31 button 02OSS比較
+					32 text 02
+					33 text OSS比較
+				34 button 03要件とレビュー
+					35 text 03 要件とレビュー
+				37 button 04出力
+					38 text 04
+					75 text 出力
+				39 button ↺履歴
+					40 text ↺
+					41 text 履歴
+				42 button ⚙設定・連携
+					43 text ⚙
+					44 text 設定・連携
+			100 heading 要件とレビュー, Value: 2
+				101 text 要件とレビュー
+			102 text 受入条件と根拠を確認し、実装へ渡す要件を決めます。
+			103 text 0  /  1  承認済み
+			104 button (collapsed) ChatGPTの回答JSONを取り込む, Secondary Actions: Expand
+				105 text ChatGPTの回答JSONを取り込む
+			106 container
+				107 text REQ-FINAL 再確認が必要 high
+				108 button 編集
+				109 heading 比較結果を保存する, Value: 3
+					110 text 比較結果を保存する
+				111 text 根拠付きで比較できる
+				112 heading 受入条件, Value: 4
+					113 text 受入条件
+				114 content list
+					115 container
+						116 AXListMarker • 
+						117 text 根拠を追跡できる
+				118 heading 実装タスク, Value: 4
+					119 text 実装タスク
+				120 content list
+					121 container
+						122 AXListMarker 1. 
+						123 text 比較画面を作成
+				124 text 根拠
+				125 link Description: 合成資料A · v2 ↗, Value: example.org/final-a
+				126 button (collapsed) 機能: 比較機能 · 未検証, Secondary Actions: Expand
+					127 text 機能
+					128 text :
+					129 text 比較機能
+					130 text · 
+					131 text 未検証
+				132 button (collapsed) レビュー状態と判断履歴, Secondary Actions: Expand
+					133 text レビュー状態と判断履歴
+				134 text 参照資料が更新されました。根拠を再確認してください。
+				135 button 確認して承認
+			74 text Security Research Workbench 根拠と判断を、あなたの手元に。
+
+The focused UI element is 0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/

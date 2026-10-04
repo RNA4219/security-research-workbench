@@ -1,0 +1,95 @@
+{
+  "feature_id": "WORKBENCH-FINAL",
+  "revision": "8bac64f82eca7c1c1fcbc6b02a478107645351c0ba9f9d28c9a353c76a645fe9",
+  "title": "現行ビルドの最終画面回帰",
+  "summary": "Windows・Node 24・通常ビルドを専用DBと4320番で操作する。自動テストの全要件被覆に加え、画面分割で影響を受ける承認・失効・保存障害・競合を確認する。",
+  "acceptance_criteria": [
+    "資料3件と候補3件を表示し、未承認では生成を拒否する",
+    "エラーを閉じても保存内容と工程移動が正常で、生成結果は空のまま",
+    "変更前は承認済みの要件と出典を確認し、契約出力できる",
+    "変更後はEvidenceが未検証、比較と要件が再確認になり、再承認と承認済み契約の出力を拒否する",
+    "履歴で変更前の版を参照できる",
+    "通信断を案内し、入力を保持する",
+    "再起動だけでは未保存で、明示再試行後に一度だけ保存される",
+    "再起動後も資料と履歴を復元する",
+    "Bは競合を表示し、編集入力を保持する",
+    "再読込後はAが保存した値を表示し、無言の上書きがない"
+  ],
+  "source_refs": [
+    {
+      "id": "FR-01",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-02",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-03",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-04",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-05",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-06",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-07",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-08",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-09",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-10",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-11",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-12",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-13",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-14",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    },
+    {
+      "id": "FR-15",
+      "kind": "spec",
+      "excerpt": "docs/requirements.md"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "run_id": "manual-c3d96d55126f",
+  "feature_id": "WORKBENCH-FINAL",
+  "build_id": "c3d96d55126f8982b78818989f8456d7d6c280b0",
+  "case_revision": "92ae588e9b54efa2ea750202e07e62830e250f310dadd55603352c37d2d64095",
+  "spec_revision": "8bac64f82eca7c1c1fcbc6b02a478107645351c0ba9f9d28c9a353c76a645fe9",
+  "oracle_revision": "8c03365a95f9116d87f5462746f88b2e814a4ff408c1cbe399f6c1e9f126a502",
+  "case_content_hash": "sha256:92ae588e9b54efa2ea750202e07e62830e250f310dadd55603352c37d2d64095",
+  "oracle_refs": [
+    "FR-01",
+    "FR-02",
+    "FR-15"
+  ],
+  "timestamp": "2026-10-04T01:51:57.627Z",
+  "result": "pass",
+  "tc_id": "TC-FINAL-03",
+  "model_hash": "1f566036f90f2ba7f4823ab6b9ec814d81f45d710f1d2b34ed5cd538f7dcc6e2",
+  "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+  "tester": "Codex agent-operated UI",
+  "oracle_type": "specified",
+  "expected": [
+    "通信断を案内し、入力を保持する",
+    "再起動だけでは未保存で、明示再試行後に一度だけ保存される",
+    "再起動後も資料と履歴を復元する"
+  ],
+  "actual": [
+    "4320の専用サーバー停止時に日本語の接続エラーと入力保持を確認",
+    "再起動後も別タブはREV10・資料1件のままで自動再送なし。明示保存でREV11・資料2件となり新規資料は1件だけ",
+    "再度再起動してREV11・資料2件とREV1〜11の履歴を画面で確認。4317の通常サーバーは稼働継続"
+  ],
+  "attachments": [
+    "tc03-before.txt",
+    "tc03-disconnected.txt",
+    "tc03-no-auto-retry.txt",
+    "tc03-retained.txt",
+    "tc03-saved.txt",
+    "tc03-restored.txt",
+    "tc03-history.txt"
+  ]
+}

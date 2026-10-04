@@ -1,0 +1,125 @@
+{
+  "feature_id": "WORKBENCH-FINAL",
+  "status": "go",
+  "profile": "standard",
+  "reasons": [
+    "P0 pass rate: 100.0%",
+    "P1 pass rate: 100.0%",
+    "mandatory observation execution: 100.0%",
+    "automation evidence meets profile thresholds"
+  ],
+  "build_id": "c3d96d55126f8982b78818989f8456d7d6c280b0",
+  "evidence_summary": {
+    "evidence_binding_mode": "case_revision",
+    "manual_by_priority": {
+      "P0": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0,
+        "blocked": 0,
+        "unknown": 0,
+        "untested": 0,
+        "total": 4
+      },
+      "P1": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "blocked": 0,
+        "unknown": 0,
+        "untested": 0,
+        "total": 0
+      },
+      "P2": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "blocked": 0,
+        "unknown": 0,
+        "untested": 0,
+        "total": 0
+      },
+      "P3": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0,
+        "blocked": 0,
+        "unknown": 0,
+        "untested": 0,
+        "total": 0
+      }
+    },
+    "mandatory_observation_rate": 100.0,
+    "coverage_population": {
+      "defined": 4,
+      "mandatory": 4,
+      "observed": 4,
+      "case_traced": 4
+    },
+    "manual_execution_results": [
+      {
+        "case_id": "TC-FINAL-01",
+        "result": "pass",
+        "run_id": "manual-c3d96d55126f",
+        "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+        "timestamp": "2026-10-04T01:51:57.627Z"
+      },
+      {
+        "case_id": "TC-FINAL-02",
+        "result": "pass",
+        "run_id": "manual-c3d96d55126f",
+        "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+        "timestamp": "2026-10-04T01:51:57.627Z"
+      },
+      {
+        "case_id": "TC-FINAL-03",
+        "result": "pass",
+        "run_id": "manual-c3d96d55126f",
+        "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+        "timestamp": "2026-10-04T01:51:57.627Z"
+      },
+      {
+        "case_id": "TC-FINAL-04",
+        "result": "pass",
+        "run_id": "manual-c3d96d55126f",
+        "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+        "timestamp": "2026-10-04T01:51:57.627Z"
+      }
+    ],
+    "open_defects": [],
+    "automation_test_suites": [
+      {
+        "suite_id": "unit",
+        "status": "passed",
+        "total": 70,
+        "passed": 70,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "source_refs": [
+          {
+            "id": "unit-junit",
+            "kind": "auto_test",
+            "excerpt": ".cache/quality/unit-junit.xml"
+          }
+        ]
+      },
+      {
+        "suite_id": "e2e",
+        "status": "passed",
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "source_refs": [
+          {
+            "id": "e2e-junit",
+            "kind": "auto_test",
+            "excerpt": ".cache/quality/e2e-junit.xml"
+          }
+        ]
+      }
+    ]
+  }
+}

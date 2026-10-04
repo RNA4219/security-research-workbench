@@ -1,0 +1,82 @@
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+	1 container root
+		2 container
+			3 link Description: ホーム, Value: 127.0.0.1:4320/
+			4 text PROJECTS
+			5 button 新しいプロジェクト
+			6 container プロジェクト
+				7 button ◇ 最終検証・承認と保存
+					8 text ◇
+					9 text 最終検証・承認と保存
+				10 button ◇ 防御ツールの選定調査
+					11 text ◇
+					12 text 防御ツールの選定調査
+			13 text  LOCAL WORKSPACE 資料から、判断へ。
+			14 text 判断から、実装へ。 v0.2.0 · Open source
+		15 container
+			16 text SECURITY RESEARCH / DEVELOPMENT
+			17 button 再読込 ↻
+			136 text 操作を完了できませんでした
+			137 text 根拠不足です。参照する主張とEvidenceを確認してください
+			138 button 閉じる
+			18 container
+				19 text RESEARCH WORKSPACE  / REV  9
+				20 heading 最終検証・承認と保存, Value: 1
+					21 text 最終検証・承認と保存
+				22 text 合成資料の根拠を確認 ● ローカル保存
+			23 text 1  調査資料 1  OSS候補 1  要件 0  承認済み
+			24 container 作業工程
+				25 button 01調査資料
+					26 text 01
+					27 text 調査資料
+				28 button ◎根拠と主張
+					29 text ◎
+					30 text 根拠と主張
+				31 button 02OSS比較
+					32 text 02
+					33 text OSS比較
+				34 button 03要件とレビュー
+					35 text 03
+					139 text 要件とレビュー
+				37 button 04出力
+					38 text 04
+					75 text 出力
+				39 button ↺履歴
+					40 text ↺
+					41 text 履歴
+				42 button ⚙設定・連携
+					43 text ⚙
+					44 text 設定・連携
+			140 heading 次の実装へ渡す, Value: 2
+				141 text 次の実装へ渡す
+			142 text ローカルファイルとして出力します。外部への送信やワーカーの実行は行いません。
+			143 container
+				144 text MD
+				145 heading 要件定義 Markdown, Value: 3
+					146 text 要件定義 Markdown
+				147 text 比較・要件・受入条件・出典をまとめたレビュー文書
+				148 button ダウンロード ↓
+			149 container
+				150 text JSON
+				151 heading プロジェクト JSON, Value: 3
+					152 text プロジェクト JSON
+				153 text 資料と履歴を含む、版付きのデータスナップショット
+				154 button ダウンロード ↓
+			155 container
+				156 text JSON
+				157 heading 実装タスク契約, Value: 3
+					158 text 実装タスク契約
+				159 text 承認済み要件・受入条件・主張・根拠を含む独立した版付き契約
+				160 button (disabled) ダウンロード ↓
+			161 container
+				162 text JSON
+				163 heading agent-protocols変換（任意）, Value: 3
+					164 text agent-protocols変換（任意）
+				165 text 導入済みの場合にv2契約へ変換。未導入でも内部契約は利用できます。
+				166 button ダウンロード ↓
+			167 container
+				168 text 契約出力: 承認済み  0 件。未レビュー・再確認の要件は含まれません。
+			74 text Security Research Workbench 根拠と判断を、あなたの手元に。
+
+The focused UI element is 37 button 04出力

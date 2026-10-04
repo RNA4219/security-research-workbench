@@ -1,0 +1,350 @@
+{
+  "document_id": "rand:document:security-research-workbench",
+  "parser_version": "1",
+  "source": {
+    "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+    "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md",
+    "sha256": "8bac64f82eca7c1c1fcbc6b02a478107645351c0ba9f9d28c9a353c76a645fe9",
+    "line_count": 49
+  },
+  "requirements": [
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-01",
+      "external_id": "FR-01",
+      "identity_basis": "explicit",
+      "statement": "プロジェクト管理",
+      "acceptance_criteria": [
+        "目的・利用者・制約を保存し、再起動後も復元できる"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "1de7e046cadd5af6af72c1ac3826f20dd6609ab311f6f8c48e6860f774d8c721",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L13-L13",
+        "line_start": 13,
+        "line_end": 13,
+        "excerpt": "| FR-01 | プロジェクト管理 | 目的・利用者・制約を保存し、再起動後も復元できる |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-02",
+      "external_id": "FR-02",
+      "identity_basis": "explicit",
+      "statement": "資料取込",
+      "acceptance_criteria": [
+        "Markdown/text/JSONを取り込み、資料ID・URL・取得日・版・SHA256を保持する"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "c8f965c8d83a11cebd169ce58ad77b9b4285f4475988806faae6c0f315dca1b4",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L14-L14",
+        "line_start": 14,
+        "line_end": 14,
+        "excerpt": "| FR-02 | 資料取込 | Markdown/text/JSONを取り込み、資料ID・URL・取得日・版・SHA256を保持する |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-03",
+      "external_id": "FR-03",
+      "identity_basis": "explicit",
+      "statement": "重複・更新",
+      "acceptance_criteria": [
+        "同一内容を重複登録せず、更新履歴を保存し、関連要件を再確認状態にする"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "d5fe77227a73765d0e9ccf9466bb9c73d6fba4d93aa7432c6360adce4fbb4b5f",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L15-L15",
+        "line_start": 15,
+        "line_end": 15,
+        "excerpt": "| FR-03 | 重複・更新 | 同一内容を重複登録せず、更新履歴を保存し、関連要件を再確認状態にする |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-04",
+      "external_id": "FR-04",
+      "identity_basis": "explicit",
+      "statement": "OSS比較",
+      "acceptance_criteria": [
+        "名称・URL・機能・ライセンス・保守状況・採否理由・出典を編集できる"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "773d36a1f0b4be1df8c3a4f273cd628c7a1475aceb1c84f481309212a354869e",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L16-L16",
+        "line_start": 16,
+        "line_end": 16,
+        "excerpt": "| FR-04 | OSS比較 | 名称・URL・機能・ライセンス・保守状況・採否理由・出典を編集できる |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-05",
+      "external_id": "FR-05",
+      "identity_basis": "explicit",
+      "statement": "プロンプト作成",
+      "acceptance_criteria": [
+        "選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "4f9af42f8468eafb6d63cb3ef83c32d8df533dde431e1ae7754b20e4287e2ffa",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L17-L17",
+        "line_start": 17,
+        "line_end": 17,
+        "excerpt": "| FR-05 | プロンプト作成 | 選択資料だけを含む、出力JSON形式を指定したプロンプトを得られる |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-06",
+      "external_id": "FR-06",
+      "identity_basis": "explicit",
+      "statement": "回答取込",
+      "acceptance_criteria": [
+        "不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "df1c17d8879468aedb0630cb8cbeb81ec6fd4c560998abb76be06e2a7eb38b77",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L18-L18",
+        "line_start": 18,
+        "line_end": 18,
+        "excerpt": "| FR-06 | 回答取込 | 不正JSON・未知フィールド・不明出典・重複IDを拒否し、位置付きエラーを表示する |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-07",
+      "external_id": "FR-07",
+      "identity_basis": "explicit",
+      "statement": "要件レビュー",
+      "acceptance_criteria": [
+        "優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "f2f536e790d6841e87b37ad5a1bd83c6718b25545f0d5d33a4fe245b78179033",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L19-L19",
+        "line_start": 19,
+        "line_end": 19,
+        "excerpt": "| FR-07 | 要件レビュー | 優先度・受入条件・出典または利用者判断を編集し、明示操作で承認できる |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-08",
+      "external_id": "FR-08",
+      "identity_basis": "explicit",
+      "statement": "出力",
+      "acceptance_criteria": [
+        "Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "942b97e7d59cf7b49e26b199631c7c2d7b091b797a01df8db7aae77cd9b1ab4a",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L20-L20",
+        "line_start": 20,
+        "line_end": 20,
+        "excerpt": "| FR-08 | 出力 | Markdown・版付き全体JSON・独立したWorkbenchTaskContractを出力できる。任意アダプターでIntentContract/TaskSeedへ変換できる |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-09",
+      "external_id": "FR-09",
+      "identity_basis": "explicit",
+      "statement": "知識連携",
+      "acceptance_criteria": [
+        "memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "71e63758eca10b94ae0030ae7900adaa658938c7880d0c3e0bf73687e1e9e05d",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L21-L21",
+        "line_start": 21,
+        "line_end": 21,
+        "excerpt": "| FR-09 | 知識連携 | memxの資料登録・検索・chunk取得・read ack・stale APIを呼べる。障害はローカル保存を壊さない |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-10",
+      "external_id": "FR-10",
+      "identity_basis": "explicit",
+      "statement": "導入再現性",
+      "acceptance_criteria": [
+        "公開clone＋npm ciから起動可能。実データはGit対象外"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "b6d227af8880d6b4ba48cc7eb45b68d0d421d63288a3bfee351dca7459be0c4b",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L22-L22",
+        "line_start": 22,
+        "line_end": 22,
+        "excerpt": "| FR-10 | 導入再現性 | 公開clone＋npm ciから起動可能。実データはGit対象外 |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-11",
+      "external_id": "FR-11",
+      "identity_basis": "explicit",
+      "statement": "根拠グラフ",
+      "acceptance_criteria": [
+        "要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "a45d7c812f8065d4c64e2e73a675690b17f456932ab58274f7f2253b6a6db9a7",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L23-L23",
+        "line_start": 23,
+        "line_end": 23,
+        "excerpt": "| FR-11 | 根拠グラフ | 要件→Claim→複数Evidence→資料URLをUI・Markdown・契約で追跡でき、Evidenceから関連要件も確認できる |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-12",
+      "external_id": "FR-12",
+      "identity_basis": "explicit",
+      "statement": "項目単位の比較",
+      "acceptance_criteria": [
+        "カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "837f831f0668e28f5682e7f813cec23f649d4ff31b46cf853dfe10a736cfbeca",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L24-L24",
+        "line_start": 24,
+        "line_end": 24,
+        "excerpt": "| FR-12 | 項目単位の比較 | カテゴリ・用途・機能・ライセンス・リリース・コミット・archive・Issue/PR・統合方式・入出力・運用・保守を比較する。known/unknown/emptyを区別し、各主張に確認状態とEvidence参照を持つ |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-13",
+      "external_id": "FR-13",
+      "identity_basis": "explicit",
+      "statement": "比較承認ゲート",
+      "acceptance_criteria": [
+        "確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "5055e553861e6d5e87821b69e24f2bc28c4147c0a11c7790624d35ba9de68e17",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L25-L25",
+        "line_start": 25,
+        "line_end": 25,
+        "excerpt": "| FR-13 | 比較承認ゲート | 確認済みの根拠を持つ既知の値、明示的な未確認・値なしを人がレビューする。承認済み比較だけをプロンプトへ含め、必要なEvidenceの資料が欠落すれば拒否する |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-14",
+      "external_id": "FR-14",
+      "identity_basis": "explicit",
+      "statement": "任意依存と契約",
+      "acceptance_criteria": [
+        "objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "01c3d98c3e46da9cf679d27c888410852694666cd8a6fbbd15021976272c9a2c",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L26-L26",
+        "line_start": 26,
+        "line_end": 26,
+        "excerpt": "| FR-14 | 任意依存と契約 | objective/scope/outOfScope/requirements/acceptanceCriteria/sourceRefsと根拠グラフをversioned schemaで出力する。両アダプター未導入でCoreが動作し、連携失敗でも保存状態が変わらない |"
+      }
+    },
+    {
+      "requirement_id": "rand:req:security-research-workbench:FR-15",
+      "external_id": "FR-15",
+      "identity_basis": "explicit",
+      "statement": "判断履歴と移行",
+      "acceptance_criteria": [
+        "draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する"
+      ],
+      "section_path": [
+        "要件定義 v2",
+        "機能・受入条件"
+      ],
+      "content_hash": "e35ac7502e5f0d3e49b608926d4bd3e221a197994a77532114ca7fd3289b996f",
+      "source": {
+        "path": "C:\\Users\\ryo-n\\Codex_dev\\Agent_tools\\security-research-workbench\\docs\\requirements.md",
+        "uri": "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md#L27-L27",
+        "line_start": 27,
+        "line_end": 27,
+        "excerpt": "| FR-15 | 判断履歴と移行 | draft/approved/needs_review/needs_evidence/needs_revision/rejectedと理由・日時・revisionを保持する。資料・根拠・主張・前提の変更で関連承認を失効させ、v1 DBの既存履歴と原文を保持して移行する |"
+      }
+    }
+  ],
+  "extraction_diagnostics": [],
+  "review_required": true,
+  "limitations": [
+    "Only the documented Markdown subset is extracted; semantic correctness and implementation alignment are not assessed."
+  ],
+  "schema_version": "2.0",
+  "id": "rand:document-snapshot:security-research-workbench:8bac64f82eca7c1c1fcb",
+  "type": "requirements_document",
+  "producer": {
+    "name": "RanD",
+    "version": "0.3.0"
+  },
+  "created_at": "2026-10-04T01:43:25.036705+00:00",
+  "input_refs": [],
+  "source_refs": [
+    "file:///C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/docs/requirements.md"
+  ],
+  "status": "ok",
+  "assumptions": [],
+  "downstream_allowed_uses": [
+    "review",
+    "analysis"
+  ]
+}

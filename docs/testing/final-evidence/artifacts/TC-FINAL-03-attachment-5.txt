@@ -1,0 +1,85 @@
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+1 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+	2 container root
+		3 container
+			4 link Description: ホーム, Value: 127.0.0.1:4320/
+			5 text PROJECTS
+			6 button 新しいプロジェクト
+			7 container プロジェクト
+				8 button ◇ 最終検証・承認と保存
+					9 text ◇
+					10 text 最終検証・承認と保存
+				11 button ◇ 防御ツールの選定調査
+					12 text ◇
+					13 text 防御ツールの選定調査
+			14 text  LOCAL WORKSPACE 資料から、判断へ。
+			15 text 判断から、実装へ。 v0.2.0 · Open source
+		16 container
+			17 text SECURITY RESEARCH / DEVELOPMENT
+			18 button 再読込 ↻
+			41 container
+				42 text RESEARCH WORKSPACE  / REV  11
+				43 heading 最終検証・承認と保存, Value: 1
+					44 text 最終検証・承認と保存
+				45 text Aが保存した目的 ● ローカル保存
+			46 text 2  調査資料 1  OSS候補 1  要件 0  承認済み
+			47 container 作業工程
+				48 button 01調査資料
+					49 text 01
+					50 text 調査資料
+				51 button ◎根拠と主張
+					52 text ◎
+					53 text 根拠と主張
+				54 button 02OSS比較
+					55 text 02
+					56 text OSS比較
+				57 button 03要件とレビュー
+					58 text 03
+					59 text 要件とレビュー
+				60 button 04出力
+					61 text 04
+					62 text 出力
+				63 button ↺履歴
+					64 text ↺
+					65 text 履歴
+				66 button ⚙設定・連携
+					67 text ⚙
+					68 text 設定・連携
+			69 heading 調査資料, Value: 2
+				70 text 調査資料
+			71 text 必要な資料だけを取り込み、出典と版を残します。
+			72 button ＋ 資料を追加
+			73 container
+				74 text SOURCE · v 2
+				75 button 編集
+				76 heading 合成資料A, Value: 3
+					77 text 合成資料A
+				78 link Description: example.org ↗, Value: example.org/final-a
+				79 text 取得:  2026-10-04  · 履歴  1 件
+				80 button (collapsed) 本文・出典IDを見る, Secondary Actions: Expand
+					81 text 本文・出典IDを見る
+			82 container
+				83 text SOURCE · v 1
+				84 button 編集
+				85 heading 通信断の入力保持, Value: 3
+					86 text 通信断の入力保持
+				87 link Description: example.org ↗, Value: example.org/retry
+				88 text 取得:  2026-10-04  · 履歴  0 件
+				89 button (collapsed) 本文・出典IDを見る, Secondary Actions: Expand
+					90 text 本文・出典IDを見る
+			91 container
+				92 heading ChatGPTへの受け渡し, Value: 2
+					93 text ChatGPTへの受け渡し
+				94 text 資料を選んでプロンプトを作成します。内容を確認してChatGPTに貼り付けてください。
+				95 container 出典資料
+					96 text 出典資料
+					97 container
+						98 checkbox (settable, integer) Description: 合成資料A v2, Value: 0
+						99 text 合成資料A v 2
+					100 container
+						101 checkbox (settable, integer) Description: 通信断の入力保持 v1, Value: 0
+						102 text 通信断の入力保持 v 1
+				103 button (disabled) プロンプトを作成
+			40 text Security Research Workbench 根拠と判断を、あなたの手元に。
+
+The focused UI element is 1 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/

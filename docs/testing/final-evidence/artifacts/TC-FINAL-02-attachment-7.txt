@@ -1,0 +1,326 @@
+Browser tab: 5, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+	1 container root
+		2 container
+			3 link Description: ホーム, Value: 127.0.0.1:4320/
+			4 text PROJECTS
+			5 button 新しいプロジェクト
+			6 container プロジェクト
+				7 button ◇ 最終検証・承認と保存
+					8 text ◇
+					9 text 最終検証・承認と保存
+				10 button ◇ 防御ツールの選定調査
+					11 text ◇
+					12 text 防御ツールの選定調査
+			13 text  LOCAL WORKSPACE 資料から、判断へ。
+			14 text 判断から、実装へ。 v0.2.0 · Open source
+		15 container
+			16 text SECURITY RESEARCH / DEVELOPMENT
+			17 button 再読込 ↻
+			18 container
+				19 text RESEARCH WORKSPACE  / REV  9
+				20 heading 最終検証・承認と保存, Value: 1
+					21 text 最終検証・承認と保存
+				22 text 合成資料の根拠を確認 ● ローカル保存
+			23 text 1  調査資料 1  OSS候補 1  要件 0  承認済み
+			24 container 作業工程
+				25 button 01調査資料
+					26 text 01
+					127 text 調査資料
+				28 button ◎根拠と主張
+					29 text ◎
+					128 text 根拠と主張
+				31 button 02OSS比較
+					32 text 02
+					129 text OSS比較
+				34 button 03要件とレビュー
+					35 text 03
+					130 text 要件とレビュー
+				37 button 04出力
+					38 text 04
+					131 text 出力
+				39 button ↺履歴
+					40 text ↺
+					132 text 履歴
+				42 button ⚙設定・連携
+					43 text ⚙
+					133 text 設定・連携
+			75 heading 判断の履歴, Value: 2
+				76 text 判断の履歴
+			77 text 過去の状態と、AIに渡したプロンプト・元回答を確認できます。
+			78 container
+				79 heading 保存された版, Value: 3
+					80 text 保存された版
+				81 button REV 9
+					82 text REV 
+					83 text 9
+				84 button REV 8
+					85 text REV 
+					86 text 8
+				87 button REV 7
+					88 text REV 
+					89 text 7
+				90 button REV 6
+					91 text REV 
+					92 text 6
+				93 button REV 5
+					94 text REV 
+					95 text 5
+				96 button REV 4
+					97 text REV 
+					98 text 4
+				99 button REV 3
+					100 text REV 
+					101 text 3
+				102 button REV 2
+					103 text REV 
+					104 text 2
+				105 button REV 1
+					106 text REV 
+					107 text 1
+			108 container
+				109 heading プロンプト・元回答（直近50件）, Value: 3
+					110 text プロンプト・元回答（直近50件）
+				111 button (collapsed) 取込原文 · 2026-10-04T01:48:41.961Z, Secondary Actions: Expand
+					112 text 取込原文
+					113 text · 
+					114 text 2026-10-04T01:48:41.961Z
+				115 button (collapsed) 出力記録 · 2026-10-04T01:46:50.315Z, Secondary Actions: Expand
+					116 text 出力記録
+					117 text · 
+					118 text 2026-10-04T01:46:50.315Z
+				119 button (collapsed) AI回答 · 2026-10-04T01:46:03.441Z, Secondary Actions: Expand
+					120 text AI回答
+					121 text · 
+					122 text 2026-10-04T01:46:03.441Z
+				123 button (collapsed) 取込原文 · 2026-10-04T01:46:03.425Z, Secondary Actions: Expand
+					124 text 取込原文
+					125 text · 
+					126 text 2026-10-04T01:46:03.425Z
+			134 text {
+  "title": "最終検証・承認と保存",
+  "objective": "合成資料の根拠を確認",
+  "audience": "開発者",
+  "constraints": "テスト専用",
+  "schemaVersion": "2.0",
+  "id": "b2942af5-7dbb-433b-85d6-da2658d087f2",
+  "revision": 8,
+  "createdAt": "2026-10-04T01:46:03.416Z",
+  "updatedAt": "2026-10-04T01:46:03.447Z",
+  "sources": [
+    {
+      "title": "合成資料A",
+      "url": "https://example.org/final-a",
+      "retrievedAt": "2026-10-04T00:00:00Z",
+      "version": "1",
+      "body": "公開合成資料。比較機能を提供する。",
+      "id": "d0251bc3-07ac-4374-b0b6-bc0240990de4",
+      "hash": "4a195ee942035c94b8274abda7964b5a909ea0700b39b4376188f23a4e874c1c",
+      "revision": 1,
+      "history": []
+    }
+  ],
+  "candidates": [
+    {
+      "name": "合成OSS",
+      "url": "https://example.org/final-a",
+      "features": "比較機能",
+      "license": "未確認",
+      "maintenance": "未確認",
+      "decision": "consider",
+      "rationale": "合成比較",
+      "sourceIds": [],
+      "id": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "status": "approved"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "REQ-FINAL",
+      "title": "比較結果を保存する",
+      "description": "根拠付きで比較できる",
+      "priority": "high",
+      "sourceIds": [
+        "d0251bc3-07ac-4374-b0b6-bc0240990de4"
+      ],
+      "claimIds": [
+        "67f1e364-a153-4dba-b505-f8e686afd870"
+      ],
+      "rationale": "",
+      "acceptance": [
+        "根拠を追跡できる"
+      ],
+      "tasks": [
+        "比較画面を作成"
+      ],
+      "status": "approved",
+      "sourceVersions": {
+        "d0251bc3-07ac-4374-b0b6-bc0240990de4": 1
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "sourceId": "d0251bc3-07ac-4374-b0b6-bc0240990de4",
+      "sourceType": "official",
+      "excerpt": "比較機能を提供する",
+      "verificationStatus": "verified",
+      "sourceRevision": 1,
+      "id": "792798dc-180b-4459-9ccc-f52ed55a5479",
+      "revision": 1
+    }
+  ],
+  "claims": [
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "category",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "f3c51537-f4f3-4d29-b94e-c146ab3ecdb2",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "purpose",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "d3bf9d1e-67f1-42fa-b3b4-6a8831aedfa6",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "features",
+      "valueState": "known",
+      "value": "比較機能",
+      "evidenceIds": [
+        "792798dc-180b-4459-9ccc-f52ed55a5479"
+      ],
+      "verificationStatus": "verified",
+      "id": "67f1e364-a153-4dba-b505-f8e686afd870",
+      "revision": 2
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "license",
+      "valueState": "unknown",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "2aca48ba-2bd2-409c-8da0-df6b569c912f",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "release",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "cf9fa5b7-8565-409e-bdaa-16bae50887d6",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "commit",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "bdf8bdaf-fcc6-4587-8c99-f92463027cfb",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "archived",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "89495f3e-c3d0-4067-a3d2-72bc5f1b8894",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "issueActivity",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "1df481e0-76c7-4de4-b3e8-731e2f448cd6",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "integration",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "cab47498-2b11-40e7-8448-bbc296228997",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "inputOutput",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "2d8303cf-398f-487c-b804-5eb39b8eb65b",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "deployment",
+      "valueState": "empty",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "5b3ca626-3b8c-4ea8-8ac6-ae999d45a0cb",
+      "revision": 1
+    },
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "maintenance",
+      "valueState": "unknown",
+      "value": "",
+      "evidenceIds": [],
+      "verificationStatus": "unverified",
+      "id": "07e94b14-97f9-4c32-ba72-70f4e0c37800",
+      "revision": 1
+    }
+  ],
+  "reviews": [
+    {
+      "entity": "candidate",
+      "entityId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "status": "needs_review",
+      "note": "根拠または比較項目が更新されました",
+      "at": "2026-10-04T01:46:03.434Z",
+      "revision": 5
+    },
+    {
+      "entity": "candidate",
+      "entityId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "status": "approved",
+      "note": "手動試験の前提をAPIで準備",
+      "at": "2026-10-04T01:46:03.438Z",
+      "revision": 6
+    },
+    {
+      "entity": "requirement",
+      "entityId": "REQ-FINAL",
+      "status": "approved",
+      "note": "APIによる試験前提準備",
+      "at": "2026-10-04T01:46:03.447Z",
+      "revision": 8
+    }
+  ]
+}
+			74 text Security Research Workbench 根拠と判断を、あなたの手元に。
+
+The focused UI element is 0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/

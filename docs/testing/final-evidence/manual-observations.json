@@ -1,0 +1,70 @@
+{
+  "head": "c3d96d55126f8982b78818989f8456d7d6c280b0",
+  "results": [
+    {
+      "tc_id": "TC-FINAL-01",
+      "result": "pass",
+      "timestamp": "2026-10-04T01:51:57.627Z",
+      "actual": [
+        "資料3件・候補3件、未承認の要件1件を確認した",
+        "未承認でプロンプト生成を拒否。エラーを閉じて工程を往復してもREV18の資料が保持され、プロンプトは生成されない"
+      ],
+      "attachments": [
+        "tc01.txt"
+      ]
+    },
+    {
+      "tc_id": "TC-FINAL-02",
+      "result": "pass",
+      "timestamp": "2026-10-04T01:51:57.627Z",
+      "actual": [
+        "承認済み要件から確認済みClaim/Evidence/資料URLを追跡し、REV8のWorkbenchTaskContractをUIからダウンロードした",
+        "資料を版2へ更新するとEvidenceは未検証、比較と要件は再確認。再承認は根拠不足で拒否、内部契約の出力ボタンは無効",
+        "画面のREV8履歴に変更前の資料と承認理由が残っていた"
+      ],
+      "attachments": [
+        "tc02-before.txt",
+        "tc02-contract.json",
+        "tc02-source.txt",
+        "tc02-evidence.txt",
+        "tc02-comparison.txt",
+        "tc02-refused.txt",
+        "tc02-export-disabled.txt",
+        "tc02-history.txt"
+      ]
+    },
+    {
+      "tc_id": "TC-FINAL-03",
+      "result": "pass",
+      "timestamp": "2026-10-04T01:51:57.627Z",
+      "actual": [
+        "4320の専用サーバー停止時に日本語の接続エラーと入力保持を確認",
+        "再起動後も別タブはREV10・資料1件のままで自動再送なし。明示保存でREV11・資料2件となり新規資料は1件だけ",
+        "再度再起動してREV11・資料2件とREV1〜11の履歴を画面で確認。4317の通常サーバーは稼働継続"
+      ],
+      "attachments": [
+        "tc03-before.txt",
+        "tc03-disconnected.txt",
+        "tc03-no-auto-retry.txt",
+        "tc03-retained.txt",
+        "tc03-saved.txt",
+        "tc03-restored.txt",
+        "tc03-history.txt"
+      ]
+    },
+    {
+      "tc_id": "TC-FINAL-04",
+      "result": "pass",
+      "timestamp": "2026-10-04T01:51:57.627Z",
+      "actual": [
+        "AはREV10で保存成功、古いBは別画面の更新を示すエラーとなり入力「Bの未保存の目的」が保持された",
+        "Bの再読込後はREV10で「Aが保存した目的」が表示され、上書きされなかった"
+      ],
+      "attachments": [
+        "tc04-a.txt",
+        "tc04-conflict.txt",
+        "tc04-reloaded.txt"
+      ]
+    }
+  ]
+}

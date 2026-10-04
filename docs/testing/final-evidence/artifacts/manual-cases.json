@@ -1,0 +1,282 @@
+{
+  "feature_id": "WORKBENCH-FINAL",
+  "spec_revision": "8bac64f82eca7c1c1fcbc6b02a478107645351c0ba9f9d28c9a353c76a645fe9",
+  "manual_cases": [
+    {
+      "tc_id": "TC-FINAL-01",
+      "title": "未承認比較からの生成拒否とエラー回復",
+      "priority": "P0",
+      "primary_view": "black",
+      "techniques": [
+        "checklist_based_testing"
+      ],
+      "preconditions": [],
+      "steps": [
+        "空DBでサンプルを作成し、資料と候補の表示を確認する",
+        "未承認のままプロンプト作成を押す",
+        "エラーを閉じ、作業工程を移動して資料を再表示する"
+      ],
+      "expected_results": [
+        "資料3件と候補3件を表示し、未承認では生成を拒否する",
+        "エラーを閉じても保存内容と工程移動が正常で、生成結果は空のまま"
+      ],
+      "oracle": {
+        "type": "specified",
+        "refs": [
+          "FR-02",
+          "FR-04",
+          "FR-05",
+          "FR-13"
+        ]
+      },
+      "source_ref": {
+        "type": "spec",
+        "refs": [
+          "FR-02",
+          "FR-04",
+          "FR-05",
+          "FR-13"
+        ]
+      },
+      "trace_to": [
+        "OBS-FINAL-01",
+        "RISK-FINAL-01"
+      ],
+      "estimate_minutes": 4,
+      "status": "active",
+      "coverage_inputs": [
+        {
+          "model_ref": "CHECK-FINAL",
+          "checklist_version": "1",
+          "checklist_item_ids": [
+            "TC-FINAL-01"
+          ],
+          "step_refs": [
+            1,
+            2,
+            3
+          ],
+          "expected_result_refs": [
+            1,
+            2
+          ]
+        }
+      ],
+      "content_hash": "sha256:c94e8014d9d511554299ed69e3980bc3b9c064be0d77d043d891dda945cd3a6f",
+      "oracle_revision": "2e57b6e04fce7d7798979da8916a4f19c3a10ea2481fd22b39a28441599dfc1e",
+      "revision": "c94e8014d9d511554299ed69e3980bc3b9c064be0d77d043d891dda945cd3a6f",
+      "case_revision": "c94e8014d9d511554299ed69e3980bc3b9c064be0d77d043d891dda945cd3a6f"
+    },
+    {
+      "tc_id": "TC-FINAL-02",
+      "title": "承認済み根拠の資料更新と失効・履歴・出力",
+      "priority": "P0",
+      "primary_view": "black",
+      "techniques": [
+        "checklist_based_testing"
+      ],
+      "preconditions": [
+        "APIで合成資料・確認済みEvidence/Claim・承認済み比較/要件を準備する。準備は手動試験結果に数えない"
+      ],
+      "steps": [
+        "画面で承認済み要件、主張、資料への参照を確認し、内部契約を出力する",
+        "資料の本文と版を画面で変更する",
+        "根拠・比較・要件を再表示し、要件の再承認を試す",
+        "履歴と出力画面を確認する"
+      ],
+      "expected_results": [
+        "変更前は承認済みの要件と出典を確認し、契約出力できる",
+        "変更後はEvidenceが未検証、比較と要件が再確認になり、再承認と承認済み契約の出力を拒否する",
+        "履歴で変更前の版を参照できる"
+      ],
+      "oracle": {
+        "type": "specified",
+        "refs": [
+          "FR-03",
+          "FR-07",
+          "FR-08",
+          "FR-11",
+          "FR-12",
+          "FR-14",
+          "FR-15"
+        ]
+      },
+      "source_ref": {
+        "type": "spec",
+        "refs": [
+          "FR-03",
+          "FR-07",
+          "FR-08",
+          "FR-11",
+          "FR-12",
+          "FR-14",
+          "FR-15"
+        ]
+      },
+      "trace_to": [
+        "OBS-FINAL-02",
+        "RISK-FINAL-02"
+      ],
+      "estimate_minutes": 7,
+      "status": "active",
+      "coverage_inputs": [
+        {
+          "model_ref": "CHECK-FINAL",
+          "checklist_version": "1",
+          "checklist_item_ids": [
+            "TC-FINAL-02"
+          ],
+          "step_refs": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "expected_result_refs": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "content_hash": "sha256:f35ba35b005c71ede5f219d112e9c0f80790e7e21fa81567e58674e680d2db2b",
+      "oracle_revision": "fe90dbcc09a3fa67a39996ec53b0060bfe668c37a2c0d7431734a47d65daa6ca",
+      "revision": "f35ba35b005c71ede5f219d112e9c0f80790e7e21fa81567e58674e680d2db2b",
+      "case_revision": "f35ba35b005c71ede5f219d112e9c0f80790e7e21fa81567e58674e680d2db2b"
+    },
+    {
+      "tc_id": "TC-FINAL-03",
+      "title": "通信断後の入力保持・明示再試行・再起動永続化",
+      "priority": "P0",
+      "primary_view": "black",
+      "techniques": [
+        "checklist_based_testing"
+      ],
+      "preconditions": [],
+      "steps": [
+        "資料編集フォームへ合成資料を入力し、専用サーバーだけ停止する",
+        "保存を押して日本語の接続エラーと入力保持を確認する",
+        "同じDBで再起動し、自動再送されないことを確認して明示保存する",
+        "再起動と画面再読込後、保存資料が1件だけあることを確認する"
+      ],
+      "expected_results": [
+        "通信断を案内し、入力を保持する",
+        "再起動だけでは未保存で、明示再試行後に一度だけ保存される",
+        "再起動後も資料と履歴を復元する"
+      ],
+      "oracle": {
+        "type": "specified",
+        "refs": [
+          "FR-01",
+          "FR-02",
+          "FR-15"
+        ]
+      },
+      "source_ref": {
+        "type": "spec",
+        "refs": [
+          "FR-01",
+          "FR-02",
+          "FR-15"
+        ]
+      },
+      "trace_to": [
+        "OBS-FINAL-03",
+        "RISK-FINAL-03"
+      ],
+      "estimate_minutes": 6,
+      "status": "active",
+      "coverage_inputs": [
+        {
+          "model_ref": "CHECK-FINAL",
+          "checklist_version": "1",
+          "checklist_item_ids": [
+            "TC-FINAL-03"
+          ],
+          "step_refs": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "expected_result_refs": [
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "content_hash": "sha256:92ae588e9b54efa2ea750202e07e62830e250f310dadd55603352c37d2d64095",
+      "oracle_revision": "8c03365a95f9116d87f5462746f88b2e814a4ff408c1cbe399f6c1e9f126a502",
+      "revision": "92ae588e9b54efa2ea750202e07e62830e250f310dadd55603352c37d2d64095",
+      "case_revision": "92ae588e9b54efa2ea750202e07e62830e250f310dadd55603352c37d2d64095"
+    },
+    {
+      "tc_id": "TC-FINAL-04",
+      "title": "2タブの競合拒否と編集値保持",
+      "priority": "P0",
+      "primary_view": "black",
+      "techniques": [
+        "checklist_based_testing"
+      ],
+      "preconditions": [],
+      "steps": [
+        "同じプロジェクトの設定を2タブで開く",
+        "Aの目的を変更して保存する",
+        "古いBから異なる目的を保存する",
+        "Bの入力保持を確認して再読込する"
+      ],
+      "expected_results": [
+        "Bは競合を表示し、編集入力を保持する",
+        "再読込後はAが保存した値を表示し、無言の上書きがない"
+      ],
+      "oracle": {
+        "type": "specified",
+        "refs": [
+          "FR-01",
+          "FR-15"
+        ]
+      },
+      "source_ref": {
+        "type": "spec",
+        "refs": [
+          "FR-01",
+          "FR-15"
+        ]
+      },
+      "trace_to": [
+        "OBS-FINAL-04",
+        "RISK-FINAL-04"
+      ],
+      "estimate_minutes": 4,
+      "status": "active",
+      "coverage_inputs": [
+        {
+          "model_ref": "CHECK-FINAL",
+          "checklist_version": "1",
+          "checklist_item_ids": [
+            "TC-FINAL-04"
+          ],
+          "step_refs": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "expected_result_refs": [
+            1,
+            2
+          ]
+        }
+      ],
+      "content_hash": "sha256:c038ea5be5280feae9d665182d84a2804c12b16e49b21b89aa8fab6b494cccc8",
+      "oracle_revision": "b06a42343faee8c0df2fcf557282a909e4799f17b8415433b98f5973fd234fa6",
+      "revision": "c038ea5be5280feae9d665182d84a2804c12b16e49b21b89aa8fab6b494cccc8",
+      "case_revision": "c038ea5be5280feae9d665182d84a2804c12b16e49b21b89aa8fab6b494cccc8"
+    }
+  ],
+  "evidence_binding": {
+    "mode": "case_revision",
+    "model_hash": "1f566036f90f2ba7f4823ab6b9ec814d81f45d710f1d2b34ed5cd538f7dcc6e2"
+  }
+}

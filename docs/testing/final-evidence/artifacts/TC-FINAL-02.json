@@ -1,0 +1,45 @@
+{
+  "run_id": "manual-c3d96d55126f",
+  "feature_id": "WORKBENCH-FINAL",
+  "build_id": "c3d96d55126f8982b78818989f8456d7d6c280b0",
+  "case_revision": "f35ba35b005c71ede5f219d112e9c0f80790e7e21fa81567e58674e680d2db2b",
+  "spec_revision": "8bac64f82eca7c1c1fcbc6b02a478107645351c0ba9f9d28c9a353c76a645fe9",
+  "oracle_revision": "fe90dbcc09a3fa67a39996ec53b0060bfe668c37a2c0d7431734a47d65daa6ca",
+  "case_content_hash": "sha256:f35ba35b005c71ede5f219d112e9c0f80790e7e21fa81567e58674e680d2db2b",
+  "oracle_refs": [
+    "FR-03",
+    "FR-07",
+    "FR-08",
+    "FR-11",
+    "FR-12",
+    "FR-14",
+    "FR-15"
+  ],
+  "timestamp": "2026-10-04T01:51:57.627Z",
+  "result": "pass",
+  "tc_id": "TC-FINAL-02",
+  "model_hash": "1f566036f90f2ba7f4823ab6b9ec814d81f45d710f1d2b34ed5cd538f7dcc6e2",
+  "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+  "tester": "Codex agent-operated UI",
+  "oracle_type": "specified",
+  "expected": [
+    "変更前は承認済みの要件と出典を確認し、契約出力できる",
+    "変更後はEvidenceが未検証、比較と要件が再確認になり、再承認と承認済み契約の出力を拒否する",
+    "履歴で変更前の版を参照できる"
+  ],
+  "actual": [
+    "承認済み要件から確認済みClaim/Evidence/資料URLを追跡し、REV8のWorkbenchTaskContractをUIからダウンロードした",
+    "資料を版2へ更新するとEvidenceは未検証、比較と要件は再確認。再承認は根拠不足で拒否、内部契約の出力ボタンは無効",
+    "画面のREV8履歴に変更前の資料と承認理由が残っていた"
+  ],
+  "attachments": [
+    "tc02-before.txt",
+    "tc02-contract.json",
+    "tc02-source.txt",
+    "tc02-evidence.txt",
+    "tc02-comparison.txt",
+    "tc02-refused.txt",
+    "tc02-export-disabled.txt",
+    "tc02-history.txt"
+  ]
+}

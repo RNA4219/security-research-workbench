@@ -1,0 +1,33 @@
+{
+  "run_id": "manual-c3d96d55126f",
+  "feature_id": "WORKBENCH-FINAL",
+  "build_id": "c3d96d55126f8982b78818989f8456d7d6c280b0",
+  "case_revision": "c94e8014d9d511554299ed69e3980bc3b9c064be0d77d043d891dda945cd3a6f",
+  "spec_revision": "8bac64f82eca7c1c1fcbc6b02a478107645351c0ba9f9d28c9a353c76a645fe9",
+  "oracle_revision": "2e57b6e04fce7d7798979da8916a4f19c3a10ea2481fd22b39a28441599dfc1e",
+  "case_content_hash": "sha256:c94e8014d9d511554299ed69e3980bc3b9c064be0d77d043d891dda945cd3a6f",
+  "oracle_refs": [
+    "FR-02",
+    "FR-04",
+    "FR-05",
+    "FR-13"
+  ],
+  "timestamp": "2026-10-04T01:51:57.627Z",
+  "result": "pass",
+  "tc_id": "TC-FINAL-01",
+  "model_hash": "1f566036f90f2ba7f4823ab6b9ec814d81f45d710f1d2b34ed5cd538f7dcc6e2",
+  "env": "Windows Node24 Chromium production 127.0.0.1:4320",
+  "tester": "Codex agent-operated UI",
+  "oracle_type": "specified",
+  "expected": [
+    "資料3件と候補3件を表示し、未承認では生成を拒否する",
+    "エラーを閉じても保存内容と工程移動が正常で、生成結果は空のまま"
+  ],
+  "actual": [
+    "資料3件・候補3件、未承認の要件1件を確認した",
+    "未承認でプロンプト生成を拒否。エラーを閉じて工程を往復してもREV18の資料が保持され、プロンプトは生成されない"
+  ],
+  "attachments": [
+    "tc01.txt"
+  ]
+}

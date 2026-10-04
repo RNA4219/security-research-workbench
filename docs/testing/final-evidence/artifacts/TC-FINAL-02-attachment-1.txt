@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "WorkbenchTaskContract",
+  "projectId": "b2942af5-7dbb-433b-85d6-da2658d087f2",
+  "projectRevision": 8,
+  "objective": "合成資料の根拠を確認",
+  "scope": "開発者",
+  "outOfScope": "テスト専用",
+  "requirements": [
+    {
+      "id": "REQ-FINAL",
+      "title": "比較結果を保存する",
+      "description": "根拠付きで比較できる",
+      "priority": "high",
+      "acceptanceCriteria": [
+        "根拠を追跡できる"
+      ],
+      "tasks": [
+        "比較画面を作成"
+      ],
+      "rationale": "",
+      "claimIds": [
+        "67f1e364-a153-4dba-b505-f8e686afd870"
+      ],
+      "sourceRefs": [
+        "d0251bc3-07ac-4374-b0b6-bc0240990de4"
+      ]
+    }
+  ],
+  "acceptanceCriteria": [
+    "根拠を追跡できる"
+  ],
+  "candidates": [
+    {
+      "id": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "name": "合成OSS",
+      "url": "https://example.org/final-a"
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "d0251bc3-07ac-4374-b0b6-bc0240990de4",
+      "url": "https://example.org/final-a",
+      "title": "合成資料A",
+      "retrievedAt": "2026-10-04T00:00:00Z",
+      "version": "1",
+      "revision": 1,
+      "hash": "4a195ee942035c94b8274abda7964b5a909ea0700b39b4376188f23a4e874c1c"
+    }
+  ],
+  "claims": [
+    {
+      "candidateId": "82c5cf25-451a-48ec-b63d-fde19b5ff607",
+      "field": "features",
+      "valueState": "known",
+      "value": "比較機能",
+      "evidenceIds": [
+        "792798dc-180b-4459-9ccc-f52ed55a5479"
+      ],
+      "verificationStatus": "verified",
+      "id": "67f1e364-a153-4dba-b505-f8e686afd870",
+      "revision": 2
+    }
+  ],
+  "evidence": [
+    {
+      "sourceId": "d0251bc3-07ac-4374-b0b6-bc0240990de4",
+      "sourceType": "official",
+      "excerpt": "比較機能を提供する",
+      "verificationStatus": "verified",
+      "id": "792798dc-180b-4459-9ccc-f52ed55a5479",
+      "revision": 1,
+      "sourceRevision": 1
+    }
+  ]
+}

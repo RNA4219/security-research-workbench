@@ -1,0 +1,79 @@
+Browser tab: 6, Title: "Security Research Workbench", URL: "http://127.0.0.1:4320/".
+0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
+	1 container root
+		2 container
+			3 link Description: ホーム, Value: 127.0.0.1:4320/
+			4 text PROJECTS
+			5 button 新しいプロジェクト
+			6 container プロジェクト
+				7 button ◇ 最終検証・承認と保存
+					8 text ◇
+					9 text 最終検証・承認と保存
+				10 button ◇ 防御ツールの選定調査
+					11 text ◇
+					12 text 防御ツールの選定調査
+			13 text  LOCAL WORKSPACE 資料から、判断へ。
+			14 text 判断から、実装へ。 v0.2.0 · Open source
+		15 container
+			16 text SECURITY RESEARCH / DEVELOPMENT
+			17 button 再読込 ↻
+			94 text 操作を完了できませんでした
+			95 text 別の画面で更新されました。再読込してやり直してください。
+			96 button 閉じる
+			40 container
+				41 text RESEARCH WORKSPACE  / REV  9
+				42 heading 最終検証・承認と保存, Value: 1
+					43 text 最終検証・承認と保存
+				44 text 合成資料の根拠を確認 ● ローカル保存
+			45 text 1  調査資料 1  OSS候補 1  要件 0  承認済み
+			46 container 作業工程
+				47 button 01調査資料
+					48 text 01
+					49 text 調査資料
+				50 button ◎根拠と主張
+					51 text ◎
+					52 text 根拠と主張
+				53 button 02OSS比較
+					54 text 02
+					55 text OSS比較
+				56 button 03要件とレビュー
+					57 text 03
+					58 text 要件とレビュー
+				59 button 04出力
+					60 text 04
+					61 text 出力
+				62 button ↺履歴
+					63 text ↺
+					64 text 履歴
+				65 button ⚙設定・連携
+					66 text ⚙
+					67 text 設定・連携
+			68 container
+				69 heading プロジェクト設定, Value: 2
+					70 text プロジェクト設定
+				71 container
+					72 text プロジェクト名
+					73 text field (settable) Description: プロジェクト名, Value: 最終検証・承認と保存
+				74 container
+					75 text 目的
+					76 text entry area (settable) Description: 目的, Value: Bの未保存の目的
+				77 container
+					78 text 対象利用者
+					79 text field (settable) Description: 対象利用者, Value: 開発者
+				80 container
+					81 text 対象範囲
+					82 text entry area (settable) 対象範囲
+				83 container
+					84 text 対象外
+					85 text entry area (settable) 対象外
+				86 container
+					87 text 制約・対象外
+					88 text entry area (settable) Description: 制約・対象外, Value: テスト専用
+				89 button 設定を保存
+			90 container
+				91 heading memx-resolver, Value: 2
+					92 text memx-resolver
+				93 text 未設定 登録した資料だけをローカルのresolverに同期します。検索結果は自動で取り込みません。 起動時に MEMX_URL を設定すると利用できます。
+			39 text Security Research Workbench 根拠と判断を、あなたの手元に。
+
+The focused UI element is 0 AXWebArea Security Research Workbench, URL: 127.0.0.1:4320/
