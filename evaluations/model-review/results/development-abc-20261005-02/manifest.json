@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.1",
+  "profile": "workflow",
+  "manifest_id": "eval:20261005-model-review-02",
+  "task_id": "model-review-20261005-02",
+  "owner": "security-research-workbench",
+  "purpose": "comparison",
+  "status": "frozen",
+  "freeze_date": "2026-10-05",
+  "hypothesis": "仕様を知るBはコードのみのAより見逃しまたは誤検知を減らし、承認済み判断を条件確認付きで再利用するCはBの誤検知・見逃しを増やさず要人確認proxyを減らす。",
+  "action_delta": "Aはコードと固定source metadataだけ、BはAに現行の承認済み製品仕様・知識を追加、CはBに条件付き承認過去判断を追加する。全条件で同じproduction reviewSnapshotを使い、再出力filterは行わない。",
+  "negative_control": "hard negative、前提不変の過去判断、前提変更の過去判断を同じ製品のdevelopment/holdoutへ固定し、旧判断が新しい前提の問題を隠さないことを確認する。",
+  "identity": {
+    "legacy": {
+      "label": "A-code-only",
+      "source_path": "scripts/model-review-evaluation.mjs",
+      "source_revision": "dirty-bundle:model-review-evaluation-v1",
+      "source_sha256": "sha256:91895f2a424fba2d5857e496b082f12ad585c8b7a6560f8c76e82cbd1560f526",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "candidate": {
+      "label": "C-approved-history",
+      "source_path": "scripts/model-review-evaluation.mjs",
+      "source_revision": "dirty-bundle:model-review-evaluation-v1",
+      "source_sha256": "sha256:91895f2a424fba2d5857e496b082f12ad585c8b7a6560f8c76e82cbd1560f526",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "runner": {
+      "id": "model-review-evaluation/v1",
+      "sha256": "sha256:91895f2a424fba2d5857e496b082f12ad585c8b7a6560f8c76e82cbd1560f526"
+    },
+    "engine": {
+      "label": "production-reviewSnapshot",
+      "source_path": "dist/server/model-review.js",
+      "source_revision": "dirty-bundle:production-model-review-dist-v2",
+      "source_sha256": "sha256:5a991c2efd9bc088055da64f4d1cc83048a4488946e806b488d303054dc659fb",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "adapter": {
+      "label": "production-model-review-adapter",
+      "source_path": "scripts/model-review-production-adapter.mjs",
+      "source_revision": "dirty-bundle:production-adapter-v1",
+      "source_sha256": "sha256:3b512e670a3e71c7697d2929d44d85a7767c5a200fe0e5c54f02225f09de40fc",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "provider": {
+      "label": "openai-compatible-loopback-provider",
+      "source_path": "dist/server/workflow-providers.js",
+      "source_revision": "dirty-bundle:workflow-provider-dist-v2",
+      "source_sha256": "sha256:ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    }
+  },
+  "evaluation": {
+    "dataset_id": "model-review-corpus/v1",
+    "dataset_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb",
+    "measurement_unit": "task",
+    "primary_metric": "f1",
+    "model_version": "Qwen3.5-4B-Q4_K_M.gguf@local-8081",
+    "policy_version": "production-reviewSnapshot-model-review/v1",
+    "configuration": {
+      "conditions": [
+        "A",
+        "B",
+        "C"
+      ],
+      "splits": [
+        "development",
+        "holdout"
+      ],
+      "tuning_split": "development",
+      "final_test_split": "holdout",
+      "repetitions": 3,
+      "matching": "path+category+location",
+      "provider": {
+        "id": "local",
+        "kind": "local",
+        "model": "Qwen3.5-4B-Q4_K_M.gguf",
+        "model_sha256": "sha256:00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4",
+        "runtime": "llama.cpp@9733-f449e0553",
+        "config_version": "local-v2:no-thinking:json:endpoint-aedf15185cebd81a9cf3b6a3bf3244691e922698df9a6f50b080a0331620b6fe",
+        "disable_thinking": true,
+        "max_output_tokens": 2048,
+        "json_mode": true
+      },
+      "budget": {
+        "maxDurationMs": 120000,
+        "maxInputTokens": 12000,
+        "maxOutputTokens": 2048
+      },
+      "condition_input_sha256": {
+        "A": "sha256:81f4524d2e4606f5c8c6ff6ac30de71c9272a13c1dd770676c089becc4fb0d5b",
+        "B": "sha256:084d207adcf6d658ad73300b0fe4a8dcc933ea6747deab8400a7fb717cfeb32a",
+        "C": "sha256:5ce9b365eedbb7f86efc844a0b84dfad594edfe0e0bf0b22e6f79f2799f2382c"
+      }
+    }
+  },
+  "external_mutations": {
+    "registry_frozen": true,
+    "submission_frozen": true
+  }
+}

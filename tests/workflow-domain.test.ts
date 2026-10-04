@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   applyWorkflowCommand,
+  evaluateFindingSuppression,
+  hashFindingReviewContext,
   importResearch,
   isFindingSuppressed,
   newWorkflow,
@@ -927,6 +929,265 @@ describe("Workflowの共有domain", () => {
     });
   });
 
+  it("診断用抑止helperは現行contextとevidenceが一致した人判断だけ再利用する", () => {
+    let state = workflow();
+    const doc = addDoc(state);
+    state = doc.state;
+    const finding = addFinding(state, doc.ref);
+    state = finding.state;
+    const contextHash = "a".repeat(64);
+    const evidenceHash = "b".repeat(64);
+    state = apply(state, {
+      type: "finding-observation",
+      findingId: finding.findingId,
+      fingerprint: "issue-1",
+      targetVersion: scope.version,
+      observation: "確認が必要",
+      sourceRefs: [doc.ref],
+      contextHash,
+      evidenceHash,
+    });
+    state = decide(state, finding.findingId, doc.ref, "accepted_known");
+    state = apply(state, {
+      type: "suppression",
+      findingId: finding.findingId,
+      actor: "reviewer",
+      reason: "現行仕様で確認済み",
+      targetVersion: scope.version,
+      fingerprint: "issue-1",
+      ruleRefs: [],
+      expiresAt: "2099-01-01T00:00:00.000Z",
+    });
+    const current = state.findings[0]!;
+    expect(
+      evaluateFindingSuppression(state, current, {
+        contextHash,
+        evidenceHash,
+      }),
+    ).toMatchObject({
+      reusable: true,
+      status: "active",
+      reason: "active",
+      decisionRevision: 2,
+      judgment: "accepted_known",
+    });
+    expect(
+      evaluateFindingSuppression(state, current, {
+        contextHash: "c".repeat(64),
+        evidenceHash,
+      }),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "context_changed",
+    });
+    expect(
+      evaluateFindingSuppression(state, current, {
+        contextHash,
+        evidenceHash: "d".repeat(64),
+      }),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "evidence_changed",
+    });
+    expect(
+      evaluateFindingSuppression(
+        state,
+        current,
+        {
+          contextHash,
+          evidenceHash,
+        },
+        Date.parse("2100-01-01T00:00:00.000Z"),
+      ),
+    ).toMatchObject({ reusable: false, status: "expired", reason: "expired" });
+    expect(evaluateFindingSuppression(state, current)).toMatchObject({
+      reusable: true,
+      status: "active",
+    });
+    const activeDecisionChanged = structuredClone(state);
+    activeDecisionChanged.findings[0]!.suppressions[0]!.decisionRevision = 999;
+    expect(
+      evaluateFindingSuppression(
+        activeDecisionChanged,
+        activeDecisionChanged.findings[0]!,
+      ),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "latest_decision_changed",
+    });
+    const activeSourceChanged = structuredClone(state);
+    activeSourceChanged.findings[0]!.suppressions[0]!.sourceRefs[0]!.excerpt =
+      "出典にない引用";
+    expect(
+      evaluateFindingSuppression(
+        activeSourceChanged,
+        activeSourceChanged.findings[0]!,
+      ),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "source_changed",
+    });
+    const activeJudgmentChanged = structuredClone(state);
+    activeJudgmentChanged.findings[0]!.judgment = "unconfirmed";
+    expect(
+      evaluateFindingSuppression(
+        activeJudgmentChanged,
+        activeJudgmentChanged.findings[0]!,
+      ),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "judgment_changed",
+    });
+    const inactive = structuredClone(state);
+    inactive.findings[0]!.suppressions[0]!.active = false;
+    expect(
+      evaluateFindingSuppression(inactive, inactive.findings[0]!, {
+        contextHash,
+        evidenceHash,
+      }),
+    ).toMatchObject({
+      reusable: false,
+      status: "missing",
+      reason: "no_active_suppression",
+    });
+    const inactiveContextChanged = structuredClone(inactive);
+    inactiveContextChanged.findings[0]!.observationHistory.at(-1)!.contextHash =
+      "c".repeat(64);
+    expect(
+      evaluateFindingSuppression(
+        inactiveContextChanged,
+        inactiveContextChanged.findings[0]!,
+        { contextHash, evidenceHash },
+      ),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "context_changed",
+    });
+    const inactiveEvidenceChanged = structuredClone(inactive);
+    inactiveEvidenceChanged.findings[0]!.observationHistory.at(
+      -1,
+    )!.evidenceHash = "d".repeat(64);
+    expect(
+      evaluateFindingSuppression(
+        inactiveEvidenceChanged,
+        inactiveEvidenceChanged.findings[0]!,
+        { contextHash, evidenceHash },
+      ),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "evidence_changed",
+    });
+    const changedDecision = decide(
+      state,
+      finding.findingId,
+      doc.ref,
+      "needs_action",
+    );
+    expect(
+      evaluateFindingSuppression(
+        changedDecision,
+        changedDecision.findings[0]!,
+        {
+          contextHash,
+          evidenceHash,
+        },
+      ),
+    ).toMatchObject({
+      reusable: false,
+      status: "invalidated",
+      reason: "latest_decision_changed",
+    });
+    let legacyState = workflow();
+    const legacyDoc = addDoc(legacyState);
+    legacyState = legacyDoc.state;
+    const legacyFinding = addFinding(legacyState, legacyDoc.ref);
+    legacyState = decide(
+      legacyFinding.state,
+      legacyFinding.findingId,
+      legacyDoc.ref,
+      "accepted_known",
+    );
+    legacyState = apply(legacyState, {
+      type: "suppression",
+      findingId: legacyFinding.findingId,
+      actor: "reviewer",
+      reason: "旧データ",
+      targetVersion: scope.version,
+      fingerprint: "issue-1",
+      ruleRefs: [],
+      expiresAt: "2099-01-01T00:00:00.000Z",
+    });
+    expect(
+      evaluateFindingSuppression(legacyState, legacyState.findings[0]!, {
+        contextHash,
+        evidenceHash,
+      }),
+    ).toMatchObject({
+      reusable: false,
+      status: "unknown",
+      reason: "legacy_context_unknown",
+    });
+    expect(
+      hashFindingReviewContext({
+        targetVersion: scope.version,
+        purpose: scope.purpose,
+        specificationRevision: 1,
+        specificationHash: "e".repeat(64),
+        knowledge: [],
+        rules: [],
+      }),
+    ).toMatch(/^[a-f0-9]{64}$/);
+    const context = {
+      targetVersion: scope.version,
+      purpose: scope.purpose,
+      specificationRevision: 1,
+      specificationHash: "e".repeat(64),
+      knowledge: [],
+      rules: [],
+      pastJudgments: [
+        {
+          findingId: "other-finding",
+          revision: 2,
+          targetVersion: scope.version,
+          judgment: "accepted_known" as const,
+          reason: "現行条件で確認済み",
+          sourceRefs: [doc.ref],
+        },
+      ],
+    };
+    expect(
+      hashFindingReviewContext({
+        ...context,
+        pastJudgments: context.pastJudgments.map((judgment) => ({
+          ...judgment,
+          sourceRefs: [...judgment.sourceRefs].reverse(),
+        })),
+      }),
+    ).toBe(hashFindingReviewContext(context));
+    expect(
+      hashFindingReviewContext({
+        ...context,
+        pastJudgments: context.pastJudgments.map((judgment) => ({
+          ...judgment,
+          reason: "別の判断理由",
+        })),
+      }),
+    ).not.toBe(hashFindingReviewContext(context));
+    expect(
+      hashFindingReviewContext({
+        ...context,
+        metadata: { diagnosticMethodologyHash: "f".repeat(64) },
+      }),
+    ).not.toBe(hashFindingReviewContext(context));
+  });
+
   it("修正を確認証跡と人の判断が揃うまで完了させない", () => {
     let state = workflow();
     const doc = addDoc(state);
@@ -1118,6 +1379,69 @@ describe("Workflowの共有domain", () => {
       fixCommit: "abcdef0123",
       completion: { actor: "reviewer", targetVersion: scope.version },
     });
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2099-01-01T00:00:00.000Z"));
+    try {
+      const changedObservation = apply(complete, {
+        type: "finding-observation",
+        findingId: finding.findingId,
+        fingerprint: "issue-1",
+        targetVersion: scope.version,
+        observation: "条件に変更があるため再確認が必要",
+        sourceRefs: [doc.ref],
+        contextHash: "a".repeat(64),
+        evidenceHash: "b".repeat(64),
+      });
+      expect(changedObservation.findings[0]!.remediation).toMatchObject({
+        status: "verification_pending",
+        completion: undefined,
+      });
+      expectAtomicReject(changedObservation, {
+        type: "remediation-complete",
+        findingId: finding.findingId,
+        actor: "reviewer",
+        reason: "根拠変更後の古い確認だけでは完了できない",
+        targetVersion: scope.version,
+      });
+      const reverified = apply(changedObservation, {
+        type: "verification",
+        findingId: finding.findingId,
+        method: "static-review",
+        rationale: "変更後の根拠を再確認",
+        scope: "変更箇所",
+        status: "passed",
+        actor: "reviewer",
+        targetVersion: scope.version,
+        evidence: [doc.ref],
+      });
+      const recommitted = apply(reverified, {
+        type: "remediation-complete",
+        findingId: finding.findingId,
+        actor: "reviewer",
+        reason: "現行根拠を再確認",
+        targetVersion: scope.version,
+      });
+      expect(recommitted.findings[0]!.remediation?.status).toBe("completed");
+      const changedAgain = apply(recommitted, {
+        type: "finding-observation",
+        findingId: finding.findingId,
+        fingerprint: "issue-1",
+        targetVersion: scope.version,
+        observation: "同一時刻にさらに条件が変更された",
+        sourceRefs: [doc.ref],
+        contextHash: "c".repeat(64),
+        evidenceHash: "d".repeat(64),
+      });
+      expectAtomicReject(changedAgain, {
+        type: "remediation-complete",
+        findingId: finding.findingId,
+        actor: "reviewer",
+        reason: "2回目の根拠変更後も再確認が必要",
+        targetVersion: scope.version,
+      });
+    } finally {
+      vi.useRealTimers();
+    }
     expectAtomicReject(complete, {
       type: "remediation-complete",
       findingId: finding.findingId,

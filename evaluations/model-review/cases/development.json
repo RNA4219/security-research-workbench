@@ -1,0 +1,440 @@
+[
+  {
+    "id": "a01",
+    "split": "development",
+    "conditionHash": "821499eaee6777a55bdd27691e33789b87b4089fcd091831c900baab742d92c2",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/profile.js",
+      "commit": "1111111111111111111111111111111111111111",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:c4abf0c3643e50340beb700a0d37c52c35724fdb3a5edec6ca8b2f88e2b6f621"
+    },
+    "code": "export function readProfile(actor, profileId, store) {\n  const profile = store.profiles.get(profileId);\n  if (!profile) return { status: 404 };\n  return { status: 200, body: profile };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "プロフィールは本人だけが読み取れる。存在しないプロフィールと他人のプロフィールは同じ404結果にする。",
+      "requirements": [
+        {
+          "id": "spec-profile",
+          "version": "spec-3",
+          "content": "プロフィールは認証済みactorのidと所有者idを照合する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-profile",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "3d20dd896402aa5fb9bd4f3c577fbd29106e441ca532ab960dd47ed31348e3ba",
+        "content": "プロフィールの所有境界はactor.idとprofile.ownerIdの照合で定義する。",
+        "sourceRefs": [
+          {
+            "id": "source-profile",
+            "version": "spec-3",
+            "hash": "0822a2ea2efd6572dacbfc9e84230ea937f0dcc4c2ef1b8c47e8048501871b0c",
+            "excerpt": "プロフィールの所有境界を照合する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a02",
+    "split": "development",
+    "conditionHash": "ae42c94f6480a225f412027ed633d42ace97c7cb4dfd2bd31697aa61bbbbb84e",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/invoices.js",
+      "commit": "2222222222222222222222222222222222222222",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:a9adc10b93cd956060deb0a3b6f20f8139fd2d8ce432045a515e3b7fd0a8cd63"
+    },
+    "code": "export function listInvoices(actor, requestedTenantId, db) {\n  return db.invoices.filter((invoice) =>\n    invoice.tenantId === requestedTenantId &&\n    invoice.ownerId === actor.id\n  );\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "請求書はactorのtenantIdから検索し、呼び出し元のrequestedTenantIdを境界の根拠にしない。",
+      "requirements": [
+        {
+          "id": "spec-invoice",
+          "version": "spec-3",
+          "content": "請求書のtenant境界は認証済みactor.tenantIdから導出する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-tenant",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "f74d000f845dcb977526f538439a14f2da6d65facb17a645f29dd8d7498b88cb",
+        "content": "テナント境界は入力されたtenant値ではなく認証済みactorのtenantIdから決める。",
+        "sourceRefs": [
+          {
+            "id": "source-tenant",
+            "version": "spec-3",
+            "hash": "41e50ff809c5be946214bc28841213f9291e8cc4f9224aa899994ab1645ee5ed",
+            "excerpt": "認証済みactorのtenantIdから決める。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a03",
+    "split": "development",
+    "conditionHash": "9a82f097fdfd345ba8c3fb16c11b5f710981d6ce54a56204b308c185fd1bcc32",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/services/visibility.js",
+      "commit": "3333333333333333333333333333333333333333",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:ab5d68551525ce0e0cce725daac9449e4312290baf12c154a8e0429ce95f20cd"
+    },
+    "code": "export function setVisibility(item, value) {\n  item.visibility = value;\n  return item;\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "visibilityはpublicまたはprivateのいずれかで、他の列挙値を保存しない。",
+      "requirements": [
+        {
+          "id": "spec-visibility",
+          "version": "spec-3",
+          "content": "visibilityの許可値はpublicとprivateだけである。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-enum",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "e50b25be6bd5d2bfdbe3c93727008e352b1ab51a46add68948f40dabb885f09f",
+        "content": "列挙値は仕様に明記されたallowlistと一致させる。",
+        "sourceRefs": [
+          {
+            "id": "source-enum",
+            "version": "spec-3",
+            "hash": "832a95acf9dd93c9ebeba64523434ee3951a2000d512eb538b0f42e8012cb9d1",
+            "excerpt": "列挙値はallowlistと一致させる。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a04",
+    "split": "development",
+    "conditionHash": "c52ea36e3238991f3ce699fb8e3c212160cbde752d8b90f7055206756663c2e8",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/services/order-state.js",
+      "commit": "4444444444444444444444444444444444444444",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:41f96d164dd8bb96183e0f028a22eb3d221ed51e9c4e0b724d7bbd95ec590bd2"
+    },
+    "code": "const allowed = new Set([\"draft\", \"submitted\", \"approved\", \"rejected\", \"archived\"]);\n\nexport function moveOrder(order, next) {\n  if (!allowed.has(next)) return { ok: false };\n  order.state = next;\n  return { ok: true, order };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "orderはdraftからsubmitted、submittedからapprovedまたはrejected、approvedからarchivedへだけ遷移できる。",
+      "requirements": [
+        {
+          "id": "spec-order",
+          "version": "spec-3",
+          "content": "状態遷移は現在状態ごとの遷移表に照合し、既知の状態名だけかどうかでは判定しない。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-state",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "c2f310e155105f55be39b5aa7f6a33437cfbc224e904794d66122a90edb6a69f",
+        "content": "状態名のallowlistと状態遷移表は別の制約として検証する。",
+        "sourceRefs": [
+          {
+            "id": "source-state",
+            "version": "spec-3",
+            "hash": "c1d23f5a574109582ae7a9ca01afb888337395a5c137258f672b175ebabca6ce",
+            "excerpt": "状態遷移表を検証する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a05",
+    "split": "development",
+    "conditionHash": "efbccb7aeb14b46bf15f10e6b2616625038bfb7483f0230b33891c856de26846",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/observability/audit.js",
+      "commit": "5555555555555555555555555555555555555555",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:b87a5e3cb50c7afa86d39a2326daef35263bef3d091306dfe5ea9d798c8f58a0"
+    },
+    "code": "export function auditFailure(requestId, email, token, log) {\n  log.warn(\"request failed\", { requestId, email, token });\n  return { requestId, ok: false };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "監査ログにはrequestIdだけを保存し、email、tokenなどの個人情報や認証情報を保存しない。",
+      "requirements": [
+        {
+          "id": "spec-log",
+          "version": "spec-3",
+          "content": "ログ出力はrequestIdに限定し、emailとtokenはredactする。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-log",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "4a2074e91676f1ebd954b5b51813fffc6be367a1557f7d1499d341dc0209c662",
+        "content": "監査ログは個人情報と認証情報を含めない。",
+        "sourceRefs": [
+          {
+            "id": "source-log",
+            "version": "spec-3",
+            "hash": "231b624ae4c593155a368e83f998c2b405c562cd18d5981062bb5354b5cf4d16",
+            "excerpt": "監査ログは個人情報を含めない。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a06",
+    "split": "development",
+    "conditionHash": "3d393c5ff35c0db55babf47ae2cdc071279b90f96f3ff13e7df2eb667cb1396d",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/services/password.js",
+      "commit": "6666666666666666666666666666666666666666",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:d8d0a205601f7f5ca9532b43e2051a732d73449f7abd902a8b520fa01bc22922"
+    },
+    "code": "export function digestPassword(password, crypto) {\n  return crypto.createHash(\"sha1\").update(password).digest(\"hex\");\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "パスワードは製品が承認したpassword hashing wrapperを使い、汎用のSHA-1 digestを直接保存しない。",
+      "requirements": [
+        {
+          "id": "spec-crypto",
+          "version": "spec-3",
+          "content": "パスワード保存には承認済みpassword hashing wrapperを使用する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-crypto",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "86cbd9913c781ea6199c1afdefe1ad10d8b39e3dfe6612e43930946acddafc30",
+        "content": "パスワード処理は承認済みwrapperを介し、汎用digestを直接保存しない。",
+        "sourceRefs": [
+          {
+            "id": "source-crypto",
+            "version": "spec-3",
+            "hash": "553a2cf8cf0e65068df1b2479a9ba4275f2ab785dad0b285144a77b81139024b",
+            "excerpt": "承認済みwrapperを介する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a07",
+    "split": "development",
+    "conditionHash": "d787af919d88a6270a07f4d822e0d871caa8bd45a609501983eae785ef017283",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/profile-safe.js",
+      "commit": "7777777777777777777777777777777777777777",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:9cd3d5d78322d5bb4576a98b9a9b2fe845c0d8315379d4d1d6032b58dac77296"
+    },
+    "code": "export function readProfile(actor, profileId, store) {\n  const profile = store.profiles.get(profileId);\n  if (!profile || profile.ownerId !== actor.id) return { status: 404 };\n  return { status: 200, body: profile };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "プロフィールは本人だけが読み取れる。存在しないプロフィールと他人のプロフィールは同じ404結果にする。",
+      "requirements": [
+        {
+          "id": "spec-profile-safe",
+          "version": "spec-3",
+          "content": "プロフィールはactor.idと所有者idを照合する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-profile-safe",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "2d7bb94c20d0c87979ec33987d8339460c69e209a7d29df8d31ba0b4ecb3c6c7",
+        "content": "プロフィールを返す前に所有者境界を確認する。",
+        "sourceRefs": [
+          {
+            "id": "source-profile-safe",
+            "version": "spec-3",
+            "hash": "32ffdf6cd403bab9db7c68664da56e82cb72f5b7c19f8424aab97b526d4445d0",
+            "excerpt": "所有者境界を確認する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "a08",
+    "split": "development",
+    "conditionHash": "a206021002d2323ade155f04a6897fdb301cd3bad2f00d3830a5d73f54e96745",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/notes.js",
+      "commit": "8888888888888888888888888888888888888888",
+      "previousCommit": "9999999999999999999999999999999999999999",
+      "codeSha256": "sha256:7058130d3cd28bfaad006289cd09f2d6a36689f4e74632af24b08ff11fb3b39e"
+    },
+    "code": "export function listTenantNotes(actor, requestedTenantId, db) {\n  return db.notes.filter((note) => note.tenantId === requestedTenantId);\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "この公開endpointではtenant境界をactor.tenantIdから導出する。旧版の内部呼び出し元がrequestedTenantIdを信頼していた判断は現行endpointには適用しない。",
+      "requirements": [
+        {
+          "id": "spec-notes-public",
+          "version": "spec-3",
+          "content": "公開endpointでは入力されたtenant識別子を認証境界として信頼しない。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-notes-public",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "13dabddd677ce9039332b3380fe512824eb57c6ab7cd34f2c9437203cfaa4f11",
+        "content": "notes endpointは公開経路へ移行したため、旧内部呼び出し条件を再確認する。",
+        "sourceRefs": [
+          {
+            "id": "source-notes-public",
+            "version": "spec-3",
+            "hash": "51e06b13e8798249911deee0e64049f160529a35b1b699925f050ad840eea746",
+            "excerpt": "旧内部呼び出し条件を再確認する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": [
+      {
+        "id": "judgment-notes-old",
+        "revision": 1,
+        "targetCommit": "8888888888888888888888888888888888888888",
+        "targetVersion": "8888888888888888888888888888888888888888",
+        "conditionHash": "0c9f67678aaa8764e342e8b9a5f0bd5f0ce7fac7f6d52e67524b01dcd7448275",
+        "judgment": "accepted_known",
+        "reason": "旧版では内部呼び出し元がtenant識別子を保証する前提で承認した。",
+        "applicability": "旧内部endpointとconditionHash aのみ",
+        "status": "approved",
+        "sourceRefs": [
+          {
+            "id": "source-judgment-notes-old",
+            "version": "spec-2",
+            "hash": "7bcbe4bd7131fdef208aac1aca11503cceace9a7ba55a2e14a456a86ea2b766d",
+            "excerpt": "旧内部endpointの前提。"
+          }
+        ],
+        "conditionBasis": {
+          "revision": "spec-2",
+          "text": "旧版の内部endpointでは呼び出し元がtenant識別子を保証するためrequestedTenantIdを境界として受け入れる。",
+          "requirements": [
+            {
+              "id": "spec-notes-old",
+              "version": "spec-2",
+              "content": "旧内部endpointでは呼び出し元がtenant識別子を保証する。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "a09",
+    "split": "development",
+    "conditionHash": "a76c08317752d19086624cd3eda920087c9b6bd7b905acff717c8af34d8aedf4",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/reports.js",
+      "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "previousCommit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "codeSha256": "sha256:66e252bcd5387407c7523e036540a8cac345cbaaa573633c0aa046da5e79c3e9"
+    },
+    "code": "export function findTenantReports(actor, db) {\n  return db.reports.filter((report) => report.tenantId === actor.tenantId);\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "reportsは現行endpointでもactor.tenantIdと一致するものだけを返す。旧判断の条件は現行仕様と同じである。",
+      "requirements": [
+        {
+          "id": "spec-reports",
+          "version": "spec-3",
+          "content": "reportsのtenant境界はactor.tenantIdから導出する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-reports",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "e1fc1120eccb71ecdf08e5e5ddda3c981d9ab95caab0eca590656046822cd3f7",
+        "content": "reportsの検索はactor.tenantIdに固定されている。",
+        "sourceRefs": [
+          {
+            "id": "source-reports",
+            "version": "spec-3",
+            "hash": "56966f73c1c3f35b907bb6191e21c392574c536b1db5b69947edc30885c00a45",
+            "excerpt": "actor.tenantIdに固定されている。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": [
+      {
+        "id": "judgment-reports",
+        "revision": 1,
+        "targetCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "targetVersion": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "conditionHash": "a76c08317752d19086624cd3eda920087c9b6bd7b905acff717c8af34d8aedf4",
+        "judgment": "accepted_known",
+        "reason": "現行仕様と同じtenant境界を確認済み。",
+        "applicability": "現行reports endpointとconditionHash c",
+        "status": "approved",
+        "sourceRefs": [
+          {
+            "id": "source-judgment-reports",
+            "version": "spec-3",
+            "hash": "ad784c106a4fe27b018c84b7cccf50ab2f507430530174368eec8f9699434c0b",
+            "excerpt": "現行仕様と同じtenant境界。"
+          }
+        ]
+      }
+    ]
+  }
+]

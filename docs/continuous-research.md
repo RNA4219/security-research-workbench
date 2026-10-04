@@ -36,6 +36,8 @@
 | 許可した外部接続 | `WORKFLOW_CLOUD_URL`、`WORKFLOW_CLOUD_MODEL`、`WORKFLOW_CLOUD_ALLOWED_HOSTS`、`WORKFLOW_CLOUD_API_KEY`。HTTPSかつ明示したホストのみ |
 | 費用の見積り | `WORKFLOW_{LOCAL,CLOUD}_INPUT_USD_PER_MILLION_TOKENS`、`WORKFLOW_{LOCAL,CLOUD}_OUTPUT_USD_PER_MILLION_TOKENS` |
 | 出力と設定版 | `WORKFLOW_{LOCAL,CLOUD}_MAX_OUTPUT_TOKENS`、`WORKFLOW_{LOCAL,CLOUD}_CONFIG_VERSION` |
+| ローカルモデルの推論出力 | 対応するllama.cppモデルでは `WORKFLOW_LOCAL_DISABLE_THINKING=true` で `enable_thinking=false` を送る。既定は送信しない。設定版にも反映し、変更前の実行と区別する |
+| ローカルモデルのJSON出力 | `WORKFLOW_LOCAL_JSON_MODE=true` で `response_format: {type: "json_object"}` を送る。対応するサーバーでのみ有効にする。既定は送信しない。設定版にも反映する |
 
 APIはOpenAI互換のChat Completions形式を使う。URLはサーバーのルートまたは`/v1`までを指定する。リダイレクトを追わない。外部接続には質問と知識の両方が公開区分であることが必要。費用見積りを設定できない外部接続は自動実行を始めない。手動受渡しの外部サービス費用はアプリでは把握できず、未測定として扱う。
 

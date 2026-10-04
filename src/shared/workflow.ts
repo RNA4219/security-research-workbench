@@ -86,6 +86,105 @@ export const findingJudgment = z.enum([
   "accepted_known",
 ]);
 export type FindingJudgment = z.infer<typeof findingJudgment>;
+const hashValue = z.string().regex(/^[a-f0-9]{64}$/);
+export const findingSuppressionStatus = z.enum([
+  "active",
+  "expired",
+  "invalidated",
+  "missing",
+  "unknown",
+]);
+export type FindingSuppressionStatus = z.infer<typeof findingSuppressionStatus>;
+export type FindingSuppressionReason =
+  | "active"
+  | "no_active_suppression"
+  | "expired"
+  | "target_version_changed"
+  | "fingerprint_changed"
+  | "latest_decision_changed"
+  | "judgment_changed"
+  | "rules_changed"
+  | "source_changed"
+  | "context_changed"
+  | "evidence_changed"
+  | "legacy_context_unknown";
+export type FindingObservation = {
+  observation: string;
+  observedAt: string;
+  targetVersion: string;
+  sourceRefs: WorkflowSourceRef[];
+  /** Optional hashes added for diagnostic findings; old workflow rows omit them. */
+  contextHash?: string;
+  evidenceHash?: string;
+};
+export type WorkflowSuppression = {
+  decisionRevision: number;
+  sourceRefs: WorkflowSourceRef[];
+  actor: string;
+  reason: string;
+  targetVersion: string;
+  fingerprint: string;
+  ruleRefs: { id: string; revision: number }[];
+  expiresAt: string;
+  active: boolean;
+  /** These fields are absent in legacy workflow data and then cannot be reused by diagnostics. */
+  contextHash?: string;
+  evidenceHash?: string;
+};
+/**
+ * Immutable approved context used to bind a diagnostic observation to the
+ * product specification and the complete current workflow context.
+ */
+export type FindingReviewContext = {
+  targetVersion: string;
+  purpose: string;
+  specificationRevision: number;
+  specificationHash: string;
+  /**
+   * Stable analysis-method metadata used to bind a human suppression to the
+   * exact diagnostic method that produced the observation.  This is optional
+   * for legacy callers and persisted workflow data; new diagnostics provide
+   * the hash while the workflow domain includes it in contextHash.
+   */
+  metadata?: {
+    diagnosticMethodologyHash: string;
+  };
+  knowledge: {
+    id: string;
+    revision: number;
+    contentHash: string;
+    sourceRefs: WorkflowSourceRef[];
+  }[];
+  rules: {
+    id: string;
+    revision: number;
+    contentHash: string;
+    appliesToVersion: string;
+    sourceRefs: WorkflowSourceRef[];
+  }[];
+  /**
+   * Current human judgments that are eligible to be supplied as model
+   * context.  The diagnostic service omits the finding currently being
+   * linked, because its own decision revision is checked separately by the
+   * suppression evaluator.
+   */
+  pastJudgments?: {
+    findingId: string;
+    revision: number;
+    targetVersion: string;
+    judgment: Exclude<FindingJudgment, "unconfirmed">;
+    reason: string;
+    sourceRefs: WorkflowSourceRef[];
+  }[];
+};
+export type FindingSuppressionEvaluation = {
+  reusable: boolean;
+  status: FindingSuppressionStatus;
+  reason: FindingSuppressionReason;
+  decisionRevision: number | null;
+  judgment: Exclude<FindingJudgment, "unconfirmed"> | null;
+  expiresAt: string | null;
+};
 export type WorkflowFinding = {
   id: string;
   revision: number;
@@ -94,12 +193,7 @@ export type WorkflowFinding = {
   observation: string;
   observedAt: string;
   sourceRefs: WorkflowSourceRef[];
-  observationHistory: {
-    observation: string;
-    observedAt: string;
-    targetVersion: string;
-    sourceRefs: WorkflowSourceRef[];
-  }[];
+  observationHistory: FindingObservation[];
   judgment: FindingJudgment;
   decisions: {
     revision: number;
@@ -111,17 +205,7 @@ export type WorkflowFinding = {
     ruleRefs: { id: string; revision: number }[];
     at: string;
   }[];
-  suppressions: {
-    decisionRevision: number;
-    sourceRefs: WorkflowSourceRef[];
-    actor: string;
-    reason: string;
-    targetVersion: string;
-    fingerprint: string;
-    ruleRefs: { id: string; revision: number }[];
-    expiresAt: string;
-    active: boolean;
-  }[];
+  suppressions: WorkflowSuppression[];
   remediation?: WorkflowRemediation;
 };
 export type WorkflowRemediation = {
@@ -132,6 +216,8 @@ export type WorkflowRemediation = {
   fixCommit?: string;
   targetVersion: string;
   verifications: WorkflowVerification[];
+  /** A changed observation invalidates verifications recorded at or before this time. */
+  reverificationRequiredAfter?: string;
   completion?: {
     actor: string;
     reason: string;
@@ -259,6 +345,8 @@ export const workflowCommand = z.discriminatedUnion("type", [
     targetVersion: text.max(200),
     observation: knowledgeBody,
     sourceRefs: z.array(sourceRefSchema).max(50).default([]),
+    contextHash: hashValue.optional(),
+    evidenceHash: hashValue.optional(),
   }),
   z.strictObject({
     type: z.literal("finding-decision"),

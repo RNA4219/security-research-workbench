@@ -6,6 +6,9 @@ import {
   workflowScopeInput,
   type WorkflowCommand,
   type WorkflowContext,
+  type FindingReviewContext,
+  type FindingSuppressionEvaluation,
+  type FindingSuppressionReason,
   type Classification,
   type WorkflowDocument,
   type WorkflowFinding,
@@ -22,6 +25,133 @@ import type { ResearchReport } from "../shared/repository-research.js";
 const hash = (value: string) =>
   createHash("sha256").update(value).digest("hex");
 const now = () => new Date().toISOString();
+const nowAfter = (minimum?: string) => {
+  const minimumMs = minimum ? Date.parse(minimum) : Number.NaN;
+  const currentMs = Date.now();
+  return new Date(
+    Number.isFinite(minimumMs) ? Math.max(currentMs, minimumMs + 1) : currentMs,
+  ).toISOString();
+};
+const latestTimestamp = (
+  base: string,
+  candidates: readonly (string | undefined)[],
+) => {
+  let latestMs = Date.parse(base);
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    const candidateMs = Date.parse(candidate);
+    if (Number.isFinite(candidateMs))
+      latestMs = Math.max(latestMs, candidateMs);
+  }
+  return new Date(latestMs).toISOString();
+};
+
+const canonicalSourceRefs = (refs: readonly WorkflowSourceRef[]) =>
+  [...refs]
+    .map((ref) => ({
+      docId: ref.docId,
+      revision: ref.revision,
+      excerpt: ref.excerpt,
+    }))
+    .sort(
+      (left, right) =>
+        left.docId.localeCompare(right.docId) ||
+        left.revision - right.revision ||
+        left.excerpt.localeCompare(right.excerpt),
+    );
+
+/**
+ * Hash the complete approved context used by a diagnostic observation.
+ *
+ * This is intentionally exported so production diagnostics and evaluation
+ * adapters can share the same binding.  The hash includes the complete
+ * applicable knowledge/rule sets and their source excerpts; a partial rule
+ * list or an old source revision therefore cannot reuse a suppression.
+ */
+export function hashFindingReviewContext(context: FindingReviewContext) {
+  return hash(
+    JSON.stringify({
+      targetVersion: context.targetVersion,
+      purpose: context.purpose,
+      specificationRevision: context.specificationRevision,
+      specificationHash: context.specificationHash,
+      ...(context.metadata
+        ? {
+            metadata: {
+              diagnosticMethodologyHash:
+                context.metadata.diagnosticMethodologyHash,
+            },
+          }
+        : {}),
+      knowledge: [...context.knowledge]
+        .map((item) => ({
+          id: item.id,
+          revision: item.revision,
+          contentHash: item.contentHash,
+          sourceRefs: canonicalSourceRefs(item.sourceRefs),
+        }))
+        .sort(
+          (left, right) =>
+            left.id.localeCompare(right.id) || left.revision - right.revision,
+        ),
+      rules: [...context.rules]
+        .map((item) => ({
+          id: item.id,
+          revision: item.revision,
+          contentHash: item.contentHash,
+          appliesToVersion: item.appliesToVersion,
+          sourceRefs: canonicalSourceRefs(item.sourceRefs),
+        }))
+        .sort(
+          (left, right) =>
+            left.id.localeCompare(right.id) || left.revision - right.revision,
+        ),
+      pastJudgments: [...(context.pastJudgments ?? [])]
+        .map((judgment) => ({
+          findingId: judgment.findingId,
+          revision: judgment.revision,
+          targetVersion: judgment.targetVersion,
+          judgment: judgment.judgment,
+          reason: judgment.reason,
+          sourceRefs: canonicalSourceRefs(judgment.sourceRefs),
+        }))
+        .sort(
+          (left, right) =>
+            left.findingId.localeCompare(right.findingId) ||
+            left.revision - right.revision,
+        ),
+    }),
+  );
+}
+
+/**
+ * Stable evidence identity for a diagnostic finding.  Location line numbers
+ * and run-specific report references are deliberately excluded so a line
+ * move does not invalidate an explicit human suppression.
+ */
+export function hashFindingEvidence(input: {
+  engine: string;
+  ruleId: string;
+  title: string;
+  severity: string;
+  path: string;
+  evidence: string;
+  remediation: string;
+  advisoryUrl?: string;
+}) {
+  return hash(
+    JSON.stringify({
+      engine: input.engine,
+      ruleId: input.ruleId,
+      title: input.title,
+      severity: input.severity,
+      path: input.path.replace(/\\/g, "/"),
+      evidence: input.evidence,
+      remediation: input.remediation,
+      advisoryUrl: input.advisoryUrl ?? null,
+    }),
+  );
+}
 const refsFor = (state: WorkflowState, refs: WorkflowSourceRef[]) => {
   for (const ref of refs) {
     const doc = state.documents.find((item) => item.id === ref.docId);
@@ -132,6 +262,28 @@ export function newWorkflow(
     events: [],
     imports: [],
   };
+}
+
+/**
+ * Resolve the product's initial ref to its immutable commit without treating
+ * that first resolution as a user scope change.  A product is created with a
+ * ref such as `main` or `baseline`; the first diagnostic replaces that alias
+ * with the resolved commit.  Approved knowledge is scoped to the product
+ * purpose and source revisions, so invalidating it during this bookkeeping
+ * step would silently remove it from the first run.
+ */
+export function pinInitialScopeVersion(
+  state: WorkflowState,
+  version: string,
+): WorkflowState {
+  const next = structuredClone(state);
+  next.scope.version = version;
+  next.events.push({
+    type: "scope-version-pinned",
+    reason: "診断開始時にrefを固定commitへ解決",
+    at: now(),
+  });
+  return next;
 }
 
 function upsertDocument(
@@ -552,14 +704,39 @@ function observeFinding(
     const refsMatch = (left: WorkflowSourceRef[], right: WorkflowSourceRef[]) =>
       JSON.stringify(left) === JSON.stringify(right);
     const lastObservation = existing.observationHistory.at(-1);
+    const hashesMatch = Boolean(
+      command.contextHash &&
+      command.evidenceHash &&
+      lastObservation?.contextHash === command.contextHash &&
+      lastObservation.evidenceHash === command.evidenceHash,
+    );
     const changed =
-      !lastObservation ||
-      lastObservation.observation !== command.observation ||
-      !refsMatch(lastObservation.sourceRefs, command.sourceRefs);
+      !hashesMatch &&
+      (!lastObservation ||
+        lastObservation.observation !== command.observation ||
+        !refsMatch(lastObservation.sourceRefs, command.sourceRefs) ||
+        (lastObservation.contextHash ?? null) !==
+          (command.contextHash ?? null) ||
+        (lastObservation.evidenceHash ?? null) !==
+          (command.evidenceHash ?? null));
+    const observedAt = now();
     if (changed) {
       existing.judgment = "unconfirmed";
       for (const suppression of existing.suppressions)
         suppression.active = false;
+      if (existing.remediation?.status === "completed") {
+        existing.remediation.status = "verification_pending";
+        existing.remediation.completion = undefined;
+      }
+      if (existing.remediation?.verifications.length) {
+        existing.remediation.reverificationRequiredAfter = latestTimestamp(
+          observedAt,
+          [
+            existing.remediation.reverificationRequiredAfter,
+            ...existing.remediation.verifications.map(({ at }) => at),
+          ],
+        );
+      }
       pushEvent(
         state,
         "finding-review-required",
@@ -584,11 +761,15 @@ function observeFinding(
         );
       }
     }
+    existing.observation = command.observation;
+    existing.observedAt = observedAt;
     existing.observationHistory.push({
       observation: command.observation,
-      observedAt: now(),
+      observedAt: existing.observedAt,
       targetVersion: command.targetVersion,
       sourceRefs: command.sourceRefs,
+      ...(command.contextHash ? { contextHash: command.contextHash } : {}),
+      ...(command.evidenceHash ? { evidenceHash: command.evidenceHash } : {}),
     });
     if (command.sourceRefs.length)
       existing.sourceRefs = [
@@ -632,6 +813,8 @@ function observeFinding(
         observedAt: now(),
         targetVersion: command.targetVersion,
         sourceRefs: command.sourceRefs,
+        ...(command.contextHash ? { contextHash: command.contextHash } : {}),
+        ...(command.evidenceHash ? { evidenceHash: command.evidenceHash } : {}),
       },
     ],
     judgment: "unconfirmed",
@@ -728,11 +911,18 @@ function setSuppression(
     throw new DomainError("抑止条件は直近の人判断・基準版と一致させてください");
   if (Date.parse(command.expiresAt) <= Date.now())
     throw new DomainError("抑止期限は未来にしてください");
+  const observation = finding.observationHistory.at(-1);
   finding.suppressions.push({
     ...command,
     decisionRevision: decision.revision,
     sourceRefs: decision.sourceRefs,
     active: true,
+    ...(observation?.contextHash
+      ? { contextHash: observation.contextHash }
+      : {}),
+    ...(observation?.evidenceHash
+      ? { evidenceHash: observation.evidenceHash }
+      : {}),
   });
   pushEvent(
     state,
@@ -844,7 +1034,7 @@ function addVerification(
   const item: WorkflowVerification = {
     ...command,
     fixCommit: remediation.fixCommit,
-    at: now(),
+    at: nowAfter(remediation.reverificationRequiredAfter),
   };
   remediation.verifications.push(item);
   pushEvent(
@@ -872,8 +1062,25 @@ function completeRemediation(
   )
     throw new DomainError("確認対象版が現在の案件版と一致しません");
   if (!remediation.fixCommit) throw new DomainError("修正コミットがありません");
+  const reverificationRequiredAfter = remediation.reverificationRequiredAfter;
+  const reverificationRequiredAfterMs = reverificationRequiredAfter
+    ? Date.parse(reverificationRequiredAfter)
+    : undefined;
+  if (
+    reverificationRequiredAfter !== undefined &&
+    !Number.isFinite(reverificationRequiredAfterMs)
+  )
+    throw new DomainError("再確認期限の記録が不正です");
   const latestByCheck = new Map<string, WorkflowVerification>();
   for (const verification of remediation.verifications) {
+    if (reverificationRequiredAfterMs !== undefined) {
+      const verificationAt = Date.parse(verification.at);
+      if (
+        !Number.isFinite(verificationAt) ||
+        verificationAt <= reverificationRequiredAfterMs
+      )
+        continue;
+    }
     if (
       verification.targetVersion !== command.targetVersion ||
       verification.fixCommit !== remediation.fixCommit
@@ -1142,10 +1349,21 @@ function suppressionValid(
   finding: WorkflowFinding,
   suppression: WorkflowFinding["suppressions"][number],
 ) {
-  if (Date.parse(suppression.expiresAt) <= Date.now()) return false;
+  const expiresAt = Date.parse(suppression.expiresAt);
+  if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) return false;
   if (state.scope.version !== suppression.targetVersion) return false;
+  if (suppression.fingerprint !== finding.fingerprint) return false;
   if (finding.decisions.at(-1)?.revision !== suppression.decisionRevision)
     return false;
+  const sourceRefsCurrent = suppression.sourceRefs.every((ref) => {
+    const document = state.documents.find((item) => item.id === ref.docId);
+    return Boolean(
+      document &&
+      document.revision === ref.revision &&
+      document.body.includes(ref.excerpt),
+    );
+  });
+  if (!sourceRefsCurrent) return false;
   return suppression.ruleRefs.every((ref) => {
     const rule = state.rules.find(
       (item) => item.id === ref.id && item.revision === ref.revision,
@@ -1153,26 +1371,127 @@ function suppressionValid(
     return Boolean(rule && applicableRule(state, rule));
   });
 }
+
+/**
+ * Evaluate whether a human suppression can be reused for a diagnostic
+ * observation.  Suppression records from before context/evidence hashes were
+ * introduced deliberately return `unknown` when strict diagnostic input is
+ * supplied; they remain readable and continue to work with the legacy boolean
+ * helper used by the generic workflow UI.
+ */
+export function evaluateFindingSuppression(
+  state: WorkflowState,
+  finding: WorkflowFinding,
+  expected?: { contextHash?: string; evidenceHash?: string },
+  at = Date.now(),
+): FindingSuppressionEvaluation {
+  const active = [...finding.suppressions]
+    .reverse()
+    .find((suppression) => suppression.active);
+  const latestDecision = finding.decisions.at(-1);
+  const empty = (
+    status: FindingSuppressionEvaluation["status"],
+    reason: FindingSuppressionReason,
+    suppression?: WorkflowFinding["suppressions"][number],
+  ): FindingSuppressionEvaluation => ({
+    reusable: false,
+    status,
+    reason,
+    decisionRevision: latestDecision?.revision ?? null,
+    judgment: latestDecision?.judgment ?? null,
+    expiresAt: suppression?.expiresAt ?? null,
+  });
+
+  if (!active) {
+    const previous = finding.suppressions.at(-1);
+    if (!previous) return empty("missing", "no_active_suppression");
+    const previousExpiry = Date.parse(previous.expiresAt);
+    if (Number.isFinite(previousExpiry) && previousExpiry <= at)
+      return empty("expired", "expired", previous);
+    if (state.scope.version !== previous.targetVersion)
+      return empty("invalidated", "target_version_changed", previous);
+    if (previous.fingerprint !== finding.fingerprint)
+      return empty("invalidated", "fingerprint_changed", previous);
+    if (
+      !latestDecision ||
+      latestDecision.revision !== previous.decisionRevision
+    )
+      return empty("invalidated", "latest_decision_changed", previous);
+    if (!suppressionValid(state, finding, previous))
+      return empty("invalidated", "source_changed", previous);
+    if (finding.judgment !== latestDecision.judgment)
+      return empty("invalidated", "judgment_changed", previous);
+    if (expected !== undefined) {
+      const lastObservation = finding.observationHistory.at(-1);
+      if (
+        !previous.contextHash ||
+        !previous.evidenceHash ||
+        !expected.contextHash ||
+        !expected.evidenceHash
+      )
+        return empty("unknown", "legacy_context_unknown", previous);
+      if (previous.contextHash !== expected.contextHash)
+        return empty("invalidated", "context_changed", previous);
+      if (previous.evidenceHash !== expected.evidenceHash)
+        return empty("invalidated", "evidence_changed", previous);
+      if (
+        lastObservation &&
+        lastObservation.contextHash &&
+        lastObservation.contextHash !== previous.contextHash
+      )
+        return empty("invalidated", "context_changed", previous);
+      if (
+        lastObservation &&
+        lastObservation.evidenceHash &&
+        lastObservation.evidenceHash !== previous.evidenceHash
+      )
+        return empty("invalidated", "evidence_changed", previous);
+    }
+    return empty("missing", "no_active_suppression", previous);
+  }
+
+  const expiresAt = Date.parse(active.expiresAt);
+  if (!Number.isFinite(expiresAt) || expiresAt <= at)
+    return empty("expired", "expired", active);
+  if (state.scope.version !== active.targetVersion)
+    return empty("invalidated", "target_version_changed", active);
+  if (active.fingerprint !== finding.fingerprint)
+    return empty("invalidated", "fingerprint_changed", active);
+  if (!latestDecision || latestDecision.revision !== active.decisionRevision)
+    return empty("invalidated", "latest_decision_changed", active);
+  if (!suppressionValid(state, finding, active))
+    return empty("invalidated", "source_changed", active);
+  if (finding.judgment !== latestDecision.judgment)
+    return empty("invalidated", "judgment_changed", active);
+
+  if (expected !== undefined) {
+    if (
+      !expected.contextHash ||
+      !expected.evidenceHash ||
+      !active.contextHash ||
+      !active.evidenceHash
+    )
+      return empty("unknown", "legacy_context_unknown", active);
+    if (active.contextHash !== expected.contextHash)
+      return empty("invalidated", "context_changed", active);
+    if (active.evidenceHash !== expected.evidenceHash)
+      return empty("invalidated", "evidence_changed", active);
+  }
+  return {
+    reusable: true,
+    status: "active",
+    reason: "active",
+    decisionRevision: latestDecision.revision,
+    judgment: latestDecision.judgment,
+    expiresAt: active.expiresAt,
+  };
+}
 export function isFindingSuppressed(
   state: WorkflowState,
   finding: WorkflowFinding,
   at = Date.now(),
 ) {
-  return finding.suppressions.some(
-    (item) =>
-      item.active &&
-      Date.parse(item.expiresAt) > at &&
-      item.targetVersion === state.scope.version &&
-      item.fingerprint === finding.fingerprint &&
-      finding.decisions.at(-1)?.revision === item.decisionRevision &&
-      item.ruleRefs.every((ref) => {
-        const rule = state.rules.find(
-          (candidate) =>
-            candidate.id === ref.id && candidate.revision === ref.revision,
-        );
-        return Boolean(rule && applicableRule(state, rule));
-      }),
-  );
+  return evaluateFindingSuppression(state, finding, undefined, at).reusable;
 }
 export function workflowContext(
   state: WorkflowState,

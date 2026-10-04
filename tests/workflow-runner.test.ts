@@ -926,6 +926,59 @@ describe("workflow runner", () => {
 });
 
 describe("operator-configured provider adapters", () => {
+  it("applies explicit local JSON/thinking settings, preserves usage, and leaves other providers unchanged", async () => {
+    const configured = workflowProvidersFromEnvironment({
+      WORKFLOW_LOCAL_URL: "http://127.0.0.1:8081",
+      WORKFLOW_LOCAL_DISABLE_THINKING: "true",
+      WORKFLOW_LOCAL_JSON_MODE: "true",
+    }).find((provider) => provider.id === "local")!;
+    expect(configured.configVersion).toMatch(
+      /^local-v1:no-thinking:json:endpoint-[a-f0-9]{64}$/,
+    );
+    const bodies: Record<string, unknown>[] = [];
+    const fetcher: typeof fetch = async (_url, init) => {
+      bodies.push(JSON.parse(String(init?.body)) as Record<string, unknown>);
+      return Response.json({
+        choices: [{ message: { content: "{}" } }],
+        usage: { prompt_tokens: 0, completion_tokens: 2 },
+      });
+    };
+    const result = await invokeOpenAICompatible(
+      configured,
+      "{}",
+      new AbortController().signal,
+      20,
+      fetcher,
+    );
+    expect(result).toMatchObject({ promptTokens: 0, completionTokens: 2 });
+    expect(bodies[0]?.chat_template_kwargs).toEqual({ enable_thinking: false });
+    expect(bodies[0]?.response_format).toEqual({ type: "json_object" });
+    await invokeOpenAICompatible(
+      { ...cloud, disableThinking: true, jsonMode: true },
+      "{}",
+      new AbortController().signal,
+      20,
+      fetcher,
+    );
+    expect(bodies[1]).not.toHaveProperty("chat_template_kwargs");
+    expect(bodies[1]).not.toHaveProperty("response_format");
+    const defaultLocal = workflowProvidersFromEnvironment({
+      WORKFLOW_LOCAL_URL: "http://127.0.0.1:8081",
+    }).find((provider) => provider.id === "local")!;
+    expect(defaultLocal.configVersion).toMatch(
+      /^local-v1:endpoint-[a-f0-9]{64}$/,
+    );
+    await invokeOpenAICompatible(
+      defaultLocal,
+      "{}",
+      new AbortController().signal,
+      20,
+      fetcher,
+    );
+    expect(bodies[2]).not.toHaveProperty("chat_template_kwargs");
+    expect(bodies[2]).not.toHaveProperty("response_format");
+  });
+
   it("accepts loopback local and allowlisted HTTPS cloud endpoints only", () => {
     const providers = workflowProvidersFromEnvironment({
       WORKFLOW_LOCAL_URL: "http://127.0.0.1:8080/v1",
@@ -963,6 +1016,89 @@ describe("operator-configured provider adapters", () => {
         WORKFLOW_CLOUD_API_KEY: "key",
       }).find((provider) => provider.id === "cloud")?.available,
     ).toBe(false);
+  });
+
+  it("binds environment provider identity to a canonical endpoint without exposing secrets", () => {
+    const localFor = (url?: string) =>
+      workflowProvidersFromEnvironment({
+        ...(url === undefined ? {} : { WORKFLOW_LOCAL_URL: url }),
+      }).find((provider) => provider.id === "local")!;
+    const localBase = localFor("http://127.0.0.1:8081");
+    const localV1 = localFor("http://127.0.0.1:8081/v1");
+    const localV1Trailing = localFor("http://127.0.0.1:8081/v1/");
+    expect(localBase.endpoint).toBe("http://127.0.0.1:8081");
+    expect(localV1.endpoint).toBe(localBase.endpoint);
+    expect(localV1Trailing.endpoint).toBe(localBase.endpoint);
+    expect(localV1.configVersion).toBe(localBase.configVersion);
+    expect(localV1Trailing.configVersion).toBe(localBase.configVersion);
+
+    const localChanged = localFor("http://127.0.0.1:8082");
+    expect(localChanged.configVersion).not.toBe(localBase.configVersion);
+    expect(localChanged.configVersion).not.toContain(
+      "http://127.0.0.1:8082",
+    );
+
+    const localMissing = localFor();
+    const localInvalid = localFor("not a url");
+    expect(localMissing.available).toBe(false);
+    expect(localInvalid.available).toBe(false);
+    expect(localInvalid.configVersion).toBe(localMissing.configVersion);
+    expect(localMissing.configVersion).not.toBe(localBase.configVersion);
+    expect(localInvalid.configVersion).not.toContain("not a url");
+
+    const cloudFor = (url: string, apiKey: string) =>
+      workflowProvidersFromEnvironment({
+        WORKFLOW_CLOUD_URL: url,
+        WORKFLOW_CLOUD_ALLOWED_HOSTS: "api.allowed.test,api.other.test",
+        WORKFLOW_CLOUD_API_KEY: apiKey,
+      }).find((provider) => provider.id === "cloud")!;
+    const cloud = cloudFor("https://api.allowed.test/v1", "cloud-secret-a");
+    const cloudEquivalent = cloudFor(
+      "https://api.allowed.test/v1/",
+      "cloud-secret-b",
+    );
+    const cloudChanged = cloudFor(
+      "https://api.other.test/v1",
+      "cloud-secret-a",
+    );
+    expect(cloudEquivalent.endpoint).toBe(cloud.endpoint);
+    expect(cloudEquivalent.configVersion).toBe(cloud.configVersion);
+    expect(cloudChanged.configVersion).not.toBe(cloud.configVersion);
+    expect(cloud.configVersion).not.toContain("https://api.allowed.test/v1");
+    expect(cloud.configVersion).not.toContain("cloud-secret-a");
+  });
+
+  it("creates a new run when only the environment endpoint changes", async () => {
+    const providersFor = (url: string) =>
+      workflowProvidersFromEnvironment({ WORKFLOW_LOCAL_URL: url });
+    const firstProviders = providersFor("http://127.0.0.1:8081");
+    const mutable = harness(firstProviders, async (provider) => ({
+      response: JSON.stringify({
+        answer: "answer",
+        citedKnowledgeIds: [knowledgeId],
+        findingReferences: [],
+      }),
+      actualCostUsd: 0,
+      model: provider.model,
+      configVersion: provider.configVersion,
+    }));
+    const original = await create(mutable.deps, input("local"));
+    await waitWorkflowRun(original.id);
+
+    mutable.setProviders(providersFor("http://127.0.0.1:8082"));
+    const recreated = await resumeWorkflowRun(
+      "project_1",
+      original.id,
+      snapshot(),
+      mutable.deps,
+    );
+    await waitWorkflowRun(recreated.id);
+    expect(recreated.id).not.toBe(original.id);
+    expect(recreated.basedOnRunId).toBe(original.id);
+    expect(recreated.snapshotDifference).toMatchObject({
+      providerConfigChanged: true,
+      modelChanged: false,
+    });
   });
 
   it("rejects oversized provider responses", async () => {

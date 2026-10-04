@@ -1,0 +1,20 @@
+{
+  "split": "queue-controls",
+  "cases": [
+    {"caseId":"q01","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":true,"status":"active","reason":"active"}},
+    {"caseId":"q02","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"expired","reason":"expired"}},
+    {"caseId":"q03","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"target_version_changed"}},
+    {"caseId":"q04","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"context_changed"}},
+    {"caseId":"q05","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"context_changed"}},
+    {"caseId":"q06","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"context_changed"}},
+    {"caseId":"q07","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"evidence_changed"}},
+    {"caseId":"q08","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"unknown","reason":"legacy_context_unknown"}},
+    {"caseId":"q09","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"source_changed"}},
+    {"caseId":"q10","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"missing","reason":"no_active_suppression"}},
+    {"caseId":"q11","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"fingerprint_changed"}},
+    {"caseId":"q12","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"latest_decision_changed"}},
+    {"caseId":"q13","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"judgment_changed"}},
+    {"caseId":"q14","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"source_changed"}},
+    {"caseId":"q15","expectedB":{"reusable":false,"status":"missing","reason":"no_active_suppression"},"expectedC":{"reusable":false,"status":"invalidated","reason":"context_changed"}}
+  ]
+}

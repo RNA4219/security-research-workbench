@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.0369231">
+    <testsuite name="tests/reverification-date-probe.test.ts" timestamp="2026-10-04T20:20:48.892Z" hostname="DESKTOP-HCPVLHM" tests="1" failures="0" errors="0" skipped="0" time="0.0369231">
+        <testcase classname="tests/reverification-date-probe.test.ts" name="reverification date probe &gt; checks whether a same-clock second observation reuses a prior verification" time="0.0344515">
+            <system-out>
+{&quot;firstVerificationAt&quot;:&quot;2026-10-05T00:00:00.001Z&quot;,&quot;secondObservationAt&quot;:&quot;2026-10-05T00:00:00.000Z&quot;,&quot;reused&quot;:true}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

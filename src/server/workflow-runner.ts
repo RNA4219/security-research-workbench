@@ -35,12 +35,16 @@ export type WorkflowProviderDefinition = WorkflowProviderSummary & {
   inputUsdPerMillionTokens?: number;
   outputUsdPerMillionTokens?: number;
   maxOutputTokens?: number;
+  disableThinking?: boolean;
+  jsonMode?: boolean;
 };
 export type WorkflowProviderResult = {
   response: string;
   actualCostUsd: number | null;
   model: string;
   configVersion: string;
+  promptTokens?: number;
+  completionTokens?: number;
 };
 export type WorkflowRunStore = {
   get(projectId: string, runId: string): Promise<WorkflowRun | undefined>;

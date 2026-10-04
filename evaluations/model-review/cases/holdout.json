@@ -1,0 +1,397 @@
+[
+  {
+    "id": "b01",
+    "split": "holdout",
+    "conditionHash": "7820248c46f58661959b5b1badb7f5329bfc387a5788ac2f2de4b0bc4f52836e",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/documents.js",
+      "commit": "1111222233334444555566667777888899990000",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:7edcefe6474a6874513bf8b372ca46e484ab9473bec26e72ca068e0f483fde9a"
+    },
+    "code": "export function deleteDocument(actor, id, repo) {\n  const doc = repo.get(id);\n  if (!doc) return { status: 404 };\n  repo.remove(id);\n  return { status: 204 };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "文書の削除は所有者または承認済み管理者だけが行える。",
+      "requirements": [
+        {
+          "id": "spec-document-delete",
+          "version": "spec-3",
+          "content": "削除前にactorと文書の所有境界または管理者権限を確認する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-document-delete",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "2dd5553e31cde49616cf37e7e5e0395455e09443048a3d06ccb1450c098b1d18",
+        "content": "文書を削除する操作は所有者境界を確認する。",
+        "sourceRefs": [
+          {
+            "id": "source-document-delete",
+            "version": "spec-3",
+            "hash": "2dd5553e31cde49616cf37e7e5e0395455e09443048a3d06ccb1450c098b1d18",
+            "excerpt": "文書を削除する操作は所有者境界を確認する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "b02",
+    "split": "holdout",
+    "conditionHash": "b654fcad4598775489022e38fb465deab676dc5c51ec039b8523a6f0e5242ae8",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/projects.js",
+      "commit": "2222333344445555666677778888999900001111",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:c5a04fafb7fec54105e346cdd02c60bc3bce33ff5cc3285283d9ae9cf02817b8"
+    },
+    "code": "export function listProjects(actor, db) {\n  return db.projects.filter(({ tenantId }) => tenantId === actor.tenantId);\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "プロジェクト一覧はactor.tenantIdに一致するものだけを返す。",
+      "requirements": [
+        {
+          "id": "spec-projects",
+          "version": "spec-3",
+          "content": "プロジェクトのtenant境界は認証済みactor.tenantIdから導出する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-projects",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "fe724c1149f17c0ec8c889bd64a3f9fb863a786e86c1d38735da3711a4c1d65f",
+        "content": "プロジェクト一覧はactor.tenantIdに固定されている。",
+        "sourceRefs": [
+          {
+            "id": "source-projects",
+            "version": "spec-3",
+            "hash": "56966f73c1c3f35b907bb6191e21c392574c536b1db5b69947edc30885c00a45",
+            "excerpt": "actor.tenantIdに固定されている。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "b03",
+    "split": "holdout",
+    "conditionHash": "342d882e2db9abfffa997f2e327e9dce4689e1f3ca8dc63c9a8e92ea754d86df",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/services/role.js",
+      "commit": "3333444455556666777788889999000011112222",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:3c991ed42aaa06c4472adcb04e6a5b4b50e3a3d3b773e30af2db1e50de79a711"
+    },
+    "code": "export function updateRole(account, role) {\n  if (role) account.role = role;\n  return account;\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "roleはviewer、editor、ownerのいずれかで、他の値を保存しない。",
+      "requirements": [
+        {
+          "id": "spec-role",
+          "version": "spec-3",
+          "content": "roleの許可値をallowlistで検証する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-role",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "b6182f2faf149e86991ae343b241ba0b1ede47c7387896d8987fe83b3fb28498",
+        "content": "roleは仕様のallowlist以外を受け付けない。",
+        "sourceRefs": [
+          {
+            "id": "source-role",
+            "version": "spec-3",
+            "hash": "6ef8ec8ceb1a7dbbb0e8b085da89a4280f7b88ad8fedcc9d1a7c63f63a3634ea",
+            "excerpt": "roleはallowlist以外を受け付けない。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "b04",
+    "split": "holdout",
+    "conditionHash": "1700da1fee1e9bb40c591b4d82a74af8b3024d0bf08fc3e336f901700a2803d0",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/services/job-state.js",
+      "commit": "4444555566667777888899990000111122223333",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:752ca4c4727bfb09c015773bf7e58bc48444d1a5e4e001489afdf883f24b4171"
+    },
+    "code": "const transitions = { draft: [\"queued\"], queued: [\"running\"], running: [\"succeeded\", \"failed\"], failed: [\"queued\"] };\n\nexport function moveJob(job, next) {\n  if (!transitions[job.state]?.includes(next)) return { ok: false };\n  job.state = next;\n  return { ok: true, job };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "jobは定義済みの現在状態からのみ次状態へ遷移できる。",
+      "requirements": [
+        {
+          "id": "spec-job",
+          "version": "spec-3",
+          "content": "jobの遷移は現在状態の遷移表に照合する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-job",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "0c324165658689e1bed2c4940a64acef5f0168580c737281bf7130a16ec18f86",
+        "content": "jobの遷移表は状態名のallowlistと別に検証する。",
+        "sourceRefs": [
+          {
+            "id": "source-job",
+            "version": "spec-3",
+            "hash": "171f76bfadf9ce0247b8f1f3a1e7081576764bd2b9c7676dc6e472b666d641ac",
+            "excerpt": "jobの遷移表を検証する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "b05",
+    "split": "holdout",
+    "conditionHash": "c320919aa4e10c0679b1979960cd54d627807d57d5513a8d72ccda9ee8b87a7e",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/observability/audit-safe.js",
+      "commit": "5555666677778888999900001111222233334444",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:eb588871bc047d3ad097a645d39b5ef4e95f0b2bd08b306d78bfc941e9020656"
+    },
+    "code": "export function auditFailure(requestId, email, token, log) {\n  log.warn(\"request failed\", { requestId, email: \"[redacted]\", token: \"[redacted]\" });\n  return { requestId, ok: false };\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "監査ログにはrequestIdだけを保存し、emailとtokenはredactする。",
+      "requirements": [
+        {
+          "id": "spec-log-safe",
+          "version": "spec-3",
+          "content": "ログに個人情報や認証情報をそのまま渡さない。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-log-safe",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "b695950d9cabc3603e8d000cd3ad69048d7a3f5dd131a12dec322fb7e06dc4a4",
+        "content": "ログへ渡す個人情報と認証情報はredact済み値にする。",
+        "sourceRefs": [
+          {
+            "id": "source-log-safe",
+            "version": "spec-3",
+            "hash": "a5efd571d7d973bf73342afb94e5319739e4d20f99bbd7f211bbc758aeeeabe4",
+            "excerpt": "redact済み値にする。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "b06",
+    "split": "holdout",
+    "conditionHash": "69dc11bb5652dee8a6f77909bfe79a5c62b3613ba9e28280f4e64e544ec0f414",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/services/session.js",
+      "commit": "6666777788889999000011112222333344445555",
+      "previousCommit": "0000000000000000000000000000000000000000",
+      "codeSha256": "sha256:05c331a385e2b2cbc614e4e435393c1808ffb7c56dcd1702ff69989ef13727b9"
+    },
+    "code": "export function createSessionToken(userId) {\n  return Buffer.from(`${userId}:${Date.now()}`).toString(\"base64url\");\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "session tokenは予測困難な暗号学的乱数を使い、利用者IDと時刻をエンコードしただけの値にしない。",
+      "requirements": [
+        {
+          "id": "spec-session",
+          "version": "spec-3",
+          "content": "session tokenは承認済みのCSPRNG wrapperから生成する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-session",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "754fd193ecacd55f2f1dfffa991e267ed5b5b152175284bb65433003d014ba4a",
+        "content": "セッションtokenは利用者IDや時刻の組み合わせから予測できないようにする。",
+        "sourceRefs": [
+          {
+            "id": "source-session",
+            "version": "spec-3",
+            "hash": "bf86f86e9a5f6b2b47ef377f7f530b319a55210edb8f7640ee44a093ad090a8b",
+            "excerpt": "予測できないtokenにする。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": []
+  },
+  {
+    "id": "b07",
+    "split": "holdout",
+    "conditionHash": "2a849a3b581ad00eefed20bbcc1765eba8698149d6ea63c53b448e17473ba4ac",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/export.js",
+      "commit": "7777888899990000111122223333444455556666",
+      "previousCommit": "8888999900001111222233334444555566667777",
+      "codeSha256": "sha256:4a9fd53df147334a6738e6448e82e704056ed9261b75217f56a8c68836d2dae3"
+    },
+    "code": "export function canExport(actor, account) {\n  return actor.role === \"member\" && account.tenantId === actor.tenantId;\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "exportはexport:read capabilityを持つactorだけが実行できる。旧版でmember roleを承認した判断は現行仕様に適用しない。",
+      "requirements": [
+        {
+          "id": "spec-export",
+          "version": "spec-3",
+          "content": "exportの認可はrole名ではなくexport:read capabilityを確認する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-export",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "9ad1a6b9f003251f6827bf240cd0e66a83f9c858423adb261a7e9a3fec515071",
+        "content": "export認可は現行仕様のcapabilityを基準に再確認する。",
+        "sourceRefs": [
+          {
+            "id": "source-export",
+            "version": "spec-3",
+            "hash": "1e1c4811cf6bebcd6a84e870b4585d239197f7044313eed7879522e17f34a894",
+            "excerpt": "現行仕様のcapabilityを基準にする。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": [
+      {
+        "id": "judgment-export-old",
+        "revision": 1,
+        "targetCommit": "7777888899990000111122223333444455556666",
+        "targetVersion": "7777888899990000111122223333444455556666",
+        "conditionHash": "77ee5ab97eb709c136d88da2f99a57cfcdb368fde23942872729094ada0982e2",
+        "judgment": "accepted_known",
+        "reason": "旧版ではmember roleのexportを承認した。",
+        "applicability": "旧版のrole policyとconditionHash aのみ",
+        "status": "approved",
+        "sourceRefs": [
+          {
+            "id": "source-judgment-export-old",
+            "version": "spec-2",
+            "hash": "8c827cbb0db582ad38827f1cc11405c1d580634519b080eac5c212ec5ee8379f",
+            "excerpt": "旧版のrole policy。"
+          }
+        ],
+        "conditionBasis": {
+          "revision": "spec-2",
+          "text": "旧版ではmember roleにexport capabilityを許可する。",
+          "requirements": [
+            {
+              "id": "spec-export-old",
+              "version": "spec-2",
+              "content": "member roleはexport capabilityを持つ。"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "b08",
+    "split": "holdout",
+    "conditionHash": "eaceee17f6b8b6f595e9ce86f693280d3892fd6b1f27880865dbf207dede9d06",
+    "source": {
+      "productId": "fixture-ledger",
+      "path": "src/routes/report-view.js",
+      "commit": "9999000011112222333344445555666677778888",
+      "previousCommit": "0000111122223333444455556666777788889999",
+      "codeSha256": "sha256:e31cc505b06905208937286d06720b5cbeaf33846347645b10e41ded3cf797f6"
+    },
+    "code": "export function canViewReport(actor, report) {\n  return report.tenantId === actor.tenantId && actor.permissions.includes(\"reports:read\");\n}\n",
+    "specification": {
+      "revision": "spec-3",
+      "text": "reportは同一tenantかつreports:read permissionを持つactorだけが閲覧できる。過去判断の条件は現行仕様と同じである。",
+      "requirements": [
+        {
+          "id": "spec-report-view",
+          "version": "spec-3",
+          "content": "report閲覧時にtenant境界とreports:read permissionを確認する。"
+        }
+      ]
+    },
+    "approvedKnowledge": [
+      {
+        "id": "knowledge-report-view",
+        "revision": 3,
+        "version": "spec-3",
+        "hash": "2f31a1704a89720d24d3b4fe429a05b6d67d501d30e20ff995988873b348c263",
+        "content": "report閲覧はtenantとpermissionの両方を確認する。",
+        "sourceRefs": [
+          {
+            "id": "source-report-view",
+            "version": "spec-3",
+            "hash": "294ae61449b280102a3cff3c5c0900532baa3ac87e458756c1dcd1f11f62f77f",
+            "excerpt": "tenantとpermissionの両方を確認する。"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "approvedDecisions": [
+      {
+        "id": "judgment-report-view",
+        "revision": 1,
+        "targetCommit": "9999000011112222333344445555666677778888",
+        "targetVersion": "9999000011112222333344445555666677778888",
+        "conditionHash": "eaceee17f6b8b6f595e9ce86f693280d3892fd6b1f27880865dbf207dede9d06",
+        "judgment": "accepted_known",
+        "reason": "現行仕様のtenantとpermission境界を確認済み。",
+        "applicability": "現行report viewとconditionHash e",
+        "status": "approved",
+        "sourceRefs": [
+          {
+            "id": "source-judgment-report-view",
+            "version": "spec-3",
+            "hash": "58c77f1144e3653a76d6af45f75c69a4fea97de6837fa484664560fde8903d5c",
+            "excerpt": "現行report viewの境界。"
+          }
+        ]
+      }
+    ]
+  }
+]

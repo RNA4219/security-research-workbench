@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.1",
+  "profile": "workflow",
+  "manifest_id": "eval:20261005-model-review-04",
+  "task_id": "model-review-20261005-04",
+  "owner": "security-research-workbench",
+  "purpose": "comparison",
+  "status": "frozen",
+  "freeze_date": "2026-10-05",
+  "hypothesis": "仕様を知るBはコードのみのAより見逃しまたは誤検知を減らし、承認済み判断を条件確認付きで再利用するCはBの誤検知・見逃しを増やさず要人確認proxyを減らす。",
+  "action_delta": "Aはコードと固定source metadataだけ、BはAに現行の承認済み製品仕様・知識を追加、CはBに条件付き承認過去判断を追加する。全条件で同じproduction reviewSnapshotを使い、再出力filterは行わない。",
+  "negative_control": "hard negative、前提不変の過去判断、前提変更の過去判断を同じ製品のdevelopment/holdoutへ固定し、旧判断が新しい前提の問題を隠さないことを確認する。",
+  "identity": {
+    "legacy": {
+      "label": "A-code-only",
+      "source_path": "scripts/model-review-evaluation.mjs",
+      "source_revision": "dirty-bundle:model-review-04",
+      "source_sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "candidate": {
+      "label": "C-approved-history",
+      "source_path": "scripts/model-review-evaluation.mjs",
+      "source_revision": "dirty-bundle:model-review-04",
+      "source_sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "runner": {
+      "id": "model-review-evaluation/v1",
+      "sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37"
+    },
+    "engine": {
+      "label": "production-reviewSnapshot",
+      "source_path": "dist/server/model-review.js",
+      "source_revision": "dirty-bundle:model-review-04",
+      "source_sha256": "sha256:5d0579daab5b738ba9404d425d74bd6a42637deca7c961ff5d146f3966ae3b0e",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "adapter": {
+      "label": "production-model-review-adapter",
+      "source_path": "scripts/model-review-production-adapter.mjs",
+      "source_revision": "dirty-bundle:model-review-04",
+      "source_sha256": "sha256:3b512e670a3e71c7697d2929d44d85a7767c5a200fe0e5c54f02225f09de40fc",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    },
+    "provider": {
+      "label": "openai-compatible-loopback-provider",
+      "source_path": "dist/server/workflow-providers.js",
+      "source_revision": "dirty-bundle:model-review-04",
+      "source_sha256": "sha256:ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec",
+      "input_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb"
+    }
+  },
+  "evaluation": {
+    "dataset_id": "model-review-corpus/v1",
+    "dataset_sha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb",
+    "measurement_unit": "task",
+    "primary_metric": "f1",
+    "model_version": "Qwen3.6-27B-UD-Q4_K_XL.gguf@local-8084",
+    "policy_version": "production-reviewSnapshot-model-review/v1",
+    "configuration": {
+      "conditions": [
+        "A",
+        "B",
+        "C"
+      ],
+      "splits": [
+        "development",
+        "holdout"
+      ],
+      "tuning_split": "development",
+      "final_test_split": "holdout",
+      "repetitions": 3,
+      "matching": "path+category+location",
+      "provider": {
+        "id": "local",
+        "kind": "local",
+        "model": "qwen3.6-27b",
+        "model_sha256": "sha256:ff6941ded525b34eb159496762c29dd0ec6e71dc31b74d57e75d871a03eec259",
+        "runtime": "llama.cpp@9733-f449e0553",
+        "config_version": "qwen36b-v3-ctx16384-np1-ngl48:no-thinking:json:endpoint-05989293179ed6eacc9858ea196b7071f43dfef4fd18c1bc801c151917fee491",
+        "disable_thinking": true,
+        "max_output_tokens": 2048,
+        "json_mode": true,
+        "runtime_parameters": {
+          "context_size": 16384,
+          "parallel": 1,
+          "cache_ram_mib": 0,
+          "fit": "off",
+          "gpu_layers": 48,
+          "backend": "Vulkan"
+        }
+      },
+      "budget": {
+        "maxDurationMs": 120000,
+        "maxInputTokens": 12000,
+        "maxOutputTokens": 2048
+      },
+      "condition_input_sha256": {
+        "A": "sha256:81f4524d2e4606f5c8c6ff6ac30de71c9272a13c1dd770676c089becc4fb0d5b",
+        "B": "sha256:084d207adcf6d658ad73300b0fe4a8dcc933ea6747deab8400a7fb717cfeb32a",
+        "C": "sha256:5ce9b365eedbb7f86efc844a0b84dfad594edfe0e0bf0b22e6f79f2799f2382c"
+      }
+    }
+  },
+  "external_mutations": {
+    "registry_frozen": true,
+    "submission_frozen": true
+  }
+}

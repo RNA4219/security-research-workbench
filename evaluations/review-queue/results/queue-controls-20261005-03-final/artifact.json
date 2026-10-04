@@ -1,0 +1,80 @@
+{
+  "artifactVersion": "review-queue-evaluation/v1",
+  "runId": "review-queue-20261005-03",
+  "manifestId": "eval:20261005-review-queue-03",
+  "status": "completed",
+  "evaluation_decision": "pass",
+  "split": "queue-controls",
+  "conditions": [
+    "B",
+    "C"
+  ],
+  "records": 30,
+  "error_count": 0,
+  "crash_count": 0,
+  "timeout_count": 0,
+  "metrics": {
+    "records": 30,
+    "successfulRecords": 30,
+    "errorCount": 0,
+    "evaluationRate": 1,
+    "queueRequiredB": 15,
+    "queueRequiredC": 14,
+    "queueReductionCount": 1,
+    "queueReductionRate": 0.06666666666666667,
+    "cReusablePrecision": 1,
+    "cReusableRecall": 1,
+    "cReusableF1": 1,
+    "cFalseReuseCount": 0,
+    "cMissedReusableCount": 0,
+    "negativeControlLeakageCount": 0,
+    "goldMismatchCount": 0,
+    "byCondition": {
+      "B": {
+        "records": 15,
+        "successfulRecords": 15,
+        "errorCount": 0,
+        "queueRequiredCount": 15,
+        "reusableCount": 0,
+        "expectedReusableCount": 0,
+        "trueReusableCount": 0,
+        "falseReusableCount": 0,
+        "missedReusableCount": 0,
+        "goldMismatchCount": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null,
+        "evaluationRate": 1
+      },
+      "C": {
+        "records": 15,
+        "successfulRecords": 15,
+        "errorCount": 0,
+        "queueRequiredCount": 14,
+        "reusableCount": 1,
+        "expectedReusableCount": 1,
+        "trueReusableCount": 1,
+        "falseReusableCount": 0,
+        "missedReusableCount": 0,
+        "goldMismatchCount": 0,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "evaluationRate": 1
+      }
+    }
+  },
+  "modelVersions": [],
+  "generatedAt": "2026-10-04T19:23:01.152Z",
+  "source": {
+    "runnerId": "review-queue-evaluation/v1",
+    "datasetSha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1",
+    "productionHelperSha256": "sha256:6e3bce9dbc8103fb8ed0c87c11eecd7af76ff89faccf5d83366ab8626c53161c"
+  },
+  "measurementNotes": [
+    "Bは承認判断を参照しない観測状態、Cはproduction evaluateFindingSuppressionの結果を使います。現行pastJudgmentsはproduction context hashの入力として扱い、独自抑止条件やpastJudgmentIdsによる代替判定は使いません。",
+    "queueRequiredはproduction evaluation.reusableの否定であり、実際の人の所要時間ではありません。確認待ち件数はproxyです。",
+    "このartifactは同一候補に対するworkflow効果を測るもので、モデル精度の改善や人の時間短縮を証明しません。",
+    "gold mismatch、negative control leakage、helper errorがあればevaluation_decision=failのまま保存します。"
+  ]
+}

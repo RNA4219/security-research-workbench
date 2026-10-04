@@ -1,0 +1,121 @@
+<testsuites id="" name="" tests="47" failures="0" skipped="0" errors="0" time="101.556431">
+<testsuite name="model-review-evidence.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="1" failures="0" skipped="0" time="1.483" errors="0">
+<testcase name="保存済み結果の上限停止・対象なし・不完全な抑止情報を成功や確認不要にしない" classname="model-review-evidence.spec.ts" time="1.483">
+</testcase>
+</testsuite>
+<testsuite name="model-review.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="6" failures="0" skipped="0" time="22.609" errors="0">
+<testcase name="AIレビューを明示して開始し、固定版の根拠・モデル・参照記録を確認できる" classname="model-review.spec.ts" time="3.956">
+</testcase>
+<testcase name="モデルが診断結果の代わりにSchemaを返しても未診断を表示する" classname="model-review.spec.ts" time="3.176">
+</testcase>
+<testcase name="モデル工程を停止すると未レビューを残し、再開で結果を確認できる" classname="model-review.spec.ts" time="8.841">
+</testcase>
+<testcase name="モデルが利用量を返さないときはゼロではなく未計測と表示する" classname="model-review.spec.ts" time="3.092">
+</testcase>
+<testcase name="人が確認した同条件の指摘は折りたたみ、対象版変更で確認待ちに戻す" classname="model-review.spec.ts" time="2.745">
+</testcase>
+<testcase name="モデル情報の取得失敗時も製品画面を使え、有効化を誤表示しない" classname="model-review.spec.ts" time="0.799">
+</testcase>
+</testsuite>
+<testsuite name="product-diagnostics.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="7" failures="0" skipped="0" time="15.438" errors="0">
+<testcase name="製品を直接登録し、Git版ごとの差分・修正後の要確認・手動照会をつなぐ" classname="product-diagnostics.spec.ts" time="8.709">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\test-results\local\product-diagnostics-製品を直接登録し、Git版ごとの差分・修正後の要確認・手動照会をつなぐ\attachments\product-diagnostics-0909a72a07b6928dec97b911d51f8f42af07143b.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="定期診断は任意で、設定版を使って有効化・解除できる" classname="product-diagnostics.spec.ts" time="1.525">
+</testcase>
+<testcase name="repo設定なしと初回通信不達を区別し、再読込後に登録を開ける" classname="product-diagnostics.spec.ts" time="1.244">
+</testcase>
+<testcase name="製品登録の通信失敗は入力と送信許可の選択を保持する" classname="product-diagnostics.spec.ts" time="0.805">
+</testcase>
+<testcase name="空白の対象版と不足した必須情報では登録を送信しない" classname="product-diagnostics.spec.ts" time="0.742">
+</testcase>
+<testcase name="未診断製品の空履歴を保ち、診断開始と再読込の通信失敗を示す" classname="product-diagnostics.spec.ts" time="0.931">
+</testcase>
+<testcase name="実行中runは停止・再開でき、失敗理由を表示する" classname="product-diagnostics.spec.ts" time="1.482">
+</testcase>
+</testsuite>
+<testsuite name="regression.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="8" failures="0" skipped="0" time="12.526" errors="0">
+<testcase name="接続失敗でも入力を保持し、自動再送せず手動再試行で1件保存" classname="regression.spec.ts" time="1.632">
+</testcase>
+<testcase name="2画面の保存競合は上書きせず、編集内容を残す" classname="regression.spec.ts" time="2.011">
+</testcase>
+<testcase name="ファイル上限・不正JSON・API入力エラーから修正して保存できる" classname="regression.spec.ts" time="1.409">
+</testcase>
+<testcase name="根拠を新規登録・編集し、比較レビューと要件編集へ反映する" classname="regression.spec.ts" time="2.584">
+</testcase>
+<testcase name="未設定連携・出力失敗・全データ出力と履歴閲覧" classname="regression.spec.ts" time="1.759">
+</testcase>
+<testcase name="memxの画面操作契約と失敗表示（依存APIをスタブ）" classname="regression.spec.ts" time="1.237">
+</testcase>
+<testcase name="初期読込失敗を表示し、再読込で復帰する" classname="regression.spec.ts" time="0.656">
+</testcase>
+<testcase name="回答ファイルの上限と修正取込、保存済みプロジェクトの再読込" classname="regression.spec.ts" time="1.238">
+</testcase>
+</testsuite>
+<testsuite name="research.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="4" failures="0" skipped="0" time="4.311" errors="0">
+<testcase name="未取得・部分照合・0件を区別し、外部文字列をHTMLとして実行しない" classname="research.spec.ts" time="1.246">
+</testcase>
+<testcase name="履歴の初期読込失敗を表示し、ページ再読込で復帰する" classname="research.spec.ts" time="0.883">
+</testcase>
+<testcase name="URL入力だけで調査し、根拠・修正版・履歴・ファイルを取得する" classname="research.spec.ts" time="1.33">
+</testcase>
+<testcase name="失敗してもURLと前の結果を保ち、手動で再試行できる" classname="research.spec.ts" time="0.852">
+</testcase>
+</testsuite>
+<testsuite name="vulnerability.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="3" failures="0" skipped="0" time="3.543" errors="0">
+<testcase name="明示照会後に未検証資料として保存し、出典を追える" classname="vulnerability.spec.ts" time="1.139">
+</testcase>
+<testcase name="未掲載・上流不達と入力エラーを区別する" classname="vulnerability.spec.ts" time="1.231">
+</testcase>
+<testcase name="記載がない値は不明・なしと表示し、撤回を勝手に推定しない" classname="vulnerability.spec.ts" time="1.173">
+</testcase>
+</testsuite>
+<testsuite name="workflow-entry.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="1" failures="0" skipped="0" time="1.29" errors="0">
+<testcase name="URL調査から採用判断へ進み、案件を開き直しても原文と対象版を保持する" classname="workflow-entry.spec.ts" time="1.29">
+</testcase>
+</testsuite>
+<testsuite name="workflow-review.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="3" failures="0" skipped="0" time="5.581" errors="0">
+<testcase name="同じ知識・基準IDのrevision 1→2→3を正しい親から更新し承認できる" classname="workflow-review.spec.ts" time="2.39">
+</testcase>
+<testcase name="scope v2に更新後、修正の確認待ちをv2と新commitへ移せる" classname="workflow-review.spec.ts" time="1.471">
+</testcase>
+<testcase name="比較条件を変更したら前回の比較結果を表示し続けない" classname="workflow-review.spec.ts" time="1.72">
+</testcase>
+</testsuite>
+<testsuite name="workflow-v3.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="9" failures="0" skipped="0" time="19.654" errors="0">
+<testcase name="初回表示で対象フォームが見え、根拠なし状態を明示する" classname="workflow-v3.spec.ts" time="1.903">
+</testcase>
+<testcase name="読み込み中と読み込み失敗を表示する" classname="workflow-v3.spec.ts" time="2.43">
+</testcase>
+<testcase name="案件範囲から根拠付き知識、人の判定、修正確認までつなぐ" classname="workflow-v3.spec.ts" time="2.782">
+</testcase>
+<testcase name="承認されていない知識では照会を開始できない" classname="workflow-v3.spec.ts" time="0.958">
+</testcase>
+<testcase name="利用不可資料を根拠にした承認済み知識も照会から除外する" classname="workflow-v3.spec.ts" time="1.352">
+</testcase>
+<testcase name="manual runの停止・再開・回答と同条件比較を保存する" classname="workflow-v3.spec.ts" time="4.454">
+</testcase>
+<testcase name="資料改版で知識・基準を失効し、却下と更新案を区別する" classname="workflow-v3.spec.ts" time="2.127">
+</testcase>
+<testcase name="保存済みURL調査を重複なく案件へ取り込む" classname="workflow-v3.spec.ts" time="1.421">
+</testcase>
+<testcase name="期限付き抑止は対象版が変わると再確認へ戻る" classname="workflow-v3.spec.ts" time="2.227">
+</testcase>
+</testsuite>
+<testsuite name="workflow.spec.ts" timestamp="2026-10-04T19:48:26.794Z" hostname="" tests="5" failures="0" skipped="0" time="11.092" errors="0">
+<testcase name="サンプルから根拠・プロンプト・レビュー・実装タスクへ" classname="workflow.spec.ts" time="4.96">
+</testcase>
+<testcase name="新規作成・資料取込・不正回答・編集・履歴を保持" classname="workflow.spec.ts" time="1.389">
+</testcase>
+<testcase name="狭い画面で作業入口を操作できる" classname="workflow.spec.ts" time="0.585">
+</testcase>
+<testcase name="ファイル取込と比較候補の追加・編集" classname="workflow.spec.ts" time="1.518">
+</testcase>
+<testcase name="比較値の未確認・値なし、複数Evidence、逆参照とオフライン操作" classname="workflow.spec.ts" time="2.64">
+</testcase>
+</testsuite>
+</testsuites>

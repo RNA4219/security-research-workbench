@@ -1,0 +1,240 @@
+{
+  "id": "49064834-e24c-453f-af59-d55dd028ffe4",
+  "productId": "f7cefb35-b522-4e8b-8834-e90ca8055885",
+  "revision": 16,
+  "status": "partial",
+  "trigger": "manual",
+  "requestId": null,
+  "ref": "baseline",
+  "commit": "2f0bcfe910fd28a003fb56bb36def7aaa062be8c",
+  "previousRunId": "42d24439-c6a5-4f4b-b812-6503e06f0392",
+  "manifestHash": "a3ca9bba3c6007dca06b01f76f8d3a738dd683fe41b7a804a90ec07f31ae4323",
+  "snapshotFiles": [
+    {
+      "path": "package-lock.json",
+      "hash": "26ca281887b7f076133aca53b9f380dfafa8a6e0edd5fc7c68420c4c15664c14"
+    },
+    {
+      "path": "src/arithmetic.mjs",
+      "hash": "f4040fb968ad8dc7327a534ead187e3b0149bcc31e2f0db59119241d157d96f0"
+    },
+    {
+      "path": "src/client.ts",
+      "hash": "de747baf718ea3ba60e3a605a871483396ea9fc30d7973c16921265c3f4f0947"
+    }
+  ],
+  "snapshotOmitted": [
+    {
+      "path": "package.json",
+      "reason": "対応対象外のファイル形式です"
+    },
+    {
+      "path": "README.md",
+      "reason": "対応対象外のファイル形式です"
+    }
+  ],
+  "engineVersion": "0.2.0",
+  "allowDependencyNetwork": false,
+  "specificationRevision": 1,
+  "workflowRevision": 7,
+  "knowledge": [],
+  "rules": [],
+  "progress": {
+    "phase": "finished",
+    "message": "診断完了（未診断範囲あり）",
+    "updatedAt": "2026-10-04T18:09:48.916Z"
+  },
+  "statusHistory": [
+    {
+      "status": "queued",
+      "at": "2026-10-04T18:07:23.725Z",
+      "reason": null
+    },
+    {
+      "status": "running",
+      "at": "2026-10-04T18:07:23.727Z",
+      "reason": null
+    },
+    {
+      "status": "partial",
+      "at": "2026-10-04T18:07:27.364Z",
+      "reason": null
+    },
+    {
+      "status": "queued",
+      "at": "2026-10-04T18:09:48.893Z",
+      "reason": "利用者が同じ固定commitを明示再開"
+    },
+    {
+      "status": "running",
+      "at": "2026-10-04T18:09:48.896Z",
+      "reason": null
+    },
+    {
+      "status": "partial",
+      "at": "2026-10-04T18:09:48.916Z",
+      "reason": null
+    }
+  ],
+  "coverage": [
+    {
+      "engine": "static",
+      "status": "partial",
+      "assessed": 2,
+      "omitted": [
+        {
+          "path": "package.json",
+          "reason": "対応対象外のファイル形式です"
+        },
+        {
+          "path": "README.md",
+          "reason": "対応対象外のファイル形式です"
+        }
+      ],
+      "limitations": [
+        "列挙したJavaScript/TypeScriptの防御的ルールのみを評価しました。完全なセキュリティレビューではありません。"
+      ]
+    },
+    {
+      "engine": "dependency",
+      "status": "complete",
+      "assessed": 0,
+      "omitted": [],
+      "limitations": [
+        "ロックファイルに照合対象の依存パッケージはありません。"
+      ]
+    },
+    {
+      "engine": "model",
+      "status": "complete",
+      "assessed": 3,
+      "omitted": [
+        {
+          "path": "package.json",
+          "reason": "対応対象外のファイル形式です"
+        },
+        {
+          "path": "README.md",
+          "reason": "対応対象外のファイル形式です"
+        }
+      ],
+      "limitations": [
+        "このcoverageは診断範囲の記録であり、安全性の証明ではありません。"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "2673ced06962b54012d51843341a9d2022cb39cfaa0d0a8354a6f6d3fdcc7f1a",
+      "ruleId": "tls.reject-unauthorized-disabled",
+      "engine": "static",
+      "title": "TLS証明書検証が無効です",
+      "severity": "high",
+      "path": "src/client.ts",
+      "line": 2,
+      "evidence": "rejectUnauthorized: false",
+      "remediation": "証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。",
+      "delta": "continuing",
+      "presentInAnalysis": true,
+      "comparedToRunId": "42d24439-c6a5-4f4b-b812-6503e06f0392",
+      "workflowFindingId": "78f74821-a348-4b52-9829-9880b59206f4",
+      "workflowUrl": "/api/projects/dd1dbbbc-8625-4cef-8533-0625c21d90cf/workflow",
+      "workflowQuestion": "製品: 実モデル接続の受入確認\n仕様: TLS通信を行うクライアントです。接続先の証明書検証を必須とし、無効化を許容しません。加算処理は独立した通常機能です。\n診断commit: 2f0bcfe910fd28a003fb56bb36def7aaa062be8c\n指摘: TLS証明書検証が無効です (high, tls.reject-unauthorized-disabled)\n位置: src/client.ts:2\n根拠: rejectUnauthorized: false\n推奨確認: 証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+      "workflowQuestionClassification": "local"
+    },
+    {
+      "fingerprint": "183762e25525680f271915fc7cc95095fefce90eb29447b15f4274d6f091ffba",
+      "ruleId": "model-review.authorization",
+      "engine": "model",
+      "title": "TLS 証明書検証が無効化されている",
+      "severity": "high",
+      "path": "src/client.ts",
+      "line": 2,
+      "evidence": "指定された知識（product-specification）は、TLS 通信を行うクライアントにおいて接続先の証明書検証を必須とし、無効化を許容しないことを定めています。しかし、ソースコード `src/client.ts` の 2 行目では `rejectUnauthorized: false` が設定されており、この規定に違反しています。\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n不確実性: ソースコードと知識の対比が明確である",
+      "remediation": "`rejectUnauthorized` プロパティを `true` に変更するか、HTTPS 通信を許可しないようにする。",
+      "delta": "new",
+      "presentInAnalysis": true,
+      "comparedToRunId": "42d24439-c6a5-4f4b-b812-6503e06f0392",
+      "workflowFindingId": "d05e6dff-1a2f-4066-a1bf-8462e1ef4b19",
+      "workflowUrl": "/api/projects/dd1dbbbc-8625-4cef-8533-0625c21d90cf/workflow",
+      "workflowQuestion": "製品: 実モデル接続の受入確認\n仕様: TLS通信を行うクライアントです。接続先の証明書検証を必須とし、無効化を許容しません。加算処理は独立した通常機能です。\n診断commit: 2f0bcfe910fd28a003fb56bb36def7aaa062be8c\n指摘: TLS 証明書検証が無効化されている (high, model-review.authorization)\n位置: src/client.ts:2\n根拠: 指定された知識（product-specification）は、TLS 通信を行うクライアントにおいて接続先の証明書検証を必須とし、無効化を許容しないことを定めています。しかし、ソースコード `src/client.ts` の 2 行目では `rejectUnauthorized: false` が設定されており、この規定に違反しています。\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n不確実性: ソースコードと知識の対比が明確である\n推奨確認: `rejectUnauthorized` プロパティを `true` に変更するか、HTTPS 通信を許可しないようにする。\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+      "workflowQuestionClassification": "local"
+    }
+  ],
+  "modelReview": {
+    "enabled": true,
+    "providerId": "local",
+    "providerKind": "local",
+    "model": "C:\\Users\\ryo-n\\Qwen3.5-4B-Q4_K_M.gguf",
+    "configVersion": "qwen35-4b-q4km-ctx16384-manual-v1:no-thinking",
+    "inputHash": "94efe6b77e0b98318930aa9ece3487a0de5d0e52253c937d59d99329aa7a4628",
+    "contextHash": "de5558b667d57f0a3df3873773f6e8cddd548bcdcb451bc1b5c2f31476c3fd8c",
+    "coverage": {
+      "status": "complete",
+      "batchCount": 1,
+      "completedBatchCount": 1,
+      "assessedFiles": 3,
+      "assessedLines": 6,
+      "omitted": [
+        {
+          "path": "package.json",
+          "reason": "対応対象外のファイル形式です"
+        },
+        {
+          "path": "README.md",
+          "reason": "対応対象外のファイル形式です"
+        }
+      ],
+      "limitations": [
+        "このcoverageは診断範囲の記録であり、安全性の証明ではありません。"
+      ],
+      "isSafetyProof": false
+    },
+    "record": {
+      "status": "completed",
+      "providerId": "local",
+      "model": "C:\\Users\\ryo-n\\Qwen3.5-4B-Q4_K_M.gguf",
+      "configVersion": "qwen35-4b-q4km-ctx16384-manual-v1:no-thinking",
+      "hashes": {
+        "snapshot": "6972af3da295809a0e202469e4389690e67fcf29f3bd24cce27d66737d170cb5",
+        "input": "94efe6b77e0b98318930aa9ece3487a0de5d0e52253c937d59d99329aa7a4628",
+        "knowledge": "de5558b667d57f0a3df3873773f6e8cddd548bcdcb451bc1b5c2f31476c3fd8c",
+        "provider": "8d127ce1b0c223c52b156e22a8f1b341798597a764a673b03c57740055175435",
+        "model": "31460aa9f6bdcc72e8563353d1f43ed3d06c7d37ca078dae87483592ed1aaf25",
+        "config": "72ba5cb9bd957790ac1613dcb79452ca74955903dbd9e5484857016828c17917",
+        "plan": "6d36f5b734104418b275cdff18c8c17cfd51e4435e76449bec273ea47175dd72",
+        "prompt": "ce1b02302a7ea187f11ac48908ca5f4a5cca9e86c771a0bb36aea300b66db66c",
+        "response": "9112854dffa7cded92fecb07c091a7e392495a9b1556695d8d1a24848c162b8f"
+      },
+      "startedAt": "2026-10-04T18:09:48.908Z",
+      "finishedAt": "2026-10-04T18:09:48.908Z",
+      "elapsedMs": 0,
+      "budget": {
+        "maxBatches": 100,
+        "maxFiles": 500,
+        "maxInputChars": 10000000,
+        "maxBatchChars": 12000,
+        "maxPromptChars": 20000,
+        "maxOutputTokens": 2048
+      },
+      "used": {
+        "batches": 1,
+        "files": 3,
+        "inputChars": 283,
+        "promptTokens": 2149,
+        "completionTokens": 287,
+        "actualCostUsd": 0
+      },
+      "stopReason": "none",
+      "checkpoint": {
+        "reused": true,
+        "savedBatchCount": 1
+      }
+    },
+    "failure": null
+  },
+  "startedAt": "2026-10-04T18:09:48.896Z",
+  "updatedAt": "2026-10-04T18:09:48.916Z",
+  "finishedAt": "2026-10-04T18:09:48.916Z",
+  "failure": null
+}

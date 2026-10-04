@@ -1,0 +1,14 @@
+{
+  "split": "development",
+  "cases": [
+    {"caseId":"a01","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/routes/profile.js","category":"authorization","lineStart":4,"lineEnd":4,"anchor":"return { status: 200, body: profile };"}]},
+    {"caseId":"a02","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/routes/invoices.js","category":"tenant-isolation","lineStart":3,"lineEnd":3,"anchor":"invoice.tenantId === requestedTenantId &&"}]},
+    {"caseId":"a03","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/services/visibility.js","category":"input-validation","lineStart":2,"lineEnd":2,"anchor":"item.visibility = value;"}]},
+    {"caseId":"a04","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/services/order-state.js","category":"state-transition","lineStart":4,"lineEnd":4,"anchor":"if (!allowed.has(next)) return { ok: false };"}]},
+    {"caseId":"a05","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/observability/audit.js","category":"pii-logging","lineStart":2,"lineEnd":2,"anchor":"log.warn(\"request failed\", { requestId, email, token });"}]},
+    {"caseId":"a06","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/services/password.js","category":"cryptography","lineStart":2,"lineEnd":2,"anchor":"return crypto.createHash(\"sha1\").update(password).digest(\"hex\");"}]},
+    {"caseId":"a07","controlType":"hard-negative","expectedReview":{"requiresHumanConfirmation":false,"recheckPriorDecision":false},"findings":[]},
+    {"caseId":"a08","controlType":"changed-assumption","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":true},"findings":[{"path":"src/routes/notes.js","category":"tenant-isolation","lineStart":2,"lineEnd":2,"anchor":"return db.notes.filter((note) => note.tenantId === requestedTenantId);"}]},
+    {"caseId":"a09","controlType":"unchanged-assumption","expectedReview":{"requiresHumanConfirmation":false,"recheckPriorDecision":false},"findings":[]}
+  ]
+}
