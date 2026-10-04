@@ -76,4 +76,6 @@ node scripts/qeg-negative-controls.mjs .cache/new-chain/qeg C:/Users/ryo-n/Codex
 
 使用版（Git）: RanD `b4315040`、Code-to-gate `c6d7137c`、HATE `22dc83b9`、manual-bb `b1830dee`、QEG `e6d25957`。[manifest](final-evidence/manifest.json)で公開証跡のバイト列を固定した。
 
+CIでも `node scripts/verify-frozen-evidence.mjs` により、公開証跡123件の存在・サイズ・SHA256を照合する。ビルドログは通常のログ除外から明示的に外して追跡している。
+
 Goの範囲はローカル機能回帰。外部デプロイ、人の公開承認、他OS・他ブラウザ、未導入OSSの実運用、変異テスト・長期flake率は評価していない。以前の記録は履歴として残し、本記録で静的指摘・現行手動証跡・QEG接続を完了とする。

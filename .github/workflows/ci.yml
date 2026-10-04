@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: "24"
           cache: npm
+      - run: node scripts/verify-frozen-evidence.mjs
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build
