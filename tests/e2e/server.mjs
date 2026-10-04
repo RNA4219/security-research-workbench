@@ -1,8 +1,10 @@
 import { createApp } from "../../dist/server/app.js";
+import { researchFetcher } from "../research-fixtures.ts";
 // テスト専用の起動入口。利用者の4317番ポート・DB・製品ビルドは変更しない。
 const app = await createApp({
   port: 4318,
   dbPath: process.env.DATA_PATH,
+  researchFetch: researchFetcher(),
   staticRoot:
     process.env.WORKBENCH_COVERAGE === "1"
       ? ".cache/coverage-build/client"

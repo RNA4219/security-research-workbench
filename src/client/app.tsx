@@ -11,6 +11,7 @@ import { ComparePage } from "./compare-page.js";
 import { EvidencePage } from "./evidence-page.js";
 import { SourcesPage } from "./sources-page.js";
 import { VulnerabilityPage } from "./vulnerability-page.js";
+import { RepositoryPage } from "./repository-page.js";
 import {
   exampleCandidates,
   exampleProject,
@@ -275,41 +276,21 @@ export function App() {
     );
   else if (!p)
     content = (
-      <section className="welcome">
-        <p className="eyebrow">OSS選定から要件定義へ</p>
-        <h1>
-          使うOSSを決め、
-          <br />
-          作る機能を定める。
-        </h1>
-        <p>
-          セキュリティツール開発で、公開OSSの役割と採否を出典付きで比較。
-          <br />
-          判断の理由を要件・実装タスクに残します。
-        </p>
-        <div className="actions">
-          <button className="primary" onClick={() => setCreating(true)}>
-            プロジェクトを作成 →
-          </button>
-          <button onClick={() => void run(sample)}>サンプルで試す</button>
-        </div>
-        <p className="muted">
-          サンプルではTrivy・OSV-Scanner・DefectDojoを比べます。採否と要件は未レビューから始まります。
-        </p>
-        <div className="welcome-grid">
-          {[
-            ["01", "調べる", "公開資料と出典を登録"],
-            ["02", "決める", "OSSを使う理由・見送る理由を記録"],
-            ["03", "作る", "要件と実装タスクを書き出す"],
-          ].map(([n, title, body]) => (
-            <article key={n}>
-              <span>{n}</span>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <>
+        <RepositoryPage />
+        <section className="panel manual-workspace">
+          <h2>手元の調査資料を整理する</h2>
+          <p className="muted">
+            調査レポートの取込、OSS比較、要件の編集はこちらから。
+          </p>
+          <div className="actions">
+            <button onClick={() => setCreating(true)}>
+              プロジェクトを作成 →
+            </button>
+            <button onClick={() => void run(sample)}>サンプルで試す</button>
+          </div>
+        </section>
+      </>
     );
   else
     content = (
@@ -403,9 +384,9 @@ export function App() {
         <div className="sidebar-bottom">
           <span className="dot" /> LOCAL WORKSPACE
           <p>
-            使うOSSを決める。
+            URLから調べる。
             <br />
-            作る機能を定める。
+            次に確認することがわかる。
           </p>
           <small>v0.2.0 · Open source</small>
         </div>

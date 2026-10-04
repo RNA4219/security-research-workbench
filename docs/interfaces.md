@@ -8,6 +8,10 @@ APIは `http://127.0.0.1:4317/api`。すべてのAPI呼出には `X-Workbench: 1
 | Method | Path | 内容 |
 |---|---|---|
 | GET | `/config` | memx設定の有無 |
+| POST | `/research` | `{repoUrl}`。公開GitHubの保守情報とnpm依存版を調査し、結果をローカル保存して201を返す。同時実行は429 |
+| GET | `/research` | 保存した調査の概要（新しい順、直近50件） |
+| GET | `/research/:id` | UUIDで保存結果を取得。外部への再照会はしない |
+| GET | `/research/:id/markdown` | 調査結果、出典、未調査範囲のMarkdown出力 |
 | POST | `/vulnerabilities/lookup` | `{cveId}`を指定した明示的な公開情報照会。OSV・KEV・EPSSの状態と、掲載元ごとの未検証資料下書き `sourceDrafts` を返す |
 | GET/POST | `/projects` | 一覧・作成 |
 | GET | `/projects/:id` | 現在のプロジェクト |
@@ -21,6 +25,10 @@ APIは `http://127.0.0.1:4317/api`。すべてのAPI呼出には `X-Workbench: 1
 | POST | `/projects/:id/memx` | 明示的なresolver操作 |
 
 入力Schemaの正本は `src/shared/model.ts`。不正入力は400と `{error, issues?: [{path,message}]}`。未存在は404、競合は409、サイズ超過は413、memx未設定は503、接続失敗は502です。
+
+リポジトリ調査の入力・型は `src/shared/repository-research.ts`。`repository`、`dependencies`、`actions`、`limitations`、`sources`を返す。`dependencies.status` は対象範囲の完了 `complete`、一部未取得 `partial`、取得・解析失敗 `unavailable`、対応lockなし `unsupported`。`queried` は重複をまとめたパッケージ名・版の照合数、`total`はlock内の依存レコード数、`skipped`は未対応レコードと上限で省いたパッケージ版の合計。`unassessed`は最大30件の未照合箇所と理由。`findings`の件数は依存版とアドバイザリの組合せ数。製品への実影響件数ではない。
+
+調査は認証なし、固定のGitHub API・OSV APIのみ。1応答3MiB、各通信8秒、全体45秒、400パッケージ版・200一致結果・40アドバイザリ詳細の上限を持つ。OSVの継続ページは未取得と明示する。ローカルSQLiteの`repository_research`テーブルに保存し、既存プロジェクトのrevisionや承認とは独立して扱う。
 
 脆弱性照会はCVE ID形式だけを受け付け、固定の3提供元へ通信します。`osv`、`kev`、`epss` は `status`（`found`、OSVのみ`withdrawn`、`not_found`、`unavailable`）、`sourceUrl`、`fetchedAt`、取得できた場合の`sha256`、掲載時の`data`を返します。`sourceDrafts` は掲載のあった提供元だけを実際の取得URL・提供元の版で表す配列です。照会だけではDBを変更しません。明示保存時は既存の `sources` コマンドで1回のrevisionとして登録します。
 

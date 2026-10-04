@@ -20,6 +20,8 @@ import {
   internalTaskContractJsonSchema,
 } from "../shared/model.js";
 import { cveId } from "../shared/vulnerability.js";
+import { researchInput } from "../shared/repository-research.js";
+import { researchRepository, researchMarkdown } from "./repository-research.js";
 
 export async function createApp(
   options: {
@@ -28,6 +30,7 @@ export async function createApp(
     memxUrl?: string;
     staticRoot?: string;
     vulnerabilityFetch?: typeof fetch;
+    researchFetch?: typeof fetch;
   } = {},
 ) {
   const app = Fastify({ logger: false, bodyLimit: 2 * 1024 * 1024 });
@@ -81,6 +84,43 @@ export async function createApp(
     async () => internalTaskContractJsonSchema,
   );
   app.get("/api/config", async () => ({ memx: memx.enabled }));
+  let researching = false;
+  app.get("/api/research", async () => store.listResearch());
+  app.get("/api/research/:id", async (req) =>
+    store.getResearch(z.object({ id: z.uuid() }).parse(req.params).id),
+  );
+  app.get("/api/research/:id/markdown", async (req, reply) => {
+    const report = store.getResearch(
+      z.object({ id: z.uuid() }).parse(req.params).id,
+    );
+    return reply
+      .header(
+        "Content-Disposition",
+        'attachment; filename="repository-research.md"',
+      )
+      .type("text/markdown; charset=utf-8")
+      .send(researchMarkdown(report));
+  });
+  app.post("/api/research", async (req, reply) => {
+    const { repoUrl } = researchInput.parse(req.body);
+    if (researching)
+      throw new DomainError(
+        "別の調査を実行中です。完了してから再試行してください。",
+        429,
+      );
+    researching = true;
+    try {
+      return reply
+        .code(201)
+        .send(
+          store.saveResearch(
+            await researchRepository(repoUrl, options.researchFetch),
+          ),
+        );
+    } finally {
+      researching = false;
+    }
+  });
   app.post("/api/vulnerabilities/lookup", async (req) => {
     const body = z.strictObject({ cveId }).parse(req.body);
     return lookupVulnerability(body.cveId, options.vulnerabilityFetch);

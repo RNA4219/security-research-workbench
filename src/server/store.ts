@@ -4,6 +4,10 @@ import { dirname } from "node:path";
 import { applyCommand, DomainError, newProject } from "./domain.js";
 import type { Command, Project, ProjectInput } from "../shared/model.js";
 import { migrateProject } from "./provenance.js";
+import type {
+  ResearchReport,
+  ResearchSummary,
+} from "../shared/repository-research.js";
 
 export class Store {
   db: DatabaseSync;
@@ -27,6 +31,7 @@ export class Store {
       CREATE TABLE IF NOT EXISTS revisions(project_id TEXT NOT NULL, revision INTEGER NOT NULL, data TEXT NOT NULL, PRIMARY KEY(project_id, revision));
       CREATE TABLE IF NOT EXISTS artifacts(id INTEGER PRIMARY KEY, project_id TEXT NOT NULL, kind TEXT NOT NULL, created_at TEXT NOT NULL, body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS memx(project_id TEXT NOT NULL, source_id TEXT NOT NULL, doc_id TEXT NOT NULL, revision INTEGER NOT NULL, PRIMARY KEY(project_id,source_id));
+      CREATE TABLE IF NOT EXISTS repository_research(id TEXT PRIMARY KEY, data TEXT NOT NULL);
       `);
       if (version < 2) {
         const rows = this.db.prepare("SELECT id,data FROM projects").all() as {
@@ -144,5 +149,36 @@ export class Store {
   }
   close() {
     this.db.close();
+  }
+  saveResearch(report: ResearchReport) {
+    this.db
+      .prepare("INSERT INTO repository_research VALUES (?,?)")
+      .run(report.id, JSON.stringify(report));
+    return report;
+  }
+  listResearch(): ResearchSummary[] {
+    return (
+      this.db
+        .prepare(
+          "SELECT data FROM repository_research ORDER BY rowid DESC LIMIT 50",
+        )
+        .all() as { data: string }[]
+    ).map((row) => {
+      const report = JSON.parse(row.data) as ResearchReport;
+      return {
+        id: report.id,
+        name: report.repository.name,
+        collectedAt: report.collectedAt,
+        findings: report.dependencies.findings.length,
+        status: report.dependencies.status,
+      };
+    });
+  }
+  getResearch(id: string): ResearchReport {
+    const row = this.db
+      .prepare("SELECT data FROM repository_research WHERE id=?")
+      .get(id) as { data: string } | undefined;
+    if (!row) throw new DomainError("調査結果がありません", 404);
+    return JSON.parse(row.data);
   }
 }
