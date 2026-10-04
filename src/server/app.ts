@@ -5,6 +5,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { Store } from "./store.js";
 import { Memx } from "./memx.js";
+import { lookupVulnerability } from "./vulnerability.js";
 import {
   DomainError,
   contracts,
@@ -18,6 +19,7 @@ import {
   mutationSchema,
   internalTaskContractJsonSchema,
 } from "../shared/model.js";
+import { cveId } from "../shared/vulnerability.js";
 
 export async function createApp(
   options: {
@@ -25,6 +27,7 @@ export async function createApp(
     port?: number;
     memxUrl?: string;
     staticRoot?: string;
+    vulnerabilityFetch?: typeof fetch;
   } = {},
 ) {
   const app = Fastify({ logger: false, bodyLimit: 2 * 1024 * 1024 });
@@ -78,6 +81,10 @@ export async function createApp(
     async () => internalTaskContractJsonSchema,
   );
   app.get("/api/config", async () => ({ memx: memx.enabled }));
+  app.post("/api/vulnerabilities/lookup", async (req) => {
+    const body = z.strictObject({ cveId }).parse(req.body);
+    return lookupVulnerability(body.cveId, options.vulnerabilityFetch);
+  });
   app.get("/api/projects", async () => store.list());
   app.post("/api/projects", async (req, reply) =>
     reply.code(201).send(store.create(projectInput.parse(req.body))),

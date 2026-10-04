@@ -8,6 +8,7 @@ APIは `http://127.0.0.1:4317/api`。すべてのAPI呼出には `X-Workbench: 1
 | Method | Path | 内容 |
 |---|---|---|
 | GET | `/config` | memx設定の有無 |
+| POST | `/vulnerabilities/lookup` | `{cveId}`を指定した明示的な公開情報照会。OSV・KEV・EPSSの状態と、掲載元ごとの未検証資料下書き `sourceDrafts` を返す |
 | GET/POST | `/projects` | 一覧・作成 |
 | GET | `/projects/:id` | 現在のプロジェクト |
 | POST | `/projects/:id/commands` | `{revision, command}`。古いrevisionは409 |
@@ -20,6 +21,8 @@ APIは `http://127.0.0.1:4317/api`。すべてのAPI呼出には `X-Workbench: 1
 | POST | `/projects/:id/memx` | 明示的なresolver操作 |
 
 入力Schemaの正本は `src/shared/model.ts`。不正入力は400と `{error, issues?: [{path,message}]}`。未存在は404、競合は409、サイズ超過は413、memx未設定は503、接続失敗は502です。
+
+脆弱性照会はCVE ID形式だけを受け付け、固定の3提供元へ通信します。`osv`、`kev`、`epss` は `status`（`found`、OSVのみ`withdrawn`、`not_found`、`unavailable`）、`sourceUrl`、`fetchedAt`、取得できた場合の`sha256`、掲載時の`data`を返します。`sourceDrafts` は掲載のあった提供元だけを実際の取得URL・提供元の版で表す配列です。照会だけではDBを変更しません。明示保存時は既存の `sources` コマンドで1回のrevisionとして登録します。
 
 ## 資料JSON
 

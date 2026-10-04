@@ -10,6 +10,7 @@ import { RequirementsPage } from "./requirements-page.js";
 import { ComparePage } from "./compare-page.js";
 import { EvidencePage } from "./evidence-page.js";
 import { SourcesPage } from "./sources-page.js";
+import { VulnerabilityPage } from "./vulnerability-page.js";
 import {
   exampleCandidates,
   exampleProject,
@@ -350,6 +351,7 @@ export function App() {
           ))}
         </nav>
         <SourcesPage ctx={{ ...ctx, p }} />
+        <VulnerabilityPage ctx={{ ...ctx, p }} />
         <EvidencePage ctx={{ ...ctx, p }} />
         <ComparePage ctx={{ ...ctx, p }} />
         <RequirementsPage ctx={{ ...ctx, p }} />

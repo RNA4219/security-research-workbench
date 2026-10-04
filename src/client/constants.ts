@@ -5,6 +5,7 @@ import type {
 } from "../shared/model.js";
 import { reviewLabels } from "./provenance.js";
 export type Tab =
+  | "vulnerability"
   | "sources"
   | "evidence"
   | "compare"
@@ -13,6 +14,7 @@ export type Tab =
   | "history"
   | "settings";
 export const tabs: [Tab, string, string][] = [
+  ["vulnerability", "◇", "脆弱性知識"],
   ["sources", "01", "調査資料"],
   ["evidence", "◎", "根拠と主張"],
   ["compare", "02", "OSS比較"],

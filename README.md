@@ -29,6 +29,7 @@ Windowsでターミナルを閉じても使い続ける場合は、ビルド後�
 
 1. プロジェクトの目的・利用者・制約を入力します。
 2. 公開資料のMarkdown、テキスト、版付きJSONを取り込み、URL・取得日・版を記録します。
+   CVE IDの公開情報を調べる場合は「脆弱性知識」でOSV・CISA KEV・FIRST EPSSを明示照会し、必要な結果だけ未検証の資料として保存します。
 3. 「根拠と主張」で資料の抜粋・要約（Evidence）を登録し、出典と照合して確認済みにします。
 4. OSS比較の各項目（Claim）へEvidenceを関連付け、既知の値・未確認・値なしを区別します。既知の値を確認し、比較を承認してからプロンプトを作ります。
 5. ChatGPT等にプロンプトを渡し、返されたJSONを取り込みます。取込直後は必ず未レビューです。
@@ -43,6 +44,8 @@ Windowsでターミナルを閉じても使い続ける場合は、ビルド後�
 
 - [要件定義](docs/requirements.md)
 - [調査と設計判断](docs/research.md)
+- [公開脆弱性知識の出典と読み方](docs/vulnerability-knowledge.md)
+- [公開脆弱性知識の手動検証](docs/manual-bb/vulnerability-results.md)
 - [APIとデータ形式](docs/interfaces.md)
 - [検証記録](docs/acceptance.md)
 - [テスト拡充とカバレッジ](docs/testing/2026-10-04-coverage.md)
