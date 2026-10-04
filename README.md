@@ -1,8 +1,12 @@
 # Security Research Workbench
 
-**使いたいOSSのGitHub URLを入れると、保守状況・依存関係・既知の問題を調べ、「採用する前に何を確認すべきか」を返すWebアプリです。**
+**調査で得た製品知識と人の判断を次回にも使い、確認事項を修正・確認まで追えるワークベンチを目指しています。** 同じ説明や判定のやり直しを減らすことが、製品全体の目的です。
+
+現在公開しているのは、その入口となるOSS採用前調査です。使いたいOSSのGitHub URLを入れると、保守状況・依存関係・既知の問題を調べ、「採用する前に何を確認すべきか」を返します。
 
 [ブラウザで使う →](https://rna4219.com/open/security-research-workbench/) · [公開ツール一覧](https://rna4219.com/open/)
+
+Horos・Ergon・まとめ編から取り込む要求は[要求・要件定義v3](docs/requirements.md)と[記事との対応表](docs/logos-traceability.md)に明記しています。目的別知識の更新、工程の再開、判断の再利用、モデル交換、修正確認の追加要件FR-17〜31は**未実装・受入未完了**です。公開版や既存テストの成功で、これらまで完成したとは扱いません。
 
 導入候補を見つけたとき、GitHubの更新履歴、ライセンス、ロックファイル、脆弱性情報を一つずつ開いて転記する作業を引き受けます。資料や比較表を先に手入力する必要はありません。
 
@@ -69,7 +73,9 @@ JSONの形式、レビュー状態、任意のagent-protocols・memx連携は以
 - [URLからの調査仕様・対象範囲・テスト設計](docs/repository-research.md)
 - [GitHub Pages版の構成・公開・検証](docs/pages.md)
 - [自動調査の実測・検証結果](docs/testing/2026-10-04-repository-research.md)
-- [要件定義](docs/requirements.md)
+- [要求・要件定義v3](docs/requirements.md)
+- [Logos 3記事との対応・現在の不足](docs/logos-traceability.md)
+- [追加要件の受入計画・未実行ケース](docs/manual-bb/logos-plan.md)
 - [調査と設計判断](docs/research.md)
 - [公開脆弱性知識の出典と読み方](docs/vulnerability-knowledge.md)
 - [公開脆弱性知識の手動検証](docs/manual-bb/vulnerability-results.md)
