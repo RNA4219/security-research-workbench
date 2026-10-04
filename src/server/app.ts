@@ -4,6 +4,10 @@ import { z, ZodError } from "zod";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { Store } from "./store.js";
+import {
+  registerWorkflowRoutes,
+  type WorkflowRouteOptions,
+} from "./workflow-routes.js";
 import { Memx } from "./memx.js";
 import { lookupVulnerability } from "./vulnerability.js";
 import {
@@ -27,7 +31,7 @@ import {
 } from "../research/repository-research.js";
 
 export async function createApp(
-  options: {
+  options: WorkflowRouteOptions & {
     dbPath?: string;
     port?: number;
     memxUrl?: string;
@@ -87,6 +91,7 @@ export async function createApp(
     async () => internalTaskContractJsonSchema,
   );
   app.get("/api/config", async () => ({ memx: memx.enabled }));
+  await registerWorkflowRoutes(app, store, options);
   let researching = false;
   app.get("/api/research", async () => store.listResearch());
   app.get("/api/research/:id", async (req) =>

@@ -33,8 +33,10 @@ const localClient: ResearchClient = {
 
 export function RepositoryPage({
   client = localClient,
+  onAdopt,
 }: {
   client?: ResearchClient;
+  onAdopt?: (report: ResearchReport) => Promise<void>;
 }) {
   const [url, setUrl] = useState("");
   const [report, setReport] = useState<ResearchReport>();
@@ -147,6 +149,15 @@ export function RepositoryPage({
                 </p>
               )}
             </div>
+            {onAdopt && (
+              <button
+                className="primary"
+                disabled={busy}
+                onClick={() => void run(() => onAdopt(report))}
+              >
+                この結果から採用判断を続ける
+              </button>
+            )}
             <button
               disabled={busy}
               onClick={() => void run(() => client.download(report))}

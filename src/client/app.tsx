@@ -12,6 +12,7 @@ import { EvidencePage } from "./evidence-page.js";
 import { SourcesPage } from "./sources-page.js";
 import { VulnerabilityPage } from "./vulnerability-page.js";
 import { RepositoryPage } from "./repository-page.js";
+import { WorkflowPage } from "./workflow-page.js";
 import {
   exampleCandidates,
   exampleProject,
@@ -277,11 +278,21 @@ export function App() {
   else if (!p)
     content = (
       <>
-        <RepositoryPage />
+        <RepositoryPage
+          onAdopt={async (report) => {
+            const next = await request<Project>(
+              `/research/${report.id}/adopt`,
+              {},
+            );
+            await refresh();
+            await select(next.id);
+            setTab("workflow");
+          }}
+        />
         <section className="panel manual-workspace">
-          <h2>手元の調査資料を整理する</h2>
+          <h2>利用条件と過去の判断を、次の調査に引き継ぐ</h2>
           <p className="muted">
-            調査レポートの取込、OSS比較、要件の編集はこちらから。
+            案件に資料と判断を残し、承認済みの知識で確認を進めます。修正が必要な問題は、確認証跡がそろうまで追跡できます。
           </p>
           <div className="actions">
             <button onClick={() => setCreating(true)}>
@@ -305,20 +316,22 @@ export function App() {
           </div>
           <span className="local-badge">● ローカル保存</span>
         </header>
-        <div className="metrics">
-          <span>
-            <b>{p.sources.length}</b> 調査資料
-          </span>
-          <span>
-            <b>{p.candidates.length}</b> OSS候補
-          </span>
-          <span>
-            <b>{p.requirements.length}</b> 要件
-          </span>
-          <span>
-            <b>{approvalCount}</b> 承認済み
-          </span>
-        </div>
+        {tab !== "workflow" && (
+          <div className="metrics">
+            <span>
+              <b>{p.sources.length}</b> 調査資料
+            </span>
+            <span>
+              <b>{p.candidates.length}</b> OSS候補
+            </span>
+            <span>
+              <b>{p.requirements.length}</b> 要件
+            </span>
+            <span>
+              <b>{approvalCount}</b> 承認済み
+            </span>
+          </div>
+        )}
         <nav className="tabs" aria-label="作業工程">
           {tabs.map(([key, n, label]) => (
             <button
@@ -334,6 +347,7 @@ export function App() {
             </button>
           ))}
         </nav>
+        {tab === "workflow" && <WorkflowPage key={p.id} projectId={p.id} />}
         <SourcesPage ctx={{ ...ctx, p }} />
         <VulnerabilityPage ctx={{ ...ctx, p }} />
         <EvidencePage ctx={{ ...ctx, p }} />

@@ -7,6 +7,7 @@ export const url = z
   .url()
   .max(2000)
   .refine((value) => {
+    if (!URL.canParse(value)) return false;
     const u = new URL(value);
     return (
       ["http:", "https:"].includes(u.protocol) && !u.username && !u.password
