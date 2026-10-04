@@ -74,7 +74,7 @@ elif args.phase == 'collect':
     run([TOOLS/'RanD/research-runtime/.venv/Scripts/python.exe','-m','rand_research.cli','audit-document','--document',ROOT/'docs/requirements.md','--document-id','security-research-workbench','--out-dir',OUT/'rand'],TOOLS/'RanD/research-runtime')
     ctg=TOOLS/'code-to-gate/dist/cli.js'
     run(['node',ctg,'analyze',ROOT,'--out',OUT/'ctg','--emit','all','--cache','disabled','--quiet'])
-    run(['node',ctg,'readiness','--from',OUT/'ctg','--out',OUT/'ctg','--policy',TOOLS/'code-to-gate/.github/ctg-policy.yaml','--quiet'])
+    run(['node',ctg,'readiness',ROOT,'--from',OUT/'ctg','--out',OUT/'ctg','--policy',TOOLS/'code-to-gate/.github/ctg-policy.yaml','--quiet'])
     inp=OUT/'hate-input'
     inp.mkdir(parents=True,exist_ok=True)
     suites=ET.Element('testsuites')
