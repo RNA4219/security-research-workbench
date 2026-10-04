@@ -4,8 +4,8 @@ if (!Number.isInteger(port) || port < 1024 || port > 65535)
   throw new Error("PORTが不正です");
 const app = await createApp({
   port,
-  dbPath: process.env.DATA_PATH,
-  memxUrl: process.env.MEMX_URL,
+  dbPath: process.env.DATA_PATH ?? ".data/workbench.db",
+  memxUrl: process.env.MEMX_URL ?? "",
 });
 await app.listen({ host: "127.0.0.1", port });
 console.log(`Security Research Workbench: http://127.0.0.1:${port}`);

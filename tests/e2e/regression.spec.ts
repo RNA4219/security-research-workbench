@@ -212,14 +212,12 @@ test("未設定連携・出力失敗・全データ出力と履歴閲覧", async
     page.getByText("起動時に MEMX_URL を設定すると利用できます。"),
   ).toBeVisible();
   await page.getByRole("button", { name: /04出力/ }).click();
-  const adapter = page
-    .getByRole("article")
-    .filter({
-      has: page.getByRole("heading", {
-        name: "agent-protocols変換（任意）",
-        exact: true,
-      }),
-    });
+  const adapter = page.getByRole("article").filter({
+    has: page.getByRole("heading", {
+      name: "agent-protocols変換（任意）",
+      exact: true,
+    }),
+  });
   await adapter.getByRole("button").click();
   await expect(page.getByRole("alert")).toContainText(
     "承認済み要件がありません",
@@ -281,9 +279,57 @@ test("初期読込失敗を表示し、再読込で復帰する", async ({ page 
   await page.goto("/");
   await expect(page.getByRole("alert")).toContainText("接続できません");
   await page.unroute("**/api/projects");
-  await page.reload();
+  await page.getByRole("button", { name: "再読込 ↻" }).click();
   await expect(page.getByRole("alert")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: "サンプルで試す" }),
   ).toBeVisible();
+});
+
+test("回答ファイルの上限と修正取込、保存済みプロジェクトの再読込", async ({
+  page,
+}) => {
+  const title = await newProject(page);
+  await page.getByRole("button", { name: "再読込 ↻" }).click();
+  await expect(page.getByRole("heading", { name: title })).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("最新の状態");
+  await page.getByRole("button", { name: /03要件とレビュー/ }).click();
+  const file = page.getByLabel("回答JSONファイル");
+  await file.setInputFiles({
+    name: "large.json",
+    mimeType: "application/json",
+    buffer: Buffer.alloc(1_500_001, "a"),
+  });
+  await expect(page.getByRole("alert")).toContainText("1.5MB以下");
+  await expect(page.getByLabel("回答JSON", { exact: true })).toHaveValue("");
+  await file.setInputFiles([]);
+  const raw = JSON.stringify({
+    schemaVersion: "1.0",
+    requirements: [
+      {
+        id: "REQ-FILE",
+        title: "回答ファイル",
+        description: "正常な回答の保存",
+        priority: "high",
+        sourceIds: [],
+        claimIds: [],
+        rationale: "利用者判断",
+        acceptance: ["保存できる"],
+        tasks: ["確認する"],
+      },
+    ],
+  });
+  await file.setInputFiles({
+    name: "reply.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(raw),
+  });
+  await expect(page.getByLabel("回答JSON", { exact: true })).toHaveValue(raw);
+  await page.getByRole("button", { name: "回答を取り込む" }).click();
+  await expect(
+    page.getByRole("heading", { name: "回答ファイル", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".requirement-card .status")).toHaveText(
+    "未レビュー",
+  );
 });

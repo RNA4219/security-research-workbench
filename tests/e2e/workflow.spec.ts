@@ -64,6 +64,15 @@ test("サンプルから根拠・プロンプト・レビュー・実装タス�
   await expect(page.getByLabel("生成したプロンプト")).toContainText(
     "回答JSON Schema",
   );
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.getByRole("button", { name: "プロンプトをコピー" }).click();
+  await expect(page.getByRole("status")).toContainText("コピーしました");
+  expect(
+    (await page.evaluate(() => navigator.clipboard.readText())).replaceAll(
+      "\r\n",
+      "\n",
+    ),
+  ).toBe(await page.getByLabel("生成したプロンプト").inputValue());
   await page.getByRole("button", { name: /02OSS比較/ }).click();
   await expect(
     page.getByRole("cell", { name: "Apache-2.0" }).first(),
