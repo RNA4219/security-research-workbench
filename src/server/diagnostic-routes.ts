@@ -23,6 +23,9 @@ export function registerDiagnosticRoutes(
   const service = new ProductDiagnosticsService(store, options);
   app.addHook("onClose", async () => service.close());
 
+  app.get("/api/model-review/providers", async () =>
+    service.listModelReviewProviders(),
+  );
   app.get("/api/diagnostics/repositories", async () =>
     service.listRepositories(),
   );

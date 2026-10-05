@@ -1,0 +1,37 @@
+{
+  "verifiedAt": "2026-10-05T00:17:43.353852+00:00",
+  "sourceFileCount": 145,
+  "sourceHashMismatches": [],
+  "files": {
+    "gate.json": "78a76f38c48e53527db8e5cc1ba8f5192370319e36f3f38d9acafa21951549c4",
+    "run-identity.json": "9ab33bcce4619b1a925acede353ee475190fd9c9a823168e754e0eb2d3644a0d",
+    "coverage-summary.json": "96773502cb595dd07614099bc9aa8f6a259c8a6ec7a186dd128dd7beb16d705d",
+    "unit-junit.xml": "c5a3cc8c1c86390a35784031fed84eb5da743a3aad8e73f75c6f08662768fee7",
+    "e2e-junit.xml": "b1bed037a64c38e4385f16e43cc9e9f411c079252ab5b052803150bae254e81b",
+    "pages-junit.xml": "20e12902b22c70d0ad52b3a2cc2af47fbee4122cfbae43bfee45c3b99919d2e0",
+    "quality.log": "6eca59524a791588b27ed881a198cc154ff2bb11c59adf29a2235c016621d1cb",
+    "source-scope-suppression.png": "176ce27139aec115667203582d0856193b60af84b1a6a7dfd735a007125efd72"
+  },
+  "verdict": "pass",
+  "failures": [],
+  "tests": {
+    "unit": {
+      "tests": "381",
+      "failures": "0",
+      "errors": "0",
+      "skipped": null
+    },
+    "e2e": {
+      "tests": "52",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "pages": {
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  }
+}

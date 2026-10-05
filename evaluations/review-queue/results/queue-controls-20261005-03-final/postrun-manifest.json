@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.1",
+  "profile": "workflow",
+  "manifest_id": "eval:20261005-review-queue-03",
+  "task_id": "review-queue-20261005-03",
+  "owner": "security-research-workbench",
+  "purpose": "comparison",
+  "status": "completed",
+  "freeze_date": "2026-10-05",
+  "hypothesis": "同一の静的レビュー候補について、明示的人判断を使わないBより、現行条件をproduction evaluateFindingSuppressionで確認するCの方が、再確認が不要な候補だけを確認待ちから外し、条件変更や他findingの現行人判断変更を隠さない。",
+  "action_delta": "Bは観測された候補に抑止判断を適用せず、Cは同一候補・同一fixture状態へproduction helperの評価結果だけを適用する。pastJudgmentsはproduction context hashの入力として扱い、独自の抑止判定やpastJudgmentIdsの存在だけによる除外は使わない。",
+  "negative_control": "期限切れ、対象版変更、仕様・知識・基準のcontext変更、evidence変更、旧hash欠落、基準失効、判断なし、fingerprint変更、source変更、他findingの現行人判断変更を含め、Cが再利用しないことを確認する。",
+  "identity": {
+    "legacy": {
+      "label": "B-no-judgment-queue",
+      "source_path": "scripts/review-queue-evaluation.mjs",
+      "source_revision": "dirty-bundle:review-queue-evaluation-v2",
+      "source_sha256": "sha256:3f3a827b968879ce2ce66b4839ea827bba104aa030004dda4ad4dd1d6c9f609b",
+      "input_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1"
+    },
+    "candidate": {
+      "label": "C-production-suppression",
+      "source_path": "dist/server/workflow-domain.js",
+      "source_revision": "dirty-bundle:workflow-domain-dist-current-prebuild",
+      "source_sha256": "sha256:6e3bce9dbc8103fb8ed0c87c11eecd7af76ff89faccf5d83366ab8626c53161c",
+      "input_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1"
+    },
+    "runner": {
+      "id": "review-queue-evaluation/v2",
+      "sha256": "sha256:3f3a827b968879ce2ce66b4839ea827bba104aa030004dda4ad4dd1d6c9f609b"
+    },
+    "production_helper": {
+      "label": "production-evaluateFindingSuppression",
+      "source_path": "dist/server/workflow-domain.js",
+      "source_revision": "dirty-bundle:workflow-domain-dist-current-prebuild",
+      "source_sha256": "sha256:6e3bce9dbc8103fb8ed0c87c11eecd7af76ff89faccf5d83366ab8626c53161c",
+      "input_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1"
+    }
+  },
+  "evaluation": {
+    "dataset_id": "review-queue-corpus/v2",
+    "dataset_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1",
+    "measurement_unit": "task",
+    "primary_metric": "queue_reduction_rate",
+    "model_version": "not_used:production-workflow-helper",
+    "policy_version": "evaluateFindingSuppression/v1",
+    "configuration": {
+      "conditions": [
+        "B",
+        "C"
+      ],
+      "split": "queue-controls",
+      "case_count": 15,
+      "at": "2030-01-01T00:00:00.000Z",
+      "matching": "caseId+condition+candidateId",
+      "queue_definition": "!productionEvaluation.reusable",
+      "raw_candidate_required": true,
+      "production_exports": [
+        "hashFindingReviewContext",
+        "hashFindingEvidence",
+        "evaluateFindingSuppression"
+      ],
+      "past_judgment_negative_control": "q15/s15",
+      "human_time_measured": false
+    }
+  },
+  "external_mutations": {
+    "registry_frozen": true,
+    "submission_frozen": true
+  },
+  "outcome": {
+    "artifact_path": "artifact.json",
+    "artifact_sha256": "sha256:f1e77c093eb5724e391d8e6d6fdbaf2cd303e8ec6b7bb4bef2363b60371f06e5",
+    "records": 30,
+    "error_count": 0,
+    "crash_count": 0,
+    "timeout_count": 0,
+    "metrics": {
+      "queue_reduction_rate": 0.06666666666666667,
+      "c_reusable_f1": 1
+    },
+    "decision": "pass"
+  },
+  "postrun_evidence": {
+    "artifactVersion": "review-queue-postrun/v1",
+    "source": {
+      "artifact.json": "sha256:f1e77c093eb5724e391d8e6d6fdbaf2cd303e8ec6b7bb4bef2363b60371f06e5",
+      "summary.json": "sha256:2621ac8510047cba8754f45bd6cba698bf363f68680f21fd689bf84070ed991d",
+      "records.jsonl": "sha256:664fc9dce2922b41511e428f42f5d046fcd6298f13c49f52948781b5c8b784e3",
+      "manifest.json": "sha256:46dc076ded261108939c804e07e19bb36800d1dd6ca6a0f0929f3e59326616ba",
+      "preflight-check.json": "sha256:ae5c55caa0022fac4f797c5800102437fec47e21fe9226108d388bca914025dc"
+    },
+    "status": "completed",
+    "evaluationDecision": "pass",
+    "records": 30,
+    "errorCount": 0,
+    "rawCandidateCount": 30,
+    "holdout": "not_applicable",
+    "metrics": {
+      "records": 30,
+      "successfulRecords": 30,
+      "errorCount": 0,
+      "evaluationRate": 1,
+      "queueRequiredB": 15,
+      "queueRequiredC": 14,
+      "queueReductionCount": 1,
+      "queueReductionRate": 0.06666666666666667,
+      "cReusablePrecision": 1,
+      "cReusableRecall": 1,
+      "cReusableF1": 1,
+      "cFalseReuseCount": 0,
+      "cMissedReusableCount": 0,
+      "negativeControlLeakageCount": 0,
+      "goldMismatchCount": 0,
+      "byCondition": {
+        "B": {
+          "records": 15,
+          "successfulRecords": 15,
+          "errorCount": 0,
+          "queueRequiredCount": 15,
+          "reusableCount": 0,
+          "expectedReusableCount": 0,
+          "trueReusableCount": 0,
+          "falseReusableCount": 0,
+          "missedReusableCount": 0,
+          "goldMismatchCount": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "evaluationRate": 1
+        },
+        "C": {
+          "records": 15,
+          "successfulRecords": 15,
+          "errorCount": 0,
+          "queueRequiredCount": 14,
+          "reusableCount": 1,
+          "expectedReusableCount": 1,
+          "trueReusableCount": 1,
+          "falseReusableCount": 0,
+          "missedReusableCount": 0,
+          "goldMismatchCount": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "evaluationRate": 1
+        }
+      }
+    },
+    "measurementNotes": [
+      "Bは承認判断を参照しない観測状態、Cはproduction evaluateFindingSuppressionの結果を使います。現行pastJudgmentsはproduction context hashの入力として扱い、独自抑止条件やpastJudgmentIdsによる代替判定は使いません。",
+      "queueRequiredはproduction evaluation.reusableの否定であり、実際の人の所要時間ではありません。確認待ち件数はproxyです。",
+      "このartifactは同一候補に対するworkflow効果を測るもので、モデル精度の改善や人の時間短縮を証明しません。",
+      "gold mismatch、negative control leakage、helper errorがあればevaluation_decision=failのまま保存します。"
+    ]
+  }
+}

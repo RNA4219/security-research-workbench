@@ -1,0 +1,18 @@
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="9.390355">
+<testsuite name="research.spec.ts" timestamp="2026-10-04T23:53:36.905Z" hostname="" tests="4" failures="0" skipped="0" time="4.748" errors="0">
+<testcase name="静的サブパスだけで調査・履歴・再読込・Markdown・履歴削除が使える" classname="research.spec.ts" time="2.017">
+</testcase>
+<testcase name="保存不能でも調査結果を失わず、ダウンロードできる" classname="research.spec.ts" time="0.918">
+</testcase>
+<testcase name="破損した履歴を削除して復帰し、API制限や未取得を画面に示す" classname="research.spec.ts" time="1.056">
+</testcase>
+<testcase name="スマートフォン幅で横にはみ出さずに入力できる" classname="research.spec.ts" time="0.757">
+</testcase>
+</testsuite>
+<testsuite name="sample.spec.ts" timestamp="2026-10-04T23:53:36.905Z" hostname="" tests="2" failures="0" skipped="0" time="1.907" errors="0">
+<testcase name="モックと明示し、外部通信なしで比較・再評価・人の確認を体験できる" classname="sample.spec.ts" time="1.008">
+</testcase>
+<testcase name="390px幅で全場面とモック表記が読み取れ、補助機能の区別も明確" classname="sample.spec.ts" time="0.899">
+</testcase>
+</testsuite>
+</testsuites>

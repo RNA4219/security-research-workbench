@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-10-04T23:55:09.815Z",
+  "sourceFileCount": 145,
+  "sourceHashMismatches": [],
+  "files": {
+    "gate.json": "df5f9ce247df76954e70945445148b9d099fca5003d8a09b0ae5829b618ffa24",
+    "run-identity.json": "a3bdfaf1b0652e02225e59ad97a4ba9bff931ddf7a47426c91f31af0d8e6d725",
+    "coverage-summary.json": "bb997b02360809c4f3fdbbec1cee51b10d773f7f43057adc7ce3e03cf9803eca",
+    "unit-junit.xml": "c3ebb480b2f702e8fb90c062193eaf8389ac2e625c864e75e1a9e15c90726f92",
+    "e2e-junit.xml": "72d57b75ab8af9dcbeaf6009938b243ab2cee7ce955f67ba8829bf12e79fb3c9",
+    "pages-junit.xml": "24e7c1f0ac9ab8a162f46a57908f7183c8af0ff4842f19d8618571834469d7d3",
+    "quality.log": "e2388bd0ddedbb03bb5cd57cb40beb02bf8eddf07122f773fb74f16fe4d34945",
+    "source-scope-suppression.png": "ce8aa40ab5ca7076588e6a4eb4b135d2f2e89045d5939f267ba06c8ee2ade7a9"
+  },
+  "verdict": "fail",
+  "failures": [
+    "src\\server\\diagnostic-service.ts branches: 84.71 < 85",
+    "src\\server\\model-source-binding.ts branches: 81.25 < 85"
+  ]
+}

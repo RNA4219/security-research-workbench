@@ -1,0 +1,18 @@
+{
+  "commit": "73c734ecb34db9b08395bcc97d8f80488a1cb3fd",
+  "files": [
+    {
+      "path": "package-lock.json",
+      "bytes": 167,
+      "sha256": "d7694db473b71969c54403639f578b1a98e270b10ed9637e67d7a46b114b7552",
+      "content": "{\"name\":\"diagnostic-feedback-contract-fixture\",\"version\":\"1.0.0\",\"lockfileVersion\":3,\"packages\":{\"\":{\"name\":\"diagnostic-feedback-contract-fixture\",\"version\":\"1.0.0\"}}}"
+    },
+    {
+      "path": "src/client.ts",
+      "bytes": 102,
+      "sha256": "de747baf718ea3ba60e3a605a871483396ea9fc30d7973c16921265c3f4f0947",
+      "content": "import https from \"node:https\";\nexport const client = new https.Agent({ rejectUnauthorized: false });\n"
+    }
+  ],
+  "snapshotSha256": "44dc269aec229a0ad855ad823ce8bb87aca6aa371e22d24f84763851e35d5d9e"
+}

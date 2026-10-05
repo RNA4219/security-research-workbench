@@ -2,11 +2,20 @@ import { useEffect, useState } from "react";
 import { request as apiRequest } from "./api.js";
 import {
   diagnosticApiPaths,
+  isDiagnosticFindingSuppressed,
   type DiagnosticRepository,
   type DiagnosticRun,
   type Product,
   type ProductRunSummary,
+  type ProductModelReview,
+  type ModelReviewStatus,
 } from "../shared/product-diagnostics.js";
+import type { WorkflowProviderSummary } from "../shared/workflow-run.js";
+import {
+  defaultModelReview,
+  ModelReviewEditor,
+  ModelReviewEvidence,
+} from "./product-model-review.js";
 import "./product-diagnostics-page.css";
 
 type ProductDetail = { product: Product; runs: ProductRunSummary[] };
@@ -30,6 +39,7 @@ const progressLabel: Record<DiagnosticRun["progress"]["phase"], string> = {
   snapshot: "対象版を固定",
   static: "コードを確認",
   dependency: "依存関係を照合",
+  model_review: "製品仕様を使ってAIがレビュー",
   linking: "前回の結果と比較",
   saving: "結果を保存",
   finished: "診断結果を確認",
@@ -43,6 +53,22 @@ const deltaLabel: Record<DiagnosticRun["findings"][number]["delta"], string> = {
 };
 
 const severityLabel = { high: "高", medium: "中", low: "低" } as const;
+const engineLabel = {
+  static: "固定ルールによるコード解析",
+  dependency: "npm依存関係",
+  model: "製品仕様を使うAIレビュー",
+} as const;
+const modelStatusLabel: Record<ModelReviewStatus, string> = {
+  disabled: "無効",
+  queued: "開始待ち",
+  running: "レビュー中",
+  completed: "指定範囲を完了",
+  partial: "一部未レビュー",
+  failed: "失敗",
+  stopped: "停止",
+  interrupted: "中断",
+  unavailable: "未診断",
+};
 const activeStatuses = new Set<DiagnosticRun["status"]>(["queued", "running"]);
 const resumableStatuses = new Set<DiagnosticRun["status"]>([
   "partial",
@@ -91,6 +117,12 @@ function SummaryCounts({ run }: { run: ProductRunSummary }) {
         <dt>今回未検出</dt>
         <dd>{run.findingCounts.notObserved}</dd>
       </div>
+      {(run.findingCounts.suppressed ?? 0) > 0 && (
+        <div>
+          <dt>人の判断を再利用</dt>
+          <dd>{run.findingCounts.suppressed}</dd>
+        </div>
+      )}
     </dl>
   );
 }
@@ -117,6 +149,14 @@ export function ProductDiagnosticsPage({
   const [ref, setRef] = useState("");
   const [specification, setSpecification] = useState("");
   const [allowDependencyNetwork, setAllowDependencyNetwork] = useState(false);
+  const [modelProviders, setModelProviders] = useState<
+    WorkflowProviderSummary[]
+  >([]);
+  const [modelProviderError, setModelProviderError] = useState("");
+  const [modelReview, setModelReview] =
+    useState<ProductModelReview>(defaultModelReview);
+  const [settingsModelReview, setSettingsModelReview] =
+    useState<ProductModelReview>(defaultModelReview);
   const [createSchedule, setCreateSchedule] = useState(false);
   const [createInterval, setCreateInterval] = useState("1440");
   const [settingsRef, setSettingsRef] = useState("");
@@ -146,11 +186,21 @@ export function ProductDiagnosticsPage({
         diagnosticApiPaths.repositories,
       ),
       diagnosticRequest<Product[]>(diagnosticApiPaths.products),
+      diagnosticRequest<WorkflowProviderSummary[]>(
+        diagnosticApiPaths.modelReviewProviders,
+      ).catch(() => {
+        if (current)
+          setModelProviderError(
+            "AIモデルの接続情報を取得できませんでした。再読込してください。",
+          );
+        return [];
+      }),
     ])
-      .then(([repoList, productList]) => {
+      .then(([repoList, productList, providers]) => {
         if (!current) return;
         setRepositories(repoList);
         setProducts(productList);
+        setModelProviders(providers);
         setRepositoryId(repoList[0]?.id ?? "");
         setRef(repoList[0]?.defaultRef ?? "");
         setProductId(productList[0]?.id ?? "");
@@ -177,6 +227,7 @@ export function ProductDiagnosticsPage({
   useEffect(() => {
     if (!productId) return;
     let current = true;
+    setDetail(undefined);
     diagnosticRequest<ProductDetail>(diagnosticApiPaths.product(productId))
       .then((next) => {
         if (!current) return;
@@ -189,6 +240,7 @@ export function ProductDiagnosticsPage({
         setSettingsRef(next.product.ref);
         setSettingsSpecification(next.product.specification);
         setSettingsAllowNetwork(next.product.allowDependencyNetwork);
+        setSettingsModelReview(next.product.modelReview ?? defaultModelReview);
         setSettingsSchedule(next.product.schedule.enabled);
         setSettingsInterval(
           String(next.product.schedule.intervalMinutes ?? 1440),
@@ -216,11 +268,13 @@ export function ProductDiagnosticsPage({
   useEffect(() => {
     if (!productId || !detail?.product.latestRun) return;
     if (!activeStatuses.has(detail.product.latestRun.status)) return;
+    let current = true;
     const timer = window.setInterval(() => {
       void diagnosticRequest<ProductDetail>(
         diagnosticApiPaths.product(productId),
       )
         .then((next) => {
+          if (!current) return;
           setDetail(next);
           setProducts((items) =>
             items.map((item) =>
@@ -228,15 +282,19 @@ export function ProductDiagnosticsPage({
             ),
           );
         })
-        .catch((cause: unknown) =>
+        .catch((cause: unknown) => {
+          if (!current) return;
           setError(
             cause instanceof Error
               ? `診断の進行状況を更新できません。再読込してください。${cause.message}`
               : "診断の進行状況を更新できません。再読込してください。",
-          ),
-        );
+          );
+        });
     }, 1800);
-    return () => window.clearInterval(timer);
+    return () => {
+      current = false;
+      window.clearInterval(timer);
+    };
   }, [
     productId,
     detail?.product.latestRun?.id,
@@ -305,6 +363,7 @@ export function ProductDiagnosticsPage({
           ref,
           specification,
           allowDependencyNetwork,
+          modelReview,
           schedule: {
             enabled: createSchedule,
             intervalMinutes: createSchedule ? Number(createInterval) : null,
@@ -316,6 +375,10 @@ export function ProductDiagnosticsPage({
       setSelectedRunId("");
       setTitle("");
       setSpecification("");
+      setModelReview({ ...defaultModelReview });
+      setAllowDependencyNetwork(false);
+      setCreateSchedule(false);
+      setCreateInterval("1440");
       setShowCreate(false);
       setNotice("製品と知識管理用の案件を作成しました。");
     });
@@ -332,6 +395,7 @@ export function ProductDiagnosticsPage({
           ref: settingsRef,
           specification: settingsSpecification,
           allowDependencyNetwork: settingsAllowNetwork,
+          modelReview: settingsModelReview,
           schedule: {
             enabled: settingsSchedule,
             intervalMinutes: settingsSchedule ? Number(settingsInterval) : null,
@@ -395,17 +459,27 @@ export function ProductDiagnosticsPage({
         diagnosticRequest<Product[]>(diagnosticApiPaths.products),
         diagnosticRequest<ProductDetail>(diagnosticApiPaths.product(productId)),
       ]);
+      const nextRunId = nextDetail.runs[0]?.id ?? "";
+      const nextRun = nextRunId
+        ? await diagnosticRequest<DiagnosticRun>(
+            diagnosticApiPaths.run(productId, nextRunId),
+          )
+        : undefined;
       setProducts(nextProducts);
       setDetail(nextDetail);
       setSettingsRef(nextDetail.product.ref);
       setSettingsSpecification(nextDetail.product.specification);
       setSettingsAllowNetwork(nextDetail.product.allowDependencyNetwork);
+      setSettingsModelReview(
+        nextDetail.product.modelReview ?? defaultModelReview,
+      );
       setSettingsSchedule(nextDetail.product.schedule.enabled);
       setSettingsInterval(
         String(nextDetail.product.schedule.intervalMinutes ?? 1440),
       );
       setRunRef(nextDetail.product.ref);
-      setSelectedRunId(nextDetail.runs[0]?.id ?? "");
+      setSelectedRunId(nextRunId);
+      setRun(nextRun);
       setNotice("最新の製品設定と診断履歴を読み込みました。");
     });
   };
@@ -558,6 +632,12 @@ export function ProductDiagnosticsPage({
               </small>
             </span>
           </label>
+          <ModelReviewEditor
+            value={modelReview}
+            providers={modelProviders}
+            error={modelProviderError}
+            onChange={setModelReview}
+          />
           <ScheduleEditor
             enabled={createSchedule}
             interval={createInterval}
@@ -582,9 +662,12 @@ export function ProductDiagnosticsPage({
             {products.map((item) => (
               <button
                 key={item.id}
+                disabled={busy}
                 className={item.id === productId ? "selected" : ""}
                 onClick={() => {
+                  if (item.id === productId) return;
                   setProductId(item.id);
+                  setDetail(undefined);
                   setSelectedRunId("");
                   setRun(undefined);
                   setError("");
@@ -724,6 +807,12 @@ export function ProductDiagnosticsPage({
                             {item.incompleteCoverage && (
                               <small>未診断範囲あり</small>
                             )}
+                            {item.modelReview?.enabled && (
+                              <small>
+                                AIレビュー:{" "}
+                                {modelStatusLabel[item.modelReview.status]}
+                              </small>
+                            )}
                           </button>
                         </li>
                       ))}
@@ -768,6 +857,12 @@ export function ProductDiagnosticsPage({
                         </small>
                       </span>
                     </label>
+                    <ModelReviewEditor
+                      value={settingsModelReview}
+                      providers={modelProviders}
+                      error={modelProviderError}
+                      onChange={setSettingsModelReview}
+                    />
                     <ScheduleEditor
                       enabled={settingsSchedule}
                       interval={settingsInterval}
@@ -857,6 +952,9 @@ function RunView({
   projectId: string;
 }) {
   const active = activeStatuses.has(run.status);
+  const suppressedCount = run.findings.filter(
+    isDiagnosticFindingSuppressed,
+  ).length;
   return (
     <section className="panel diagnostic-run" aria-label="診断結果">
       <header className="section-head">
@@ -931,12 +1029,13 @@ function RunView({
         </p>
       )}
 
+      <ModelReviewEvidence run={run} />
       <div className="diagnostic-coverage">
         <h4>解析できた範囲と未診断</h4>
         {run.coverage.map((coverage) => (
           <article key={coverage.engine}>
             <h5>
-              {coverage.engine === "static" ? "製品コード" : "npm依存関係"} ·{" "}
+              {engineLabel[coverage.engine]} ·{" "}
               {coverage.status === "complete"
                 ? "指定範囲を解析"
                 : coverage.status === "partial"
@@ -975,71 +1074,130 @@ function RunView({
         className="diagnostic-findings"
         aria-label="診断で見つかった項目"
       >
-        <h4>診断で確認する項目（{run.findings.length}件）</h4>
+        <h4>診断で確認する項目（{run.findings.length - suppressedCount}件）</h4>
+        {suppressedCount > 0 && (
+          <p className="notice">
+            人の判断を再利用した{suppressedCount}
+            件は、折りたたんで表示しています。
+            この診断時点で、明示した再確認不要の期限と、コード・仕様・知識・根拠の一致を確認した項目です。
+          </p>
+        )}
         {run.findings.length === 0 ? (
           <p className="muted">
             この実行では指摘候補を取得していません。解析範囲と未診断項目を確認してください。結果は安全性の保証ではありません。
           </p>
         ) : (
-          run.findings.map((finding) => (
-            <article
-              className="diagnostic-finding"
-              key={`${finding.fingerprint}:${finding.delta}`}
-            >
-              <header>
-                <span className={`delta delta-${finding.delta}`}>
-                  {deltaLabel[finding.delta]}
-                </span>
-                <span className={`severity severity-${finding.severity}`}>
-                  重要度 {severityLabel[finding.severity]}
-                </span>
-                <small>{finding.ruleId}</small>
-              </header>
-              <h5>{finding.title}</h5>
-              <p className="diagnostic-location">
-                <code>
-                  {finding.path}:{finding.line}
-                </code>{" "}
-                · {finding.engine === "static" ? "コード解析" : "依存関係"}
-              </p>
-              <p>{finding.evidence}</p>
-              <p>
-                <b>確認・修正案:</b> {finding.remediation}
-              </p>
-              {finding.advisoryUrl && (
+          run.findings.map((finding, index) => {
+            const suppressed = isDiagnosticFindingSuppressed(finding);
+            const card = (
+              <article
+                className="diagnostic-finding"
+                key={`${finding.fingerprint}:${finding.delta}:${index}`}
+              >
+                <header>
+                  <span className={`delta delta-${finding.delta}`}>
+                    {deltaLabel[finding.delta]}
+                  </span>
+                  <span className={`severity severity-${finding.severity}`}>
+                    重要度 {severityLabel[finding.severity]}
+                  </span>
+                  <small>{finding.ruleId}</small>
+                </header>
+                <h5>{finding.title}</h5>
+                <p className="diagnostic-location">
+                  <code>
+                    {finding.path}:{finding.line}
+                  </code>{" "}
+                  · {engineLabel[finding.engine]}
+                </p>
+                <p>{finding.evidence}</p>
+                {finding.modelReviewEvidence && (
+                  <details>
+                    <summary>AIが参照した仕様・過去の判断</summary>
+                    <p>
+                      仕様・知識の参照:{" "}
+                      {finding.modelReviewEvidence.specRefIds.join("、") ||
+                        "参照なし"}
+                    </p>
+                    <p>
+                      過去判断の参照:{" "}
+                      {finding.modelReviewEvidence.pastJudgmentIds.join("、") ||
+                        "参照なし"}
+                    </p>
+                    {!suppressed && (
+                      <p>
+                        過去の判断を参照していても、今回の指摘は人の確認が必要です。
+                      </p>
+                    )}
+                  </details>
+                )}
+                {finding.suppression &&
+                  finding.suppression.status !== "missing" && (
+                    <p className="diagnostic-caution">
+                      {suppressed
+                        ? "この診断では人の判断を再利用しました。"
+                        : "過去の再確認不要の判断は、この診断には引き継いでいません。"}
+                      {finding.suppression.decisionRevision !== null &&
+                        ` 判断 revision ${finding.suppression.decisionRevision}。`}
+                      {finding.suppression.expiresAt &&
+                        ` 期限: ${dateLabel(finding.suppression.expiresAt)}。`}
+                      {finding.suppression.status === "expired" &&
+                        "期限が切れています。"}
+                      {finding.suppression.status === "invalidated" &&
+                        "判断・根拠または適用条件が変わっています。"}
+                      {finding.suppression.status === "unknown" &&
+                        "以前の記録では適用条件の一致を確認できません。"}
+                    </p>
+                  )}
                 <p>
-                  <a
-                    href={finding.advisoryUrl}
-                    target="_blank"
-                    rel="noreferrer"
+                  <b>確認・修正案:</b> {finding.remediation}
+                </p>
+                {finding.advisoryUrl && (
+                  <p>
+                    <a
+                      href={finding.advisoryUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      公開アドバイザリを確認 ↗
+                    </a>
+                  </p>
+                )}
+                {finding.delta === "not_observed" && (
+                  <p className="diagnostic-caution">
+                    {!finding.presentInAnalysis &&
+                      "前回の指摘記録を比較用に保持しています。 "}
+                    今回見つからなかった状態です。修正版であることや解決済みであることを自動確定しません。対象版の確認と人の判定が必要です。
+                  </p>
+                )}
+                <div className="actions">
+                  <button onClick={() => onOpenWorkflow(projectId)}>
+                    {finding.workflowFindingId
+                      ? "案件の判定・修正記録を開く"
+                      : "製品の知識・判定を開く"}
+                  </button>
+                  <button
+                    onClick={() =>
+                      onOpenWorkflow(projectId, finding.workflowQuestion)
+                    }
                   >
-                    公開アドバイザリを確認 ↗
-                  </a>
-                </p>
-              )}
-              {finding.delta === "not_observed" && (
-                <p className="diagnostic-caution">
-                  {!finding.presentInAnalysis &&
-                    "前回の指摘記録を比較用に保持しています。 "}
-                  今回見つからなかった状態です。修正版であることや解決済みであることを自動確定しません。対象版の確認と人の判定が必要です。
-                </p>
-              )}
-              <div className="actions">
-                <button onClick={() => onOpenWorkflow(projectId)}>
-                  {finding.workflowFindingId
-                    ? "案件の判定・修正記録を開く"
-                    : "製品の知識・判定を開く"}
-                </button>
-                <button
-                  onClick={() =>
-                    onOpenWorkflow(projectId, finding.workflowQuestion)
-                  }
-                >
-                  根拠付きの質問を手動で確認する
-                </button>
-              </div>
-            </article>
-          ))
+                    根拠付きの質問を手動で確認する
+                  </button>
+                </div>
+              </article>
+            );
+            return suppressed ? (
+              <details
+                className="diagnostic-suppressed"
+                key={`${finding.fingerprint}:${index}`}
+              >
+                <summary>人の判断を再利用: {finding.title}</summary>
+                {card}
+              </details>
+            ) : (
+              card
+            );
+          })
         )}
       </section>
 

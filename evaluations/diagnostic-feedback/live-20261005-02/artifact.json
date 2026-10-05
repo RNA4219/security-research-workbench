@@ -1,0 +1,851 @@
+{
+  "artifactVersion": "diagnostic-feedback-evaluation/v1",
+  "mode": "live",
+  "gate": {
+    "status": "fail",
+    "failure": "同条件runで明示的人判断の抑止が再利用されませんでした",
+    "modelCandidateRequired": true,
+    "rawCandidatesRequired": true,
+    "humanTimeMeasured": false,
+    "realModelUsed": true,
+    "recheckPriorDecisionProvidedByModel": false
+  },
+  "scope": {
+    "purpose": "本番ProductDiagnosticsServiceの保存済みhuman suppressionが同一条件だけで確認待ちを別枠化するlive評価",
+    "interpretation": "確認待ち件数はproxyであり、人の所要時間短縮・モデル精度改善・幅広さの証拠へ読み替えない。固定ruleとモデル候補が重なるためworkflow効果だけを測定する。",
+    "humanJudgmentNotice": "workflowへ記録した判断はテスト用の判断であり、実利用者の判定ではない。"
+  },
+  "fixture": {
+    "repositoryId": "fixture",
+    "commit": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+    "root": "fixture",
+    "sourceSnapshot": "source-snapshot.json",
+    "sourceSnapshotSha256": "e24e9842a8b06cfa01020932dc0534634d9ca7f374a77980320f45c8c69ebd4f"
+  },
+  "database": "diagnostics.sqlite",
+  "productId": "6070366a-b7ae-431c-9921-0e9b096c1df9",
+  "execution": {
+    "modelReviewBudget": {
+      "maxBatches": 100,
+      "maxFiles": 500,
+      "maxInputChars": 10000000,
+      "maxBatchChars": 12000,
+      "maxPromptChars": 20000,
+      "maxOutputTokens": 2048
+    },
+    "modelReviewTimeoutMs": 120000,
+    "pollIntervalMs": 200,
+    "runWaitTimeoutMs": 135000,
+    "actualModelReviewBudgets": [
+      {
+        "name": "initial",
+        "budget": {
+          "maxBatches": 100,
+          "maxFiles": 500,
+          "maxInputChars": 10000000,
+          "maxBatchChars": 12000,
+          "maxPromptChars": 20000,
+          "maxOutputTokens": 2048
+        }
+      },
+      {
+        "name": "same-condition-reuse",
+        "budget": {
+          "maxBatches": 100,
+          "maxFiles": 500,
+          "maxInputChars": 10000000,
+          "maxBatchChars": 12000,
+          "maxPromptChars": 20000,
+          "maxOutputTokens": 2048
+        }
+      }
+    ]
+  },
+  "provider": {
+    "id": "local",
+    "kind": "local",
+    "label": "ローカルモデル",
+    "model": "qwen3.6-27b",
+    "available": true,
+    "costKnown": true,
+    "configVersion": "qwen36b-v3-ctx16384-np1-ngl48:no-thinking:json:endpoint-05989293179ed6eacc9858ea196b7071f43dfef4fd18c1bc801c151917fee491",
+    "endpointConfigured": true,
+    "endpointFingerprint": "7ad2345f62685fa05f392ba2f90da9b0ac38dec9bdad6bc9997327ad799f87e5",
+    "disableThinking": true,
+    "maxOutputTokens": 2048
+  },
+  "runtime": {
+    "nodeVersion": "v24.15.0",
+    "appModule": {
+      "kind": "app",
+      "path": "dist\\server\\app.js",
+      "bytes": 8743,
+      "sha256": "4e744cb4fa375b2de704b43c2813aa8236bccf7166817b39918864e48c50925c"
+    },
+    "providerModule": {
+      "kind": "provider",
+      "path": "dist\\server\\workflow-providers.js",
+      "bytes": 8409,
+      "sha256": "ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec"
+    },
+    "sourceSnapshot": "runtime-source-snapshot.json",
+    "sourceSnapshotSha256": "b02623dd8096a14c9d242cc76d52e454916a4807ab3ed09d194a5b68ffe44066",
+    "buildIdentity": "f2d89aa3b5acc88f0694d02e831652d60fdc99c6ace60253eea5b2ec5c0cc3ec",
+    "appFactoryInjected": false
+  },
+  "phases": [
+    {
+      "name": "initial",
+      "startedRunId": "4b1f0eb9-e861-477a-bafe-4fac23cb3812",
+      "run": {
+        "id": "4b1f0eb9-e861-477a-bafe-4fac23cb3812",
+        "status": "completed",
+        "commit": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+        "engineVersion": "0.2.0",
+        "specificationRevision": 1,
+        "workflowRevision": 2,
+        "snapshotFiles": [
+          {
+            "path": "package-lock.json",
+            "hash": "d7694db473b71969c54403639f578b1a98e270b10ed9637e67d7a46b114b7552"
+          },
+          {
+            "path": "src/client.ts",
+            "hash": "de747baf718ea3ba60e3a605a871483396ea9fc30d7973c16921265c3f4f0947"
+          }
+        ],
+        "snapshotOmitted": [],
+        "coverage": [
+          {
+            "engine": "static",
+            "status": "complete",
+            "assessed": 1,
+            "omitted": [],
+            "limitations": [
+              "列挙したJavaScript/TypeScriptの防御的ルールのみを評価しました。完全なセキュリティレビューではありません。"
+            ]
+          },
+          {
+            "engine": "dependency",
+            "status": "complete",
+            "assessed": 0,
+            "omitted": [],
+            "limitations": [
+              "ロックファイルに照合対象の依存パッケージはありません。"
+            ]
+          },
+          {
+            "engine": "model",
+            "status": "complete",
+            "assessed": 2,
+            "omitted": [],
+            "limitations": [
+              "このcoverageは診断範囲の記録であり、安全性の証明ではありません。"
+            ]
+          }
+        ],
+        "failure": null,
+        "modelReview": {
+          "enabled": true,
+          "providerId": "local",
+          "providerKind": "local",
+          "model": "qwen3.6-27b",
+          "configVersion": "qwen36b-v3-ctx16384-np1-ngl48:no-thinking:json:endpoint-05989293179ed6eacc9858ea196b7071f43dfef4fd18c1bc801c151917fee491",
+          "inputHash": "bacaec46026ec0aa39660f9a95de07ffddbae1e9054446edb9ce49e7c349c022",
+          "contextHash": "78c56e150019d4c1575d31f31b1e324e75a964de73e126168fa69f8b1a64cbc3",
+          "budget": {
+            "maxBatches": 100,
+            "maxFiles": 500,
+            "maxInputChars": 10000000,
+            "maxBatchChars": 12000,
+            "maxPromptChars": 20000,
+            "maxOutputTokens": 2048
+          },
+          "coverage": {
+            "status": "complete",
+            "batchCount": 1,
+            "completedBatchCount": 1,
+            "assessedFiles": 2,
+            "assessedLines": 4,
+            "omitted": [],
+            "limitations": [
+              "このcoverageは診断範囲の記録であり、安全性の証明ではありません。"
+            ],
+            "isSafetyProof": false
+          },
+          "record": {
+            "status": "completed",
+            "providerId": "local",
+            "model": "qwen3.6-27b",
+            "configVersion": "qwen36b-v3-ctx16384-np1-ngl48:no-thinking:json:endpoint-05989293179ed6eacc9858ea196b7071f43dfef4fd18c1bc801c151917fee491",
+            "hashes": {
+              "snapshot": "215a18bf35b1929baa9f60d5c87c02481e229c764c832ce1dd378abed3b405e0",
+              "input": "bacaec46026ec0aa39660f9a95de07ffddbae1e9054446edb9ce49e7c349c022",
+              "knowledge": "4efaddde877862a204d474768c2df4d82d3f0641fc64b0513427587e03174e41",
+              "provider": "59c35c97ca4de72aa674195535f3c1f9b984bdc84384458a812ea6ce7fac46f5",
+              "model": "802b617845602e2ba7ba2ce837057781c90242b660376a35f6716564e7439c0e",
+              "config": "24f913577fac4fe79e2f604b365a5073dc6c2ffcdf6542bbc6a6cedb4d07fa17",
+              "plan": "1c34a47e2075dff520499ad091d6aeb01a28826f5acbb49d28e0435cfeff5f56",
+              "prompt": "1530f822ee4f4149d8348cd5c4898ff6fb770d2131f32af18552ad5f2c0a32ab",
+              "response": "ead6cade02c86e08945749eac42349dc7c66a9635127efd94d4052eb153ec24f"
+            },
+            "startedAt": "2026-10-04T21:42:36.343Z",
+            "finishedAt": "2026-10-04T21:43:49.696Z",
+            "elapsedMs": 73353,
+            "budget": {
+              "maxBatches": 100,
+              "maxFiles": 500,
+              "maxInputChars": 10000000,
+              "maxBatchChars": 12000,
+              "maxPromptChars": 20000,
+              "maxOutputTokens": 2048
+            },
+            "used": {
+              "batches": 1,
+              "files": 2,
+              "inputChars": 269,
+              "promptTokens": 1985,
+              "completionTokens": 364,
+              "actualCostUsd": 0
+            },
+            "stopReason": "none",
+            "checkpoint": {
+              "reused": false,
+              "savedBatchCount": 1
+            }
+          },
+          "failure": null
+        },
+        "findingCounts": {
+          "new": 2,
+          "continuing": 0,
+          "needsReview": 0,
+          "notObserved": 0
+        },
+        "candidates": [
+          {
+            "fingerprint": "2673ced06962b54012d51843341a9d2022cb39cfaa0d0a8354a6f6d3fdcc7f1a",
+            "ruleId": "tls.reject-unauthorized-disabled",
+            "engine": "static",
+            "title": "TLS証明書検証が無効です",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "rejectUnauthorized: false",
+            "remediation": "証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。",
+            "delta": "new",
+            "presentInAnalysis": true,
+            "comparedToRunId": null,
+            "workflowFindingId": "cc86546d-4da2-4147-b573-ea84c5af9da0",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS証明書検証が無効です (high, tls.reject-unauthorized-disabled)\n位置: src/client.ts:2\n根拠: rejectUnauthorized: false\n推奨確認: 証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "missing",
+              "reason": "no_active_suppression",
+              "decisionRevision": null,
+              "judgment": null,
+              "expiresAt": null,
+              "reused": false
+            }
+          },
+          {
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleId": "model-review.cryptography",
+            "engine": "model",
+            "title": "TLS certificate verification is disabled in HTTPS agent",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "remediation": "Change rejectUnauthorized to true or remove the option to use the default secure behavior. Ensure that valid CA certificates are available in the environment if custom CAs are used.",
+            "modelReviewEvidence": {
+              "specRefIds": [
+                "product-specification"
+              ],
+              "pastJudgmentIds": [],
+              "requiresHumanConfirmation": true,
+              "recheckPriorDecision": true
+            },
+            "delta": "new",
+            "presentInAnalysis": true,
+            "comparedToRunId": null,
+            "workflowFindingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS certificate verification is disabled in HTTPS agent (high, model-review.cryptography)\n位置: src/client.ts:2\n根拠: The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n推奨確認: Change rejectUnauthorized to true or remove the option to use the default secure behavior. Ensure that valid CA certificates are available in the environment if custom CAs are used.\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "missing",
+              "reason": "no_active_suppression",
+              "decisionRevision": null,
+              "judgment": null,
+              "expiresAt": null,
+              "reused": false
+            }
+          }
+        ],
+        "rawModelCandidates": [
+          {
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleId": "model-review.cryptography",
+            "engine": "model",
+            "title": "TLS certificate verification is disabled in HTTPS agent",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "remediation": "Change rejectUnauthorized to true or remove the option to use the default secure behavior. Ensure that valid CA certificates are available in the environment if custom CAs are used.",
+            "modelReviewEvidence": {
+              "specRefIds": [
+                "product-specification"
+              ],
+              "pastJudgmentIds": [],
+              "requiresHumanConfirmation": true,
+              "recheckPriorDecision": true
+            },
+            "delta": "new",
+            "presentInAnalysis": true,
+            "comparedToRunId": null,
+            "workflowFindingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS certificate verification is disabled in HTTPS agent (high, model-review.cryptography)\n位置: src/client.ts:2\n根拠: The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n推奨確認: Change rejectUnauthorized to true or remove the option to use the default secure behavior. Ensure that valid CA certificates are available in the environment if custom CAs are used.\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "missing",
+              "reason": "no_active_suppression",
+              "decisionRevision": null,
+              "judgment": null,
+              "expiresAt": null,
+              "reused": false
+            }
+          }
+        ],
+        "confirmationQueueCandidates": [
+          {
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleId": "model-review.cryptography",
+            "engine": "model",
+            "title": "TLS certificate verification is disabled in HTTPS agent",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "remediation": "Change rejectUnauthorized to true or remove the option to use the default secure behavior. Ensure that valid CA certificates are available in the environment if custom CAs are used.",
+            "modelReviewEvidence": {
+              "specRefIds": [
+                "product-specification"
+              ],
+              "pastJudgmentIds": [],
+              "requiresHumanConfirmation": true,
+              "recheckPriorDecision": true
+            },
+            "delta": "new",
+            "presentInAnalysis": true,
+            "comparedToRunId": null,
+            "workflowFindingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS certificate verification is disabled in HTTPS agent (high, model-review.cryptography)\n位置: src/client.ts:2\n根拠: The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n推奨確認: Change rejectUnauthorized to true or remove the option to use the default secure behavior. Ensure that valid CA certificates are available in the environment if custom CAs are used.\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "missing",
+              "reason": "no_active_suppression",
+              "decisionRevision": null,
+              "judgment": null,
+              "expiresAt": null,
+              "reused": false
+            }
+          }
+        ],
+        "modelCandidateCount": 1,
+        "modelCurrentCount": 1,
+        "modelSuppressedCount": 0,
+        "modelQueueRequiredCount": 1
+      },
+      "invocationRange": [
+        0,
+        1
+      ],
+      "validation": {
+        "status": "pass",
+        "errors": []
+      }
+    },
+    {
+      "name": "same-condition-reuse",
+      "startedRunId": "60323ed2-12ad-409a-a0cc-5ce8cab7ac9c",
+      "run": {
+        "id": "60323ed2-12ad-409a-a0cc-5ce8cab7ac9c",
+        "status": "completed",
+        "commit": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+        "engineVersion": "0.2.0",
+        "specificationRevision": 1,
+        "workflowRevision": 7,
+        "snapshotFiles": [
+          {
+            "path": "package-lock.json",
+            "hash": "d7694db473b71969c54403639f578b1a98e270b10ed9637e67d7a46b114b7552"
+          },
+          {
+            "path": "src/client.ts",
+            "hash": "de747baf718ea3ba60e3a605a871483396ea9fc30d7973c16921265c3f4f0947"
+          }
+        ],
+        "snapshotOmitted": [],
+        "coverage": [
+          {
+            "engine": "static",
+            "status": "complete",
+            "assessed": 1,
+            "omitted": [],
+            "limitations": [
+              "列挙したJavaScript/TypeScriptの防御的ルールのみを評価しました。完全なセキュリティレビューではありません。"
+            ]
+          },
+          {
+            "engine": "dependency",
+            "status": "complete",
+            "assessed": 0,
+            "omitted": [],
+            "limitations": [
+              "ロックファイルに照合対象の依存パッケージはありません。"
+            ]
+          },
+          {
+            "engine": "model",
+            "status": "complete",
+            "assessed": 2,
+            "omitted": [],
+            "limitations": [
+              "このcoverageは診断範囲の記録であり、安全性の証明ではありません。"
+            ]
+          }
+        ],
+        "failure": null,
+        "modelReview": {
+          "enabled": true,
+          "providerId": "local",
+          "providerKind": "local",
+          "model": "qwen3.6-27b",
+          "configVersion": "qwen36b-v3-ctx16384-np1-ngl48:no-thinking:json:endpoint-05989293179ed6eacc9858ea196b7071f43dfef4fd18c1bc801c151917fee491",
+          "inputHash": "d0935640496f021286fad7ce755af99b3d13900d8ff916d246f176ae3f970ba8",
+          "contextHash": "9b44eba81cc2706529913aa4368e35522dea4ffea321afb555a6f36a1b1b3d4d",
+          "budget": {
+            "maxBatches": 100,
+            "maxFiles": 500,
+            "maxInputChars": 10000000,
+            "maxBatchChars": 12000,
+            "maxPromptChars": 20000,
+            "maxOutputTokens": 2048
+          },
+          "coverage": {
+            "status": "complete",
+            "batchCount": 1,
+            "completedBatchCount": 1,
+            "assessedFiles": 2,
+            "assessedLines": 4,
+            "omitted": [],
+            "limitations": [
+              "このcoverageは診断範囲の記録であり、安全性の証明ではありません。"
+            ],
+            "isSafetyProof": false
+          },
+          "record": {
+            "status": "completed",
+            "providerId": "local",
+            "model": "qwen3.6-27b",
+            "configVersion": "qwen36b-v3-ctx16384-np1-ngl48:no-thinking:json:endpoint-05989293179ed6eacc9858ea196b7071f43dfef4fd18c1bc801c151917fee491",
+            "hashes": {
+              "snapshot": "215a18bf35b1929baa9f60d5c87c02481e229c764c832ce1dd378abed3b405e0",
+              "input": "d0935640496f021286fad7ce755af99b3d13900d8ff916d246f176ae3f970ba8",
+              "knowledge": "4efaddde877862a204d474768c2df4d82d3f0641fc64b0513427587e03174e41",
+              "provider": "59c35c97ca4de72aa674195535f3c1f9b984bdc84384458a812ea6ce7fac46f5",
+              "model": "802b617845602e2ba7ba2ce837057781c90242b660376a35f6716564e7439c0e",
+              "config": "24f913577fac4fe79e2f604b365a5073dc6c2ffcdf6542bbc6a6cedb4d07fa17",
+              "plan": "1c34a47e2075dff520499ad091d6aeb01a28826f5acbb49d28e0435cfeff5f56",
+              "prompt": "770ee6df20b8c1635fefb7c96ed45ba8c4833b3c414e8565d6a10dd9f2c28bf0",
+              "response": "35a4ad08b55557e131674713db0633f5e8d55391db296c492e379f65ae816780"
+            },
+            "startedAt": "2026-10-04T21:43:50.102Z",
+            "finishedAt": "2026-10-04T21:45:00.577Z",
+            "elapsedMs": 70475,
+            "budget": {
+              "maxBatches": 100,
+              "maxFiles": 500,
+              "maxInputChars": 10000000,
+              "maxBatchChars": 12000,
+              "maxPromptChars": 20000,
+              "maxOutputTokens": 2048
+            },
+            "used": {
+              "batches": 1,
+              "files": 2,
+              "inputChars": 269,
+              "promptTokens": 2355,
+              "completionTokens": 333,
+              "actualCostUsd": 0
+            },
+            "stopReason": "none",
+            "checkpoint": {
+              "reused": false,
+              "savedBatchCount": 1
+            }
+          },
+          "failure": null
+        },
+        "findingCounts": {
+          "new": 0,
+          "continuing": 1,
+          "needsReview": 1,
+          "notObserved": 0
+        },
+        "candidates": [
+          {
+            "fingerprint": "2673ced06962b54012d51843341a9d2022cb39cfaa0d0a8354a6f6d3fdcc7f1a",
+            "ruleId": "tls.reject-unauthorized-disabled",
+            "engine": "static",
+            "title": "TLS証明書検証が無効です",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "rejectUnauthorized: false",
+            "remediation": "証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。",
+            "delta": "continuing",
+            "presentInAnalysis": true,
+            "comparedToRunId": "4b1f0eb9-e861-477a-bafe-4fac23cb3812",
+            "workflowFindingId": "cc86546d-4da2-4147-b573-ea84c5af9da0",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS証明書検証が無効です (high, tls.reject-unauthorized-disabled)\n位置: src/client.ts:2\n根拠: rejectUnauthorized: false\n推奨確認: 証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "missing",
+              "reason": "no_active_suppression",
+              "decisionRevision": null,
+              "judgment": null,
+              "expiresAt": null,
+              "reused": false
+            }
+          },
+          {
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleId": "model-review.cryptography",
+            "engine": "model",
+            "title": "TLS certificate verification is disabled in production client",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "The product specification explicitly requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "remediation": "Remove the rejectUnauthorized: false option or set it to true to enforce certificate verification. Ensure that valid CA certificates are available in the trust store.",
+            "modelReviewEvidence": {
+              "specRefIds": [
+                "product-specification"
+              ],
+              "pastJudgmentIds": [
+                "fef34d92-49bc-49cc-bf45-8ef455bd9d80-decision-2"
+              ],
+              "requiresHumanConfirmation": true,
+              "recheckPriorDecision": true
+            },
+            "delta": "needs_review",
+            "presentInAnalysis": true,
+            "comparedToRunId": "4b1f0eb9-e861-477a-bafe-4fac23cb3812",
+            "workflowFindingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS certificate verification is disabled in production client (high, model-review.cryptography)\n位置: src/client.ts:2\n根拠: The product specification explicitly requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n推奨確認: Remove the rejectUnauthorized: false option or set it to true to enforce certificate verification. Ensure that valid CA certificates are available in the trust store.\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "invalidated",
+              "reason": "evidence_changed",
+              "decisionRevision": 2,
+              "judgment": "accepted_known",
+              "expiresAt": "2099-01-01T00:00:00.000Z",
+              "reused": false
+            }
+          }
+        ],
+        "rawModelCandidates": [
+          {
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleId": "model-review.cryptography",
+            "engine": "model",
+            "title": "TLS certificate verification is disabled in production client",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "The product specification explicitly requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "remediation": "Remove the rejectUnauthorized: false option or set it to true to enforce certificate verification. Ensure that valid CA certificates are available in the trust store.",
+            "modelReviewEvidence": {
+              "specRefIds": [
+                "product-specification"
+              ],
+              "pastJudgmentIds": [
+                "fef34d92-49bc-49cc-bf45-8ef455bd9d80-decision-2"
+              ],
+              "requiresHumanConfirmation": true,
+              "recheckPriorDecision": true
+            },
+            "delta": "needs_review",
+            "presentInAnalysis": true,
+            "comparedToRunId": "4b1f0eb9-e861-477a-bafe-4fac23cb3812",
+            "workflowFindingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS certificate verification is disabled in production client (high, model-review.cryptography)\n位置: src/client.ts:2\n根拠: The product specification explicitly requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n推奨確認: Remove the rejectUnauthorized: false option or set it to true to enforce certificate verification. Ensure that valid CA certificates are available in the trust store.\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "invalidated",
+              "reason": "evidence_changed",
+              "decisionRevision": 2,
+              "judgment": "accepted_known",
+              "expiresAt": "2099-01-01T00:00:00.000Z",
+              "reused": false
+            }
+          }
+        ],
+        "confirmationQueueCandidates": [
+          {
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleId": "model-review.cryptography",
+            "engine": "model",
+            "title": "TLS certificate verification is disabled in production client",
+            "severity": "high",
+            "path": "src/client.ts",
+            "line": 2,
+            "evidence": "The product specification explicitly requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "remediation": "Remove the rejectUnauthorized: false option or set it to true to enforce certificate verification. Ensure that valid CA certificates are available in the trust store.",
+            "modelReviewEvidence": {
+              "specRefIds": [
+                "product-specification"
+              ],
+              "pastJudgmentIds": [
+                "fef34d92-49bc-49cc-bf45-8ef455bd9d80-decision-2"
+              ],
+              "requiresHumanConfirmation": true,
+              "recheckPriorDecision": true
+            },
+            "delta": "needs_review",
+            "presentInAnalysis": true,
+            "comparedToRunId": "4b1f0eb9-e861-477a-bafe-4fac23cb3812",
+            "workflowFindingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "workflowUrl": "/api/projects/43218c3b-0c2c-4f58-b586-e621e14aa7d7/workflow",
+            "workflowQuestion": "製品: AI feedback live evaluation\n仕様: TLS接続の証明書検証を必須とする。live mode評価用。\n診断commit: 0393f71ad52d885104a0fe98678dda3a5f1f7841\n指摘: TLS certificate verification is disabled in production client (high, model-review.cryptography)\n位置: src/client.ts:2\n根拠: The product specification explicitly requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });\n推奨確認: Remove the rejectUnauthorized: false option or set it to true to enforce certificate verification. Ensure that valid CA certificates are available in the trust store.\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+            "workflowQuestionClassification": "local",
+            "reviewDisposition": "confirmation_required",
+            "suppression": {
+              "status": "invalidated",
+              "reason": "evidence_changed",
+              "decisionRevision": 2,
+              "judgment": "accepted_known",
+              "expiresAt": "2099-01-01T00:00:00.000Z",
+              "reused": false
+            }
+          }
+        ],
+        "modelCandidateCount": 1,
+        "modelCurrentCount": 1,
+        "modelSuppressedCount": 0,
+        "modelQueueRequiredCount": 1
+      },
+      "invocationRange": [
+        1,
+        2
+      ],
+      "validation": {
+        "status": "pass",
+        "errors": []
+      }
+    }
+  ],
+  "workflowCommands": [
+    {
+      "phase": "human-judgment",
+      "request": {
+        "revision": 5,
+        "command": {
+          "type": "finding-decision",
+          "findingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+          "actor": "contract-test-subject",
+          "reason": "テスト用の判断であり、実利用者の判定ではない。固定fixtureの根拠と期限を確認した。",
+          "judgment": "accepted_known",
+          "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+          "sourceRefs": [
+            {
+              "docId": "4ac4af95-1d82-44dd-b06f-8b167998787b",
+              "revision": 1,
+              "excerpt": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });"
+            }
+          ],
+          "ruleRefs": []
+        }
+      }
+    },
+    {
+      "phase": "human-suppression",
+      "request": {
+        "revision": 6,
+        "command": {
+          "type": "suppression",
+          "findingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+          "actor": "contract-test-subject",
+          "reason": "テスト用の判断。同一固定版・同一根拠・同一条件に限り再確認不要とする。",
+          "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+          "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+          "ruleRefs": [],
+          "expiresAt": "2099-01-01T00:00:00.000Z"
+        }
+      }
+    }
+  ],
+  "humanJudgments": [
+    {
+      "phase": "human-judgment",
+      "command": {
+        "type": "finding-decision",
+        "findingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+        "actor": "contract-test-subject",
+        "reason": "テスト用の判断であり、実利用者の判定ではない。固定fixtureの根拠と期限を確認した。",
+        "judgment": "accepted_known",
+        "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+        "sourceRefs": [
+          {
+            "docId": "4ac4af95-1d82-44dd-b06f-8b167998787b",
+            "revision": 1,
+            "excerpt": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });"
+          }
+        ],
+        "ruleRefs": []
+      }
+    },
+    {
+      "phase": "human-suppression",
+      "command": {
+        "type": "suppression",
+        "findingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+        "actor": "contract-test-subject",
+        "reason": "テスト用の判断。同一固定版・同一根拠・同一条件に限り再確認不要とする。",
+        "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+        "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+        "ruleRefs": [],
+        "expiresAt": "2099-01-01T00:00:00.000Z"
+      }
+    }
+  ],
+  "workflowSnapshots": [
+    {
+      "phase": "after-human-judgment",
+      "revision": 7,
+      "finding": {
+        "id": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+        "revision": 2,
+        "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+        "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+        "observation": "TLS certificate verification is disabled in HTTPS agent (high) at src/client.ts:2. The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+        "observedAt": "2026-10-04T21:43:49.706Z",
+        "sourceRefs": [
+          {
+            "docId": "4ac4af95-1d82-44dd-b06f-8b167998787b",
+            "revision": 1,
+            "excerpt": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });"
+          }
+        ],
+        "observationHistory": [
+          {
+            "observation": "TLS certificate verification is disabled in HTTPS agent (high) at src/client.ts:2. The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });",
+            "observedAt": "2026-10-04T21:43:49.706Z",
+            "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+            "sourceRefs": [
+              {
+                "docId": "4ac4af95-1d82-44dd-b06f-8b167998787b",
+                "revision": 1,
+                "excerpt": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });"
+              }
+            ],
+            "contextHash": "16086f28d30129bcb586cd6ed270a79f905acdec6b6b71fcfa77316779e3dbcf",
+            "evidenceHash": "efb06e02f255666153e777ef9448447883701503d04150e6919e688ca9138c41"
+          }
+        ],
+        "judgment": "accepted_known",
+        "decisions": [
+          {
+            "revision": 2,
+            "judgment": "accepted_known",
+            "actor": "contract-test-subject",
+            "reason": "テスト用の判断であり、実利用者の判定ではない。固定fixtureの根拠と期限を確認した。",
+            "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+            "sourceRefs": [
+              {
+                "docId": "4ac4af95-1d82-44dd-b06f-8b167998787b",
+                "revision": 1,
+                "excerpt": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });"
+              }
+            ],
+            "ruleRefs": [],
+            "at": "2026-10-04T21:43:49.845Z",
+            "contextHash": "16086f28d30129bcb586cd6ed270a79f905acdec6b6b71fcfa77316779e3dbcf",
+            "evidenceHash": "efb06e02f255666153e777ef9448447883701503d04150e6919e688ca9138c41"
+          }
+        ],
+        "suppressions": [
+          {
+            "type": "suppression",
+            "findingId": "fef34d92-49bc-49cc-bf45-8ef455bd9d80",
+            "actor": "contract-test-subject",
+            "reason": "テスト用の判断。同一固定版・同一根拠・同一条件に限り再確認不要とする。",
+            "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841",
+            "fingerprint": "4b2c90e2461d09bf65803cc87dcc81770e3e7c916c2b4d3ba9d75b084faeffc0",
+            "ruleRefs": [],
+            "expiresAt": "2099-01-01T00:00:00.000Z",
+            "decisionRevision": 2,
+            "sourceRefs": [
+              {
+                "docId": "4ac4af95-1d82-44dd-b06f-8b167998787b",
+                "revision": 1,
+                "excerpt": "The product specification requires that TLS connection certificate verification be mandatory for live mode evaluation. However, the source code in src/client.ts explicitly sets rejectUnauthorized to false when creating the https.Agent. This configuration disables the verification of the server's SSL/TLS certificate, making the connection vulnerable to man-in-the-middle attacks. This directly violates the stated requirement.\n固定snapshot原文: export const client = new https.Agent({ rejectUnauthorized: false });"
+              }
+            ],
+            "active": true,
+            "contextHash": "16086f28d30129bcb586cd6ed270a79f905acdec6b6b71fcfa77316779e3dbcf",
+            "evidenceHash": "efb06e02f255666153e777ef9448447883701503d04150e6919e688ca9138c41"
+          }
+        ]
+      }
+    }
+  ],
+  "feedbackChecks": {
+    "sameConditionSuppression": null,
+    "specificationReconfirmation": null
+  },
+  "invocations": {
+    "count": 2,
+    "path": "raw-invocations.json",
+    "promptHashes": [
+      "a4ed7232b8216718601501424545cc9ec1dfaead86f8218c8b4094ae8fcd2d8d",
+      "b53a122f3ae25c3bc6dee1ddb11bb0c46bdb3c26a9025e782c690be8f4077d51"
+    ],
+    "responseHashes": [
+      "38a8973e91687d1e9701c92e6326cc542d47f29086c98009207faee0d52f0f72",
+      "710f2a1acc48f42262c402b73d3b150d97a6bf1b67146c87390deb7f0901f1d5"
+    ],
+    "modelInputReferences": [
+      {
+        "phase": "initial",
+        "matchingPastJudgmentIds": [],
+        "conditionHash": null,
+        "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841"
+      },
+      {
+        "phase": "same-condition-reuse",
+        "matchingPastJudgmentIds": [
+          "fef34d92-49bc-49cc-bf45-8ef455bd9d80-decision-2"
+        ],
+        "conditionHash": null,
+        "targetVersion": "0393f71ad52d885104a0fe98678dda3a5f1f7841"
+      }
+    ]
+  }
+}

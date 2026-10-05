@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "queue04-source-bundle/v1",
+  "resultDir": "evaluations/review-queue/results/queue-controls-20261005-04",
+  "manifestId": "eval:20261005-review-queue-04",
+  "runtimeRoot": "source-bundle/runtime",
+  "replayEntry": "source-bundle/runtime/server/workflow-domain.js",
+  "relativeImportMapping": [
+    {
+      "from": "runtime/server/workflow-domain.js",
+      "import": "../shared/domain-error.js",
+      "to": "runtime/shared/domain-error.js"
+    },
+    {
+      "from": "runtime/server/workflow-domain.js",
+      "import": "../shared/workflow.js",
+      "to": "runtime/shared/workflow.js"
+    },
+    {
+      "from": "runtime/shared/workflow.js",
+      "import": "./model.js",
+      "to": "runtime/shared/model.js"
+    }
+  ],
+  "files": [
+    {
+      "role": "runner",
+      "kind": "runner",
+      "source_path": ".cache/review-queue-evaluation-04.mjs",
+      "snapshot_path": "source-bundle/runner/review-queue-evaluation-04.mjs",
+      "source_sha256": "sha256:41844548cbb69a06a440f6ab4a92962d1e135e813724c5b1b362dd8f48ea31b5",
+      "snapshot_sha256": "sha256:41844548cbb69a06a440f6ab4a92962d1e135e813724c5b1b362dd8f48ea31b5",
+      "bytes": 28246
+    },
+    {
+      "role": "production-helper",
+      "kind": "helper",
+      "source_path": ".cache/coverage-build/server/workflow-domain.js",
+      "snapshot_path": "source-bundle/runtime/server/workflow-domain.js",
+      "source_sha256": "sha256:211c12db3100b48c5ed3ba433fa3b1e25b37e0065767c5814e0cc448cb959021",
+      "snapshot_sha256": "sha256:211c12db3100b48c5ed3ba433fa3b1e25b37e0065767c5814e0cc448cb959021",
+      "bytes": 50845
+    },
+    {
+      "role": "helper-relative-import",
+      "kind": "relative-import",
+      "source_path": ".cache/coverage-build/shared/domain-error.js",
+      "snapshot_path": "source-bundle/runtime/shared/domain-error.js",
+      "source_sha256": "sha256:8ffebc888bdc2f885ab9d83eecd2a7a282dac844efa21f0ab9ca68e6a42fccd8",
+      "snapshot_sha256": "sha256:8ffebc888bdc2f885ab9d83eecd2a7a282dac844efa21f0ab9ca68e6a42fccd8",
+      "bytes": 196
+    },
+    {
+      "role": "helper-relative-import",
+      "kind": "relative-import",
+      "source_path": ".cache/coverage-build/shared/workflow.js",
+      "snapshot_path": "source-bundle/runtime/shared/workflow.js",
+      "source_sha256": "sha256:f82cd23600d6b453c5303853575c3e6c7a504ce4527a941347409dcf5464c637",
+      "snapshot_sha256": "sha256:f82cd23600d6b453c5303853575c3e6c7a504ce4527a941347409dcf5464c637",
+      "bytes": 5717
+    },
+    {
+      "role": "helper-relative-import",
+      "kind": "relative-import",
+      "source_path": ".cache/coverage-build/shared/model.js",
+      "snapshot_path": "source-bundle/runtime/shared/model.js",
+      "source_sha256": "sha256:791c8e1324c7e9633f573a0c8c31500764eac332f867e0b31aa23d6ccd5cd1b1",
+      "snapshot_sha256": "sha256:791c8e1324c7e9633f573a0c8c31500764eac332f867e0b31aa23d6ccd5cd1b1",
+      "bytes": 6475
+    }
+  ],
+  "notes": [
+    "このsnapshotはqueue04の既存結果を再実行・改変せず、helperと相対importのbytesだけを保全する。",
+    "runnerはfixture生成・集計scriptのbytesとして保存し、実行時のrepo外部状態やnode_modulesは含めない。",
+    "source-bundle/runtime/server/workflow-domain.jsは同じ相対import構造で保存している。"
+  ]
+}

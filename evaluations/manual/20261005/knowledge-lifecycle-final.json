@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-04T20:01:06.539Z",
+  "kind": "UI lifecycle acceptance; test data only",
+  "productId": "f7cefb35-b522-4e8b-8834-e90ca8055885",
+  "workflowRevision": 13,
+  "knowledge": [
+    {
+      "id": "b0768f9b-62dd-4449-b7b0-f09f11a89087",
+      "revision": 1,
+      "status": "stale",
+      "sourceRefs": [
+        {
+          "docId": "fa6d812c-a94f-46b4-bfb2-776e0c820e63",
+          "revision": 1,
+          "excerpt": "接続先の証明書検証を必須とし、無効化を許容しません。"
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "fa6d812c-a94f-46b4-bfb2-776e0c820e63",
+      "revision": 2,
+      "hash": "41f76b876c9789ba100891efad72a80e59841b31384758e3d9d42a19e974dcd0"
+    }
+  ]
+}

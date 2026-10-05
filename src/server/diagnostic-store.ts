@@ -14,16 +14,27 @@ import {
 } from "../shared/diagnostic-engine.js";
 import {
   productInputSchema,
+  productModelReviewSchema,
   productSchema,
+  diagnosticFindingCounts,
   diagnosticRunSchema,
   type DiagnosticRun,
   type Product,
   type ProductInput,
 } from "../shared/product-diagnostics.js";
+import {
+  modelReviewCheckpointSchema,
+  type ModelReviewCheckpoint,
+} from "../shared/model-review.js";
 
 const sha256 = (value: string) =>
   createHash("sha256").update(value).digest("hex");
 const now = () => new Date().toISOString();
+const defaultModelReview = {
+  enabled: false,
+  providerId: "local",
+  cloudConsent: false,
+} as const;
 
 /** 製品診断データと紐付くworkflow projectを同じSQLite DBへ保存する。 */
 export class DiagnosticStore {
@@ -54,15 +65,23 @@ export class DiagnosticStore {
         identity TEXT NOT NULL,
         snapshot TEXT,
         static_analysis TEXT,
-        dependency_analysis TEXT
+        dependency_analysis TEXT,
+        model_review TEXT
       );
     `);
+    const checkpointColumns = this.store.db
+      .prepare("PRAGMA table_info(diagnostic_checkpoints)")
+      .all() as { name: string }[];
+    if (!checkpointColumns.some(({ name }) => name === "model_review"))
+      this.store.db.exec(
+        "ALTER TABLE diagnostic_checkpoints ADD COLUMN model_review TEXT",
+      );
   }
 
   private runSummaries(productId: string) {
     return this.store.db
       .prepare(
-        "SELECT data FROM diagnostic_runs WHERE product_id=? ORDER BY rowid DESC LIMIT 500",
+        "SELECT data FROM diagnostic_runs WHERE product_id=? ORDER BY COALESCE(json_extract(data, '$.startedAt'), json_extract(data, '$.updatedAt')) DESC, rowid DESC LIMIT 500",
       )
       .all(productId) as { data: string }[];
   }
@@ -71,18 +90,7 @@ export class DiagnosticStore {
     const latest = this.runSummaries(product.id)[0];
     if (!latest) return { ...product, latestRun: null };
     const run = diagnosticRunSchema.parse(JSON.parse(latest.data));
-    const findingCounts = {
-      new: 0,
-      continuing: 0,
-      needsReview: 0,
-      notObserved: 0,
-    };
-    for (const finding of run.findings) {
-      if (finding.delta === "new") findingCounts.new++;
-      else if (finding.delta === "continuing") findingCounts.continuing++;
-      else if (finding.delta === "needs_review") findingCounts.needsReview++;
-      else findingCounts.notObserved++;
-    }
+    const findingCounts = diagnosticFindingCounts(run.findings);
     return productSchema.parse({
       ...product,
       latestRun: {
@@ -97,6 +105,24 @@ export class DiagnosticStore {
         incompleteCoverage: run.coverage.some(
           (item) => item.status !== "complete",
         ),
+        ...(run.modelReview
+          ? {
+              modelReview: {
+                enabled: run.modelReview.enabled,
+                providerId: run.modelReview.providerId,
+                status:
+                  run.modelReview.record?.status ??
+                  (run.modelReview.failure
+                    ? run.modelReview.coverage.status === "unavailable"
+                      ? "unavailable"
+                      : "failed"
+                    : run.modelReview.enabled
+                      ? "queued"
+                      : "disabled"),
+                coverage: run.modelReview.coverage,
+              },
+            }
+          : {}),
       },
     });
   }
@@ -122,7 +148,9 @@ export class DiagnosticStore {
         "登録製品の固定コミットを防御的に静的レビューし、既知依存問題と照合する。",
       ownership:
         "製品登録で指定された管理下ローカルGitリポジトリ。runごとに固定commitを保存する。",
-      allowedProviderIds: ["manual"],
+      allowedProviderIds: parsed.modelReview?.enabled
+        ? ["manual", parsed.modelReview.providerId]
+        : ["manual"],
       allowedMethods: [
         "static-review",
         "known-issue-match",
@@ -146,6 +174,9 @@ export class DiagnosticStore {
       ref: parsed.ref,
       specification: parsed.specification,
       allowDependencyNetwork: parsed.allowDependencyNetwork,
+      modelReview: productModelReviewSchema.parse(
+        parsed.modelReview ?? defaultModelReview,
+      ),
       schedule: parsed.schedule,
       revision: 1,
       diagnosticRevision: 1,
@@ -202,7 +233,11 @@ export class DiagnosticStore {
     change: Partial<
       Pick<
         Product,
-        "ref" | "specification" | "allowDependencyNetwork" | "schedule"
+        | "ref"
+        | "specification"
+        | "allowDependencyNetwork"
+        | "modelReview"
+        | "schedule"
       >
     >,
   ): Product {
@@ -223,7 +258,10 @@ export class DiagnosticStore {
         (change.specification !== undefined &&
           change.specification !== current.specification) ||
         (change.allowDependencyNetwork !== undefined &&
-          change.allowDependencyNetwork !== current.allowDependencyNetwork);
+          change.allowDependencyNetwork !== current.allowDependencyNetwork) ||
+        (change.modelReview !== undefined &&
+          JSON.stringify(change.modelReview) !==
+            JSON.stringify(current.modelReview ?? defaultModelReview));
       const next = productSchema.parse({
         ...current,
         ...change,
@@ -237,7 +275,10 @@ export class DiagnosticStore {
         (change.specification !== undefined &&
           change.specification !== current.specification) ||
         (change.allowDependencyNetwork !== undefined &&
-          change.allowDependencyNetwork !== current.allowDependencyNetwork)
+          change.allowDependencyNetwork !== current.allowDependencyNetwork) ||
+        (change.modelReview !== undefined &&
+          JSON.stringify(change.modelReview) !==
+            JSON.stringify(current.modelReview ?? defaultModelReview))
       ) {
         const linked = this.store.db
           .prepare("SELECT data,revision FROM workflows WHERE project_id=?")
@@ -278,6 +319,25 @@ export class DiagnosticStore {
               title: "製品仕様",
               body: change.specification,
               classification: "local",
+            },
+          });
+        }
+        if (change.modelReview !== undefined) {
+          const modelReview = productModelReviewSchema.parse(
+            change.modelReview,
+          );
+          const allowedProviderIds = new Set(workflow.scope.allowedProviderIds);
+          // Keep the selected provider inside the case scope.  The service
+          // still enforces local-only operation and explicit cloud consent;
+          // this also permits injected local providers with a test-specific
+          // identifier.
+          if (modelReview.enabled)
+            allowedProviderIds.add(modelReview.providerId);
+          workflow = applyWorkflowCommand(workflow, {
+            type: "scope",
+            value: {
+              ...workflow.scope,
+              allowedProviderIds: [...allowedProviderIds].slice(0, 20),
             },
           });
         }
@@ -389,7 +449,7 @@ export class DiagnosticStore {
       if (checkpointIdentity) {
         this.store.db
           .prepare(
-            "INSERT INTO diagnostic_checkpoints (run_id,identity,snapshot,static_analysis,dependency_analysis) VALUES (?,? ,NULL,NULL,NULL)",
+            "INSERT INTO diagnostic_checkpoints (run_id,identity,snapshot,static_analysis,dependency_analysis,model_review) VALUES (?,? ,NULL,NULL,NULL,NULL)",
           )
           .run(value.id, checkpointIdentity);
       }
@@ -425,7 +485,7 @@ export class DiagnosticStore {
   getCheckpoint(runId: string) {
     const row = this.store.db
       .prepare(
-        "SELECT identity,snapshot,static_analysis,dependency_analysis FROM diagnostic_checkpoints WHERE run_id=?",
+        "SELECT identity,snapshot,static_analysis,dependency_analysis,model_review FROM diagnostic_checkpoints WHERE run_id=?",
       )
       .get(runId) as
       | {
@@ -433,6 +493,7 @@ export class DiagnosticStore {
           snapshot: string | null;
           static_analysis: string | null;
           dependency_analysis: string | null;
+          model_review: string | null;
         }
       | undefined;
     if (!row) return undefined;
@@ -458,13 +519,20 @@ export class DiagnosticStore {
         : null,
       staticAnalysis: parseStage(row.static_analysis),
       dependencyAnalysis: parseStage(row.dependency_analysis),
+      ...(row.model_review
+        ? {
+            modelReview: modelReviewCheckpointSchema.parse(
+              JSON.parse(row.model_review),
+            ),
+          }
+        : {}),
     };
   }
 
   ensureCheckpoint(runId: string, identity: string) {
     this.store.db
       .prepare(
-        "INSERT OR IGNORE INTO diagnostic_checkpoints (run_id,identity,snapshot,static_analysis,dependency_analysis) VALUES (?,?,NULL,NULL,NULL)",
+        "INSERT OR IGNORE INTO diagnostic_checkpoints (run_id,identity,snapshot,static_analysis,dependency_analysis,model_review) VALUES (?,?,NULL,NULL,NULL,NULL)",
       )
       .run(runId, identity);
     const checkpoint = this.getCheckpoint(runId);
@@ -495,6 +563,11 @@ export class DiagnosticStore {
     findings: DiagnosticFinding[],
     coverage: DiagnosticCoverage,
   ) {
+    if (engine === "model")
+      throw new DomainError(
+        "モデル診断checkpointはsaveModelReviewCheckpointを使用してください",
+        400,
+      );
     const validatedFindings = findings.map((finding) =>
       diagnosticFindingSchema.parse(finding),
     );
@@ -518,6 +591,21 @@ export class DiagnosticStore {
         runId,
         identity,
       );
+    if (result.changes !== 1)
+      throw new DomainError("診断checkpointのidentityが一致しません", 409);
+  }
+
+  saveModelReviewCheckpoint(
+    runId: string,
+    identity: string,
+    checkpoint: ModelReviewCheckpoint,
+  ) {
+    const value = modelReviewCheckpointSchema.parse(checkpoint);
+    const result = this.store.db
+      .prepare(
+        "UPDATE diagnostic_checkpoints SET model_review=? WHERE run_id=? AND identity=?",
+      )
+      .run(JSON.stringify(value), runId, identity);
     if (result.changes !== 1)
       throw new DomainError("診断checkpointのidentityが一致しません", 409);
   }

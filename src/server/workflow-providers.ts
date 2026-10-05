@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { DomainError } from "../shared/domain-error.js";
 import type {
   WorkflowProviderDefinition,
@@ -36,10 +37,25 @@ function checkedEndpoint(
     ) {
       return undefined;
     }
+    const path = url.pathname.replace(/\/+$/, "") || "/";
+    // /v1 is the default API prefix used by completionUrl. Store it in the
+    // same canonical form as a bare endpoint so equivalent settings share an
+    // identity while the request URL remains unchanged.
+    url.pathname = path === "/v1" ? "/" : path;
     return url.toString().replace(/\/$/, "");
   } catch {
     return undefined;
   }
+}
+function endpointConfigVersion(
+  base: string,
+  kind: "local" | "cloud",
+  endpoint: string | undefined,
+) {
+  const digest = createHash("sha256")
+    .update(`${kind}\0${endpoint ?? "<missing>"}`, "utf8")
+    .digest("hex");
+  return `${base}:endpoint-${digest}`;
 }
 function completionUrl(endpoint: string) {
   return endpoint.endsWith("/v1")
@@ -99,12 +115,18 @@ export function workflowProvidersFromEnvironment(
       model: env.WORKFLOW_LOCAL_MODEL ?? "configured-local-model",
       available: Boolean(localEndpoint),
       costKnown: true,
-      configVersion: env.WORKFLOW_LOCAL_CONFIG_VERSION ?? "local-v1",
+      configVersion: endpointConfigVersion(
+        `${env.WORKFLOW_LOCAL_CONFIG_VERSION ?? "local-v1"}${env.WORKFLOW_LOCAL_DISABLE_THINKING === "true" ? ":no-thinking" : ""}${env.WORKFLOW_LOCAL_JSON_MODE === "true" ? ":json" : ""}`,
+        "local",
+        localEndpoint,
+      ),
       endpoint: localEndpoint,
       apiKey: env.WORKFLOW_LOCAL_API_KEY,
       inputUsdPerMillionTokens: localInput ?? 0,
       outputUsdPerMillionTokens: localOutput ?? 0,
       maxOutputTokens: localMaxTokens,
+      disableThinking: env.WORKFLOW_LOCAL_DISABLE_THINKING === "true",
+      jsonMode: env.WORKFLOW_LOCAL_JSON_MODE === "true",
     },
     {
       id: "cloud",
@@ -113,7 +135,11 @@ export function workflowProvidersFromEnvironment(
       model: env.WORKFLOW_CLOUD_MODEL ?? "configured-cloud-model",
       available: Boolean(cloudEndpoint && env.WORKFLOW_CLOUD_API_KEY),
       costKnown: cloudInput !== undefined && cloudOutput !== undefined,
-      configVersion: env.WORKFLOW_CLOUD_CONFIG_VERSION ?? "cloud-v1",
+      configVersion: endpointConfigVersion(
+        env.WORKFLOW_CLOUD_CONFIG_VERSION ?? "cloud-v1",
+        "cloud",
+        cloudEndpoint,
+      ),
       endpoint: cloudEndpoint,
       apiKey: env.WORKFLOW_CLOUD_API_KEY,
       inputUsdPerMillionTokens: cloudInput,
@@ -148,6 +174,12 @@ export async function invokeOpenAICompatible(
       messages: [{ role: "user", content: prompt }],
       max_tokens: maxOutputTokens,
       temperature: 0,
+      ...(provider.kind === "local" && provider.disableThinking
+        ? { chat_template_kwargs: { enable_thinking: false } }
+        : {}),
+      ...(provider.kind === "local" && provider.jsonMode
+        ? { response_format: { type: "json_object" } }
+        : {}),
     }),
     signal,
     redirect: "error",
@@ -223,5 +255,7 @@ export async function invokeOpenAICompatible(
     actualCostUsd,
     model: body.model ?? provider.model,
     configVersion: provider.configVersion,
+    ...(promptTokens === undefined ? {} : { promptTokens }),
+    ...(completionTokens === undefined ? {} : { completionTokens }),
   };
 }

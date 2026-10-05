@@ -1,0 +1,149 @@
+{
+  "id": "42d24439-c6a5-4f4b-b812-6503e06f0392",
+  "productId": "f7cefb35-b522-4e8b-8834-e90ca8055885",
+  "revision": 8,
+  "status": "partial",
+  "trigger": "manual",
+  "requestId": null,
+  "ref": "baseline",
+  "commit": "2f0bcfe910fd28a003fb56bb36def7aaa062be8c",
+  "previousRunId": null,
+  "manifestHash": "a3ca9bba3c6007dca06b01f76f8d3a738dd683fe41b7a804a90ec07f31ae4323",
+  "snapshotFiles": [
+    {
+      "path": "package-lock.json",
+      "hash": "26ca281887b7f076133aca53b9f380dfafa8a6e0edd5fc7c68420c4c15664c14"
+    },
+    {
+      "path": "src/arithmetic.mjs",
+      "hash": "f4040fb968ad8dc7327a534ead187e3b0149bcc31e2f0db59119241d157d96f0"
+    },
+    {
+      "path": "src/client.ts",
+      "hash": "de747baf718ea3ba60e3a605a871483396ea9fc30d7973c16921265c3f4f0947"
+    }
+  ],
+  "snapshotOmitted": [
+    {
+      "path": "package.json",
+      "reason": "対応対象外のファイル形式です"
+    },
+    {
+      "path": "README.md",
+      "reason": "対応対象外のファイル形式です"
+    }
+  ],
+  "engineVersion": "0.2.0",
+  "allowDependencyNetwork": false,
+  "specificationRevision": 1,
+  "workflowRevision": 2,
+  "knowledge": [],
+  "rules": [],
+  "progress": {
+    "phase": "finished",
+    "message": "診断完了（未診断範囲あり）",
+    "updatedAt": "2026-10-04T18:03:08.601Z"
+  },
+  "statusHistory": [
+    {
+      "status": "queued",
+      "at": "2026-10-04T18:02:51.071Z",
+      "reason": null
+    },
+    {
+      "status": "running",
+      "at": "2026-10-04T18:02:51.076Z",
+      "reason": null
+    },
+    {
+      "status": "partial",
+      "at": "2026-10-04T18:03:08.601Z",
+      "reason": null
+    }
+  ],
+  "coverage": [
+    {
+      "engine": "static",
+      "status": "partial",
+      "assessed": 2,
+      "omitted": [
+        {
+          "path": "package.json",
+          "reason": "対応対象外のファイル形式です"
+        },
+        {
+          "path": "README.md",
+          "reason": "対応対象外のファイル形式です"
+        }
+      ],
+      "limitations": [
+        "列挙したJavaScript/TypeScriptの防御的ルールのみを評価しました。完全なセキュリティレビューではありません。"
+      ]
+    },
+    {
+      "engine": "dependency",
+      "status": "complete",
+      "assessed": 0,
+      "omitted": [],
+      "limitations": [
+        "ロックファイルに照合対象の依存パッケージはありません。"
+      ]
+    },
+    {
+      "engine": "model",
+      "status": "unavailable",
+      "assessed": 0,
+      "omitted": [],
+      "limitations": [
+        "model responseのJSON schemaが不正です"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "2673ced06962b54012d51843341a9d2022cb39cfaa0d0a8354a6f6d3fdcc7f1a",
+      "ruleId": "tls.reject-unauthorized-disabled",
+      "engine": "static",
+      "title": "TLS証明書検証が無効です",
+      "severity": "high",
+      "path": "src/client.ts",
+      "line": 2,
+      "evidence": "rejectUnauthorized: false",
+      "remediation": "証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。",
+      "delta": "new",
+      "presentInAnalysis": true,
+      "comparedToRunId": null,
+      "workflowFindingId": "78f74821-a348-4b52-9829-9880b59206f4",
+      "workflowUrl": "/api/projects/dd1dbbbc-8625-4cef-8533-0625c21d90cf/workflow",
+      "workflowQuestion": "製品: 実モデル接続の受入確認\n仕様: TLS通信を行うクライアントです。接続先の証明書検証を必須とし、無効化を許容しません。加算処理は独立した通常機能です。\n診断commit: 2f0bcfe910fd28a003fb56bb36def7aaa062be8c\n指摘: TLS証明書検証が無効です (high, tls.reject-unauthorized-disabled)\n位置: src/client.ts:2\n根拠: rejectUnauthorized: false\n推奨確認: 証明書検証を有効にしてください。rejectUnauthorizedをfalseに設定しないでください。\n製品仕様と承認済み案件知識を使い、影響・適用条件・未確認点を人が確認してください。これは候補であり自動判定ではありません。",
+      "workflowQuestionClassification": "local"
+    }
+  ],
+  "modelReview": {
+    "enabled": true,
+    "providerId": "local",
+    "providerKind": "local",
+    "model": "C:\\Users\\ryo-n\\Qwen3.5-4B-Q4_K_M.gguf",
+    "configVersion": "qwen35-4b-q4km-ctx16384-manual-v1:no-thinking",
+    "inputHash": null,
+    "contextHash": null,
+    "coverage": {
+      "status": "unavailable",
+      "batchCount": 0,
+      "completedBatchCount": 0,
+      "assessedFiles": 0,
+      "assessedLines": 0,
+      "omitted": [],
+      "limitations": [
+        "model responseのJSON schemaが不正です"
+      ],
+      "isSafetyProof": false
+    },
+    "record": null,
+    "failure": "model responseのJSON schemaが不正です"
+  },
+  "startedAt": "2026-10-04T18:02:51.076Z",
+  "updatedAt": "2026-10-04T18:03:08.601Z",
+  "finishedAt": "2026-10-04T18:03:08.601Z",
+  "failure": null
+}

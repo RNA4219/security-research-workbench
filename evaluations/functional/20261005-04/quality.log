@@ -1,0 +1,395 @@
+
+> security-research-workbench@0.2.0 test:quality
+> node scripts/coverage.mjs
+
+
+ RUN  v5.0.3 C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench
+      Coverage enabled with v8
+
+ ✓ tests/workflow-api.test.ts (7 tests) 3899ms
+   ✓ 案件APIと永続化 (7)
+     ✓ 版の競合、不正入力、案件越境を拒否し、原文と承認済みの版を履歴に残す 719ms
+     ✓ URL調査から一度だけ案件を作成し、import失敗で案件を壊さない 449ms
+     ✓ 手動runを保存・停止・再開し、比較の欠測を0にせず、別案件では読めない 523ms
+     ✓ プロセスを閉じても手動引渡しの原文と進行状況を保持する 1057ms
+     ✓ 案件の情報区分・許可範囲の変更で旧条件の実行を停止する 381ms
+     ✓ 実行途中で失われたプロセスのcheckpointを検出し、二重保存や案件横断更新を拒否する 745ms
+ ✓ tests/diagnostic-service-review.test.ts (4 tests) 10202ms
+   ✓ 診断serviceの境界と状態整合 (4)
+     ✓ 案件で静的診断と既知依存照合が許可されていなければrunを拒否する 379ms
+     ✓ 依存照合を無効化する更新中はinterrupted runを再開せず、外部照会を送らない 4983ms
+     ✓ 保存済みengineVersionと現行engineが異なるrunを再開しない 321ms
+ ✓ tests/regression.test.ts (32 tests) 1708ms
+   ✓ FR-01/07/15 APIとトランザクション (3)
+     ✓ 不正入力の詳細、一覧、履歴、不明ID、サーバー内部例外を区別する 505ms
+     ✓ 一括取込の途中失敗・競合時も状態と履歴を変更せず、失敗原本は残す 375ms
+   ✓ FR-09 memx異常系と部分再試行（実ループバックHTTP） (5)
+     ✓ 途中成功後の再試行は未同期分だけ送る。各APIの結果を返す 448ms
+ ✓ tests/diagnostic-judgment-context.test.ts (2 tests) 9250ms
+   ✓ 診断判断の適用条件 provenance (2)
+     ✓ 仕様revision変更後に旧判断をmodel入力へ残さず、同条件では再利用する 9220ms
+ ✓ tests/product-diagnostics-review.test.ts (4 tests) 15410ms
+   ✓ 製品の実解析と既存案件の独立レビュー (4)
+     ✓ 実解析を根拠に判定し、修正版の再解析と通常機能試験を確認して人が完了する 5422ms
+     ✓ 初回・行移動・修正版を解析し、履歴と対象版を保持する 3534ms
+     ✓ 同じCI要求を再解析せず、別内容での使い回しを拒否する 944ms
+     ✓ 製品を越えた結果の取得と古い設定による上書きを拒否する 1017ms
+ ✓ tests/diagnostic-feedback-evaluation.test.mjs (11 tests) 15667ms
+   ✓ product diagnostic feedback evaluation (5)
+     ✓ contract modeで候補保持・同条件抑止・仕様変更再確認を公開API経由で検証する 6210ms
+     ✓ 既定の厳密比較では文章が変わると確認待ちのまま失敗証跡を残す 4546ms
+     ✓ 人が明示したコード範囲なら文章変更を含めて再利用し、仕様変更は再確認する 4823ms
+ ✓ tests/research.test.ts (35 tests) 1483ms
+   ✓ 同時調査を制限し、終了・失敗後は次の調査を受け付ける 614ms
+   ✓ APIで保存・再起動後の読出し・Markdown出力ができ、不正idは拒否 728ms
+ ✓ tests/workbench.test.ts (11 tests) 1275ms
+   ✓ API (2)
+     ✓ 作成→資料→要件→承認→出力。誤入力と接続失敗はデータを壊さない 507ms
+     ✓ Host・Origin・必須ヘッダー・サイズの制限 361ms
+ ✓ tests/vulnerability.test.ts (8 tests) 819ms
+   ✓ APIは明示POSTまで通信せず、不正IDを外部へ渡さない 623ms
+ ✓ tests/workflow-integration-review.test.ts (2 tests) 1041ms
+   ✓ workflow persistence and shutdown integration review (2)
+     ✓ workflow scope change stops an in-flight provider before returning 661ms
+     ✓ onCloseはSQLite closeより先にactive providerを停止・checkpointする 377ms
+ ✓ tests/provenance.test.ts (11 tests) 675ms
+   ✓ Deep Researchの不足要件 (11)
+     ✓ 内部Schemaを公開し、外部通信なしで保存・再読込・出力できる 545ms
+ ✓ tests/browser-storage.test.ts (4 tests) 446ms
+ ✓ tests/diagnostic-store.test.ts (13 tests) 264ms
+ ✓ tests/model-review.test.ts (31 tests) 180ms
+ ✓ tests/product-diagnostics.test.ts (3 tests) 4221ms
+ ✓ tests/workflow-binding-provenance.test.ts (1 test) 599ms
+   ✓ 公開APIは自己申告のコード対応情報を拒否し、通常の手動観測は保持する 596ms
+ ✓ tests/workflow-runner.test.ts (18 tests) 131ms
+ ✓ tests/workflow-run-review.test.ts (9 tests) 79ms
+ ✓ tests/diagnostic-recovery-integrity.test.ts (8 tests) 21522ms
+   ✓ 診断保存データの再開整合性 (8)
+     ✓ checkpoint identityが壊れているrunを再開せず、partialのまま保持する 1885ms
+     ✓ 固定snapshotのcommitが壊れている再開はfailedになり、completed扱いにしない 2120ms
+     ✓ 保存snapshotのJSONが壊れている再開はcheckpointを修復せず拒否する 1875ms
+     ✓ checkpoint行がない旧形式のrunは保存済み結果を捏造せず、再計算してから終了する 2710ms
+     ✓ 旧runでmodelReviewとmodel checkpointが欠けていても再開失敗を完了扱いにしない 2118ms
+     ✓ model checkpoint不一致時は旧complete coverageを無効化し、旧候補を修正済みにしない 2308ms
+     ✓ 再起動時にrunningレコードが壊れていれば自動修復せず起動を拒否する 1886ms
+     ✓ 最小固定snapshotでは全engineを完了し、completed runを再開できない 2910ms
+ ✓ tests/bootstrap.test.ts (13 tests) 48ms
+ ✓ tests/workflow-domain.test.ts (19 tests) 175ms
+ ✓ tests/diagnostic-store-ordering.test.ts (1 test) 49ms
+ ✓ tests/workflow-domain-review.test.ts (4 tests) 55ms
+ ✓ tests/model-source-binding.test.ts (13 tests) 44ms
+ ✓ tests/review-queue-evaluation.test.mjs (4 tests) 96ms
+ ✓ tests/workflow-fields.test.ts (1 test) 16ms
+ ✓ tests/diagnostic-model-failures.test.ts (13 tests) 22614ms
+   ✓ 診断serviceのmodel provider異常・予算境界 (13)
+     ✓ 利用できないlocal providerではrunを作らず開始を拒否する 926ms
+     ✓ cloud同意なし・同意後の未提供状態をそれぞれ拒否する 919ms
+     ✓ 案件scopeからproviderを外したrunを拒否する 521ms
+     ✓ local以外のprovider kindをモデル診断に使わせない 711ms
+     ✓ modelのJSON不正応答を成功扱いせず、モデルcoverageをunavailableにする 2063ms
+     ✓ 負のtoken usageをprovider応答不正として記録する 1335ms
+     ✓ 非有限costをprovider応答不正として記録する 1520ms
+     ✓ 注入adapterなしでもendpointのOpenAI互換応答をモデル診断へ接続する 1574ms
+     ✓ model timeoutを部分成功やcompletedにせずinterruptedとして記録する 2704ms
+     ✓ maxPromptChars超過時はpromptを送らず停止記録だけを残す 1594ms
+     ✓ maxCostUsdに達した後は次batchを呼ばず、部分coverageを残す 1523ms
+     ✓ providerのmaxOutputTokensを有効budgetとinvoke引数に反映する 1439ms
+     ✓ 保存済みmodel checkpointのbudget変更を再開時に拒否する 2010ms
+ ✓ tests/recalculate-model-review-metrics.test.mjs (2 tests) 42ms
+ ✓ tests/model-methodology-identity.test.ts (4 tests) 48ms
+ ✓ tests/quality-chain.test.mjs (9 tests) 9ms
+ ✓ tests/client-api.test.ts (1 test) 10ms
+ ✓ tests/model-review-evaluation.test.mjs (23 tests) 5256ms
+   ✓ runEvaluation preflight and raw evidence (12)
+     ✓ rejects a missing source-bundle input before any review invocation 1258ms
+     ✓ keeps production prompt and raw invocation evidence when schema validation throws 783ms
+     ✓ saves every prompt, raw response, measured time, model, and usage value 1503ms
+     ✓ fails records whose measured usage exceeds the frozen budget 887ms
+     ✓ persists coverage/report and treats partial reviews as unscored 381ms
+ ✓ tests/diagnostic-suppression-integration.test.ts (4 tests) 24437ms
+   ✓ 診断とworkflow抑止の統合 (4)
+     ✓ 明示的人判断の同一context/evidenceだけを別枠抑止し、raw候補と履歴を残す 8987ms
+     ✓ decisionと最新observationのcontext不一致は抑止を再利用しない 5452ms
+     ✓ 人判断がcheckpoint作成後に変わったresumeを拒否する 4544ms
+     ✓ model provider条件が変わったrunでは同じ抑止を再利用しない 5451ms
+ ✓ tests/model-review-integration.test.ts (8 tests) 24467ms
+   ✓ diagnostic serviceとlocal model reviewの統合 (8)
+     ✓ provider契約を守り、固定snapshotの検証済みモデルfindingをrunへ接続する 2998ms
+     ✓ 承認されていない/失効した案件知識と条件不一致の過去判断をモデル入力へ渡さない 3631ms
+     ✓ 過去判断は監査履歴全件ではなく現行findingの最新判断だけを入力する 2436ms
+     ✓ 複数sourceRefsの承認知識を順序どおり固定し、rule更新後は根拠付き過去判断を除外する 3380ms
+     ✓ 別findingの現行判断変更はモデル比較contextを変え、再確認を要求する 2419ms
+     ✓ 二つのmodel findingを同一条件で再判断しても抑止が相互失効し続けない 3631ms
+     ✓ blockedまたは未分類sourceの過去判断をlocal modelへ送らない 658ms
+     ✓ モデル停止時は保存済みbatchのpartial coverageをrunへ残す 826ms
+ ✓ tests/product-diagnostics-boundary.test.ts (13 tests) 24533ms
+   ✓ 製品診断のAPI境界 (2)
+     ✓ 終端runは停止・再開されず、partial runは最新workflow版から明示再開できる 1387ms
+   ✓ 診断serviceの停止・schedule lifecycle (7)
+     ✓ active runを停止し、設定更新が旧診断を中断して新しい診断版を保存する 2537ms
+     ✓ 明示scheduleだけを経過後に1回開始し、同じinterval要求を重複作成しない 1580ms
+     ✓ Git ref解決中のcloseはschedule tickを待ち、後続runや解析を開始しない 366ms
+     ✓ 実行中に案件revisionが変わった診断をinterruptedとして具体理由付きで保存する 1421ms
+     ✓ 承認済み知識のhashをrunへ固定し、context追加後のpartial resumeを拒否する 1555ms
+     ✓ restart resumeはsnapshotを再利用し、complete engine stageを再実行しない 1829ms
+     ✓ 消失確認済み指摘が再出現したらneeds_reviewに戻し、詳細履歴のdelta件数を分ける 4908ms
+   ✓ 診断serviceの設定境界 (2)
+     ✓ repo registryは不正ID、非Git path、禁止path、非root pathを拒否し、run開始条件を確認する 1391ms
+     ✓ 既定workbench登録、registry上限、package fallback、detached HEADを扱う 3156ms
+ ✓ tests/diagnostic-service-coverage.test.ts (8 tests) 27025ms
+   ✓ 診断serviceの境界変換 (8)
+     ✓ provider一覧は安全な識別情報だけを返し、local/cloud/manualの利用可能性を区別する 4041ms
+     ✓ 製品登録時の対象refを初回runで再固定しても承認済みknowledgeを失効させない 5425ms
+     ✓ 有効化したmodel providerの案件境界を拒否理由ごとに区別する 4411ms
+     ✓ model findingとcoverageの変換はseverity・不確実性・停止状態を保持する 3467ms
+     ✓ 停止済みmodel checkpointのcoverageは重複omissionと未収録pathを安全に集計する 3707ms
+     ✓ record未生成の中断checkpointでもbudget変更のresumeを409で拒否する 3998ms
+     ✓ 未実行model reviewの記録は旧製品設定とprovider種別を後方互換で表現する 1969ms
+ ✓ tests/diagnostic-engine.test.ts (23 tests) 62121ms
+   ✓ snapshotRepository (10)
+     ✓ reads a pinned commit, ignores working-tree edits, and excludes unsupported and secret paths 1498ms
+     ✓ honors cancellation and reports source file limits 1814ms
+     ✓ resolves a user ref to a full immutable commit before taking its snapshot 1939ms
+     ✓ excludes symbolic links, submodules, and non-UTF8 source blobs 2874ms
+     ✓ caps source count and summarizes excess omitted paths 50868ms
+     ✓ caps total snapshot bytes after enforcing each-file limits 1908ms
+     ✓ propagates string abort reasons and rejects non-directory repository paths 596ms
+     ✓ rejects malformed and option-like refs before invoking Git 468ms
+
+ Test Files  37 passed (37)
+      Tests  377 passed (377)
+   Start at  08:49:53
+   Duration  63.71s (tests 93%, import 5%, transform 2%)
+
+JUNIT report written to C:/Users/ryo-n/Codex_dev/Agent_tools/security-research-workbench/.cache/quality/unit-junit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   73.79 |    68.44 |   58.52 |   74.37 |                   
+ client            |    0.67 |     0.99 |    0.84 |    0.73 |                   
+  api.ts           |   26.31 |       50 |      60 |   29.41 | 20-29,35-41       
+  app.tsx          |       0 |        0 |       0 |       0 | 24-457            
+  claim-editor.tsx |       0 |        0 |       0 |       0 | 10-117            
+  compare-page.tsx |       0 |        0 |       0 |       0 | 7-104             
+  constants.ts     |       0 |      100 |       0 |       0 | 17-50             
+  ...ic-sample.tsx |       0 |      100 |       0 |       0 | 3-113             
+  ...ence-page.tsx |       0 |        0 |       0 |       0 | 5-10              
+  export-page.tsx  |       0 |        0 |       0 |       0 | 7-52              
+  forms.tsx        |       0 |        0 |       0 |       0 | 31-413            
+  history-page.tsx |       0 |        0 |       0 |       0 | 14-53             
+  main.tsx         |       0 |      100 |     100 |       0 | 4                 
+  pages-main.tsx   |       0 |      100 |       0 |       0 | 12-44             
+  ...tics-page.tsx |       0 |        0 |       0 |       0 | 24-1291           
+  ...el-review.tsx |       0 |        0 |       0 |       0 | 7-164             
+  provenance.tsx   |       0 |        0 |       0 |       0 | 13-411            
+  ...tory-page.tsx |       0 |        0 |       0 |       0 | 8-389             
+  ...ents-page.tsx |       0 |        0 |       0 |       0 | 17-146            
+  ...ings-page.tsx |       0 |        0 |       0 |       0 | 8-84              
+  sources-page.tsx |       0 |        0 |       0 |       0 | 21-125            
+  ...lity-page.tsx |       0 |        0 |       0 |       0 | 6-154             
+  ...ow-fields.tsx |      20 |    44.44 |   18.18 |      25 | 14-60,106         
+  ...flow-page.tsx |       0 |        0 |       0 |       0 | 31-2574           
+ research          |   98.47 |    94.44 |   93.18 |   99.17 |                   
+  ...er-storage.ts |   96.87 |     90.9 |      90 |   96.42 | 58                
+  ...y-research.ts |   98.86 |       92 |   91.66 |   98.83 | 244               
+  ...pendencies.ts |   99.01 |    95.45 |     100 |     100 | 77,143,215        
+  research-http.ts |    97.5 |      100 |      80 |     100 |                   
+ server            |    94.6 |    89.58 |   97.45 |   95.46 |                   
+  app.ts           |   94.84 |    93.87 |   95.83 |   94.38 | 168-174           
+  ...tic-engine.ts |   95.54 |    86.32 |   98.27 |   96.57 | ...31,624-628,895 
+  ...tic-routes.ts |   97.56 |    85.71 |    92.3 |     100 | 75                
+  ...ic-service.ts |   93.73 |    84.71 |   96.87 |    95.2 | ...2138,2320-2321 
+  ...stic-store.ts |   94.61 |    88.33 |     100 |   94.26 | ...36,373,567,610 
+  domain.ts        |     100 |    96.85 |     100 |     100 | 154,246-248       
+  exports.ts       |     100 |    97.05 |     100 |     100 | 13                
+  model-review.ts  |   98.58 |    93.57 |     100 |    98.8 | 511,538,642,912   
+  ...ce-binding.ts |    92.1 |    81.25 |     100 |   91.66 | 49,59,146         
+  provenance.ts    |   98.55 |    93.61 |   96.15 |   98.21 | 150               
+  store.ts         |   97.33 |      100 |     100 |   97.18 | 86-87             
+  validation.ts    |   93.75 |     87.5 |     100 |    92.3 | 32                
+  vulnerability.ts |   96.66 |    95.65 |     100 |   98.13 | 16,204            
+  ...low-domain.ts |   90.26 |    89.82 |   96.52 |   91.64 | ...1685,1704,1706 
+  ...-providers.ts |    92.1 |     93.8 |     100 |   91.78 | ...92,220,223,231 
+  ...low-routes.ts |   97.11 |    96.55 |   92.85 |   96.96 | 121-124,159       
+  ...low-runner.ts |   91.75 |    86.91 |   94.59 |   93.78 | ...85,805,914-916 
+  ...flow-store.ts |   98.85 |      100 |   94.73 |   98.79 | 174               
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 73.79% ( 3863/5235 )
+Branches     : 68.44% ( 2842/4152 )
+Functions    : 58.52% ( 865/1478 )
+Lines        : 74.37% ( 3604/4846 )
+================================================================================
+vite v8.3.2 building client environment for coverage...
+transforming...
+✓ 298 modules transformed.
+rendering chunks...
+computing gzip size...
+.cache/coverage-build/client/index.html                   0.41 kB │ gzip:   0.28 kB
+.cache/coverage-build/client/assets/index-IdtO-GvO.css   24.25 kB │ gzip:   6.02 kB
+.cache/coverage-build/client/assets/index-CRwbk3Wn.js   909.69 kB │ gzip: 233.48 kB
+
+✓ built in 1.32s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+[WebServer] (node:39560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 52 tests using 1 worker
+
+(node:35736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\e2e\model-review-evidence.spec.ts:7:1 › 保存済み結果の上限停止・対象なし・不完全な抑止情報を成功や確認不要にしない (3.1s)
+  ok  2 tests\e2e\model-review-evidence.spec.ts:123:1 › 対象リポジトリとモデルが未設定なら登録・AI有効化を案内付きで止める (1.8s)
+  ok  3 tests\e2e\model-review.spec.ts:11:1 › AIレビューを明示して開始し、固定版の根拠・モデル・参照記録を確認できる (4.8s)
+  ok  4 tests\e2e\model-review.spec.ts:133:1 › モデルが診断結果の代わりにSchemaを返しても未診断を表示する (3.5s)
+  ok  5 tests\e2e\model-review.spec.ts:166:1 › モデル工程を停止すると未レビューを残し、再開で結果を確認できる (9.2s)
+  ok  6 tests\e2e\model-review.spec.ts:210:1 › モデルが利用量を返さないときはゼロではなく未計測と表示する (3.2s)
+  ok  7 tests\e2e\model-review.spec.ts:240:1 › 人が確認した同条件の指摘は折りたたみ、対象版変更で確認待ちに戻す (5.2s)
+  ok  8 tests\e2e\model-review.spec.ts:356:1 › モデル情報の取得失敗時も製品画面を使え、有効化を誤表示しない (1.3s)
+  ok  9 tests\e2e\product-diagnostics.spec.ts:44:1 › 製品を直接登録し、Git版ごとの差分・修正後の要確認・手動照会をつなぐ (10.0s)
+  ok 10 tests\e2e\product-diagnostics.spec.ts:192:1 › 定期診断は任意で、設定版を使って有効化・解除できる (2.2s)
+  ok 11 tests\e2e\product-diagnostics.spec.ts:285:1 › repo設定なしと初回通信不達を区別し、再読込後に登録を開ける (2.0s)
+  ok 12 tests\e2e\product-diagnostics.spec.ts:324:1 › 製品登録の通信失敗は入力と送信許可の選択を保持する (1.2s)
+  ok 13 tests\e2e\product-diagnostics.spec.ts:367:1 › 空白の対象版と不足した必須情報では登録を送信しない (1.1s)
+  ok 14 tests\e2e\product-diagnostics.spec.ts:396:1 › 未診断製品の空履歴を保ち、診断開始と再読込の通信失敗を示す (1.3s)
+  ok 15 tests\e2e\product-diagnostics.spec.ts:470:1 › 実行中runは停止・再開でき、失敗理由を表示する (2.0s)
+  ok 16 tests\e2e\product-selection-recovery.spec.ts:34:1 › 製品切替後に古い進行応答が届いても、表示と診断対象を戻さない (3.5s)
+  ok 17 tests\e2e\product-selection-recovery.spec.ts:103:1 › 切替先の読込失敗時に前の製品の操作欄を残さない (1.3s)
+  ok 18 tests\e2e\product-selection-recovery.spec.ts:134:1 › 診断結果の取得失敗を表示し、同じ実行を再読込して回復できる (2.3s)
+  ok 19 tests\e2e\regression.spec.ts:30:1 › 接続失敗でも入力を保持し、自動再送せず手動再試行で1件保存 (2.2s)
+  ok 20 tests\e2e\regression.spec.ts:67:1 › 2画面の保存競合は上書きせず、編集内容を残す (3.2s)
+  ok 21 tests\e2e\regression.spec.ts:91:1 › ファイル上限・不正JSON・API入力エラーから修正して保存できる (2.3s)
+  ok 22 tests\e2e\regression.spec.ts:128:1 › 根拠を新規登録・編集し、比較レビューと要件編集へ反映する (3.9s)
+  ok 23 tests\e2e\regression.spec.ts:198:1 › 未設定連携・出力失敗・全データ出力と履歴閲覧 (2.5s)
+  ok 24 tests\e2e\regression.spec.ts:241:1 › memxの画面操作契約と失敗表示（依存APIをスタブ） (1.8s)
+  ok 25 tests\e2e\regression.spec.ts:275:1 › 初期読込失敗を表示し、再読込で復帰する (1.2s)
+  ok 26 tests\e2e\regression.spec.ts:289:1 › 回答ファイルの上限と修正取込、保存済みプロジェクトの再読込 (2.0s)
+  ok 27 tests\e2e\research.spec.ts:8:1 › 未取得・部分照合・0件を区別し、外部文字列をHTMLとして実行しない (1.8s)
+  ok 28 tests\e2e\research.spec.ts:89:1 › 履歴の初期読込失敗を表示し、ページ再読込で復帰する (1.6s)
+  ok 29 tests\e2e\research.spec.ts:107:1 › URL入力だけで調査し、根拠・修正版・履歴・ファイルを取得する (2.1s)
+  ok 30 tests\e2e\research.spec.ts:152:1 › 失敗してもURLと前の結果を保ち、手動で再試行できる (1.3s)
+  ok 31 tests\e2e\source-scope-suppression.spec.ts:107:1 › 抑止範囲は厳密比較を既定にし、bindingがない古い観測では広げられない (3.3s)
+  ok 32 tests\e2e\vulnerability.spec.ts:91:1 › 明示照会後に未検証資料として保存し、出典を追える (2.0s)
+  ok 33 tests\e2e\vulnerability.spec.ts:140:1 › 未掲載・上流不達と入力エラーを区別する (1.8s)
+  ok 34 tests\e2e\vulnerability.spec.ts:188:1 › 記載がない値は不明・なしと表示し、撤回を勝手に推定しない (1.5s)
+  ok 35 tests\e2e\workflow-entry.spec.ts:3:1 › URL調査から採用判断へ進み、案件を開き直しても原文と対象版を保持する (1.8s)
+  ok 36 tests\e2e\workflow-review.spec.ts:196:1 › 同じ知識・基準IDのrevision 1→2→3を正しい親から更新し承認できる (2.9s)
+  ok 37 tests\e2e\workflow-review.spec.ts:273:1 › scope v2に更新後、修正の確認待ちをv2と新commitへ移せる (1.8s)
+  ok 38 tests\e2e\workflow-review.spec.ts:353:1 › 比較条件を変更したら前回の比較結果を表示し続けない (2.1s)
+  ok 39 tests\e2e\workflow-v3.spec.ts:31:1 › 初回表示で対象フォームが見え、根拠なし状態を明示する (3.3s)
+  ok 40 tests\e2e\workflow-v3.spec.ts:182:1 › 読み込み中と読み込み失敗を表示する (2.9s)
+  ok 41 tests\e2e\workflow-v3.spec.ts:209:1 › 案件範囲から根拠付き知識、人の判定、修正確認までつなぐ (3.8s)
+  ok 42 tests\e2e\workflow-v3.spec.ts:343:1 › 承認されていない知識では照会を開始できない (1.5s)
+  ok 43 tests\e2e\workflow-v3.spec.ts:354:1 › 利用不可資料を根拠にした承認済み知識も照会から除外する (2.3s)
+  ok 44 tests\e2e\workflow-v3.spec.ts:407:1 › manual runの停止・再開・回答と同条件比較を保存する (6.5s)
+  ok 45 tests\e2e\workflow-v3.spec.ts:512:1 › 資料改版で知識・基準を失効し、却下と更新案を区別する (3.3s)
+  ok 46 tests\e2e\workflow-v3.spec.ts:580:1 › 保存済みURL調査を重複なく案件へ取り込む (2.2s)
+  ok 47 tests\e2e\workflow-v3.spec.ts:614:1 › 期限付き抑止は対象版が変わると再確認へ戻る (3.0s)
+  ok 48 tests\e2e\workflow.spec.ts:5:1 › サンプルから根拠・プロンプト・レビュー・実装タスクへ (7.6s)
+  ok 49 tests\e2e\workflow.spec.ts:134:1 › 新規作成・資料取込・不正回答・編集・履歴を保持 (2.0s)
+  ok 50 tests\e2e\workflow.spec.ts:194:1 › 狭い画面で作業入口を操作できる (993ms)
+  ok 51 tests\e2e\workflow.spec.ts:207:1 › ファイル取込と比較候補の追加・編集 (2.1s)
+  ok 52 tests\e2e\workflow.spec.ts:263:1 › 比較値の未確認・値なし、複数Evidence、逆参照とオフライン操作 (4.4s)
+
+  52 passed (2.6m)
+vite v8.3.2 building client environment for pages-coverage...
+transforming...
+✓ 119 modules transformed.
+rendering chunks...
+computing gzip size...
+.cache/coverage-pages/index.html                   1.18 kB │ gzip:   0.70 kB
+.cache/coverage-pages/THIRD_PARTY_LICENSES.txt     5.47 kB │ gzip:   0.78 kB
+.cache/coverage-pages/assets/index-B-Y8WFhq.css   15.85 kB │ gzip:   4.28 kB
+.cache/coverage-pages/assets/index-eViTyTZ7.js   368.93 kB │ gzip: 112.22 kB
+
+✓ built in 462ms
+[WebServer] (node:37400) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:39540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\pages\research.spec.ts:25:1 › 静的サブパスだけで調査・履歴・再読込・Markdown・履歴削除が使える (2.0s)
+  ok 2 tests\pages\research.spec.ts:78:1 › 保存不能でも調査結果を失わず、ダウンロードできる (918ms)
+  ok 3 tests\pages\research.spec.ts:98:1 › 破損した履歴を削除して復帰し、API制限や未取得を画面に示す (1.1s)
+  ok 4 tests\pages\research.spec.ts:128:1 › スマートフォン幅で横にはみ出さずに入力できる (757ms)
+  ok 5 tests\pages\sample.spec.ts:3:1 › モックと明示し、外部通信なしで比較・再評価・人の確認を体験できる (1.0s)
+  ok 6 tests\pages\sample.spec.ts:69:1 › 390px幅で全場面とモック表記が読み取れ、補助機能の区別も明確 (899ms)
+
+  6 passed (9.4s)
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   95.12 |       90 |    95.8 |   96.01 |                   
+ client            |   95.41 |    90.13 |    93.6 |   96.52 |                   
+  api.ts           |     100 |      100 |     100 |     100 |                   
+  app.tsx          |   97.63 |    86.95 |     100 |     100 | 56-84,171-177,289 
+  claim-editor.tsx |     100 |      100 |     100 |     100 |                   
+  compare-page.tsx |     100 |    92.85 |     100 |     100 | 77                
+  constants.ts     |     100 |      100 |     100 |     100 |                   
+  ...ic-sample.tsx |     100 |      100 |     100 |     100 |                   
+  ...ence-page.tsx |     100 |      100 |     100 |     100 |                   
+  export-page.tsx  |     100 |      100 |     100 |     100 |                   
+  forms.tsx        |   98.27 |    96.42 |   97.22 |   98.11 | 78                
+  history-page.tsx |     100 |       90 |     100 |     100 | 55                
+  main.tsx         |     100 |      100 |     100 |     100 |                   
+  pages-main.tsx   |   93.33 |      100 |   66.66 |     100 |                   
+  ...tics-page.tsx |   95.05 |    88.92 |   95.65 |   98.06 | ...7,709,850,1174 
+  ...el-review.tsx |     100 |      100 |     100 |     100 |                   
+  provenance.tsx   |   98.55 |    96.15 |   98.07 |   98.36 | 411               
+  ...tory-page.tsx |     100 |    95.52 |     100 |     100 | 52-64,313         
+  ...ents-page.tsx |     100 |      100 |     100 |     100 |                   
+  ...ings-page.tsx |     100 |      100 |     100 |     100 |                   
+  sources-page.tsx |     100 |      100 |     100 |     100 |                   
+  ...lity-page.tsx |     100 |    88.09 |     100 |     100 | 120,130,140-142   
+  ...ow-fields.tsx |   93.33 |    88.88 |    90.9 |   91.66 | 60                
+  ...flow-page.tsx |      91 |    86.92 |    86.6 |   91.45 | ...2205,2382,2498 
+ research          |   98.47 |    94.44 |   93.18 |   99.17 |                   
+  ...er-storage.ts |   96.87 |     90.9 |      90 |   96.42 | 58                
+  ...y-research.ts |   98.86 |       92 |   91.66 |   98.83 | 244               
+  ...pendencies.ts |   99.01 |    95.45 |     100 |     100 | 77,143,215        
+  research-http.ts |    97.5 |      100 |      80 |     100 |                   
+ server            |    94.6 |    89.58 |   97.45 |   95.46 |                   
+  ...-protocols.ts |     100 |      100 |     100 |     100 |                   
+  app.ts           |   94.84 |    93.87 |   95.83 |   94.38 | 168-174           
+  ...tic-engine.ts |   95.54 |    86.32 |   98.27 |   96.57 | ...31,624-628,895 
+  ...tic-routes.ts |   97.56 |    85.71 |    92.3 |     100 | 75                
+  ...ic-service.ts |   93.73 |    84.71 |   96.87 |    95.2 | ...2138,2320-2321 
+  ...stic-store.ts |   94.61 |    88.33 |     100 |   94.26 | ...36,373,567,610 
+  domain.ts        |     100 |    96.85 |     100 |     100 | 154,246-248       
+  exports.ts       |     100 |    97.05 |     100 |     100 | 13                
+  index.ts         |     100 |      100 |     100 |     100 |                   
+  memx.ts          |     100 |      100 |     100 |     100 |                   
+  model-review.ts  |   98.58 |    93.57 |     100 |    98.8 | 511,538,642,912   
+  ...ce-binding.ts |    92.1 |    81.25 |     100 |   91.66 | 49,59,146         
+  provenance.ts    |   98.55 |    93.61 |   96.15 |   98.21 | 150               
+  store.ts         |   97.33 |      100 |     100 |   97.18 | 86-87             
+  validation.ts    |   93.75 |     87.5 |     100 |    92.3 | 32                
+  vulnerability.ts |   96.66 |    95.65 |     100 |   98.13 | 16,204            
+  ...low-domain.ts |   90.26 |    89.82 |   96.52 |   91.64 | ...1685,1704,1706 
+  ...-providers.ts |    92.1 |     93.8 |     100 |   91.78 | ...92,220,223,231 
+  ...low-routes.ts |   97.11 |    96.55 |   92.85 |   96.96 | 121-124,159       
+  ...low-runner.ts |   91.75 |    86.91 |   94.59 |   93.78 | ...85,805,914-916 
+  ...flow-store.ts |   98.85 |      100 |   94.73 |   98.79 | 174               
+ shared            |     100 |      100 |     100 |     100 |                   
+  ...tic-engine.ts |     100 |      100 |     100 |     100 |                   
+  domain-error.ts  |     100 |      100 |     100 |     100 |                   
+  example.ts       |     100 |      100 |     100 |     100 |                   
+  model-review.ts  |     100 |      100 |     100 |     100 |                   
+  ...ce-binding.ts |     100 |      100 |     100 |     100 |                   
+  model.ts         |     100 |      100 |     100 |     100 |                   
+  ...iagnostics.ts |     100 |      100 |     100 |     100 |                   
+  ...y-research.ts |     100 |      100 |     100 |     100 |                   
+  vulnerability.ts |     100 |      100 |     100 |     100 |                   
+  workflow-run.ts  |     100 |      100 |     100 |     100 |                   
+  workflow.ts      |     100 |      100 |     100 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+src\server\diagnostic-service.ts branches: 84.71 < 85
+src\server\model-source-binding.ts branches: 81.25 < 85

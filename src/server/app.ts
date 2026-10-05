@@ -30,6 +30,7 @@ import {
   researchRepository,
   researchMarkdown,
 } from "../research/repository-research.js";
+import type { ModelReviewBudget } from "../shared/model-review.js";
 
 export async function createApp(
   options: WorkflowRouteOptions & {
@@ -42,6 +43,9 @@ export async function createApp(
     diagnosticsRepositories?: Record<string, string>;
     diagnosticsFetch?: typeof fetch;
     diagnosticsScheduleIntervalMs?: number;
+    modelReviewBudget?: Partial<ModelReviewBudget>;
+    modelReviewBatchSize?: number;
+    modelReviewTimeoutMs?: number;
   } = {},
 ) {
   const app = Fastify({ logger: false, bodyLimit: 2 * 1024 * 1024 });
@@ -100,6 +104,11 @@ export async function createApp(
     repositories: options.diagnosticsRepositories,
     fetcher: options.diagnosticsFetch,
     scheduleIntervalMs: options.diagnosticsScheduleIntervalMs,
+    workflowProviders: options.workflowProviders,
+    workflowInvokeModel: options.workflowInvokeModel,
+    modelReviewBudget: options.modelReviewBudget,
+    modelReviewBatchSize: options.modelReviewBatchSize,
+    modelReviewTimeoutMs: options.modelReviewTimeoutMs,
   });
   let researching = false;
   app.get("/api/research", async () => store.listResearch());

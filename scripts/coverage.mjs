@@ -65,6 +65,7 @@ for (const name of [
   "browser-coverage",
   "coverage-combined",
   "quality",
+  "coverage-build",
 ]) {
   const dir = resolve(".cache", name);
   if (
@@ -74,7 +75,14 @@ for (const name of [
     throw new Error("Invalid output path");
   rmSync(dir, { recursive: true, force: true });
 }
-run("node_modules/typescript/bin/tsc", ["-p", "tsconfig.server.json"]);
+// Keep the verification server separate from a running local app or a frozen
+// model evaluation. Both browser and server checks use this same fresh build.
+run("node_modules/typescript/bin/tsc", [
+  "-p",
+  "tsconfig.server.json",
+  "--outDir",
+  ".cache/coverage-build",
+]);
 run("node_modules/vitest/vitest.mjs", ["run", "--coverage"]);
 run("node_modules/vite/bin/vite.js", ["build", "--mode", "coverage"]);
 run("node_modules/@playwright/test/cli.js", ["test"]);

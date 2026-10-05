@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "functional-model-review-input-compare/v1",
+  "runId": "model-review-input-compare-04",
+  "status": "completed",
+  "split": "development",
+  "conditions": [
+    "A",
+    "B",
+    "C"
+  ],
+  "cases": 9,
+  "freshCallCount": 27,
+  "expectedFreshCallCount": 27,
+  "promptEquality": true,
+  "mismatchCount": 0,
+  "mismatches": [],
+  "datasetSha256": "sha256:02bd61956a926909fbb99e3933304cb78abf91256439d88c8ac42ddd62bf27bb",
+  "conditionInputSha256": {
+    "A": "sha256:81f4524d2e4606f5c8c6ff6ac30de71c9272a13c1dd770676c089becc4fb0d5b",
+    "B": "sha256:084d207adcf6d658ad73300b0fe4a8dcc933ea6747deab8400a7fb717cfeb32a",
+    "C": "sha256:5ce9b365eedbb7f86efc844a0b84dfad594edfe0e0bf0b22e6f79f2799f2382c"
+  },
+  "source": {
+    "server/model-review.js": {
+      "fixed": {
+        "path": "dist/server/model-review.js",
+        "sha256": "sha256:5d0579daab5b738ba9404d425d74bd6a42637deca7c961ff5d146f3966ae3b0e"
+      },
+      "coverage": {
+        "path": ".cache/coverage-build/server/model-review.js",
+        "sha256": "sha256:0dac58607ae1a7caf9c8bc116a7c68b9633c5b458c8a92ec8760b73632c26991"
+      }
+    },
+    "server/workflow-providers.js": {
+      "fixed": {
+        "path": "dist/server/workflow-providers.js",
+        "sha256": "sha256:ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec"
+      },
+      "coverage": {
+        "path": ".cache/coverage-build/server/workflow-providers.js",
+        "sha256": "sha256:ece26f52a74ece86892597219e5ae60cb0e961db1275e1abb3aa0fcf84ae81ec"
+      }
+    },
+    "shared/diagnostic-engine.js": {
+      "fixed": {
+        "path": "dist/shared/diagnostic-engine.js",
+        "sha256": "sha256:e715ca04e39e2b07f2fb288674211e8c669d48047783534caac41322d60e54aa"
+      },
+      "coverage": {
+        "path": ".cache/coverage-build/shared/diagnostic-engine.js",
+        "sha256": "sha256:e715ca04e39e2b07f2fb288674211e8c669d48047783534caac41322d60e54aa"
+      }
+    },
+    "shared/model-review.js": {
+      "fixed": {
+        "path": "dist/shared/model-review.js",
+        "sha256": "sha256:b2a74fc1f692dc464685b06682870fd19ad18850824293ebfbb953630983a9d0"
+      },
+      "coverage": {
+        "path": ".cache/coverage-build/shared/model-review.js",
+        "sha256": "sha256:b2a74fc1f692dc464685b06682870fd19ad18850824293ebfbb953630983a9d0"
+      }
+    },
+    "shared/model.js": {
+      "fixed": {
+        "path": "dist/shared/model.js",
+        "sha256": "sha256:791c8e1324c7e9633f573a0c8c31500764eac332f867e0b31aa23d6ccd5cd1b1"
+      },
+      "coverage": {
+        "path": ".cache/coverage-build/shared/model.js",
+        "sha256": "sha256:791c8e1324c7e9633f573a0c8c31500764eac332f867e0b31aa23d6ccd5cd1b1"
+      }
+    },
+    "shared/domain-error.js": {
+      "fixed": {
+        "path": "dist/shared/domain-error.js",
+        "sha256": "sha256:8ffebc888bdc2f885ab9d83eecd2a7a282dac844efa21f0ab9ca68e6a42fccd8"
+      },
+      "coverage": {
+        "path": ".cache/coverage-build/shared/domain-error.js",
+        "sha256": "sha256:8ffebc888bdc2f885ab9d83eecd2a7a282dac844efa21f0ab9ca68e6a42fccd8"
+      }
+    },
+    "runner": {
+      "path": "scripts/model-review-evaluation.mjs",
+      "sha256": "sha256:02104f183a6dec512a2db47238b6958860f15adace3de4a9d0a70927c9f3df37"
+    },
+    "package-lock": {
+      "path": "package-lock.json",
+      "sha256": "sha256:ce89fb15d25b9f6e8b1b7576595cd40a7c7740eb4156c8db03e0568bb7ec3d56"
+    }
+  },
+  "fixedModule": "dist/server/model-review.js",
+  "coverageModule": ".cache/coverage-build/server/model-review.js",
+  "fakeInvoker": {
+    "used": true,
+    "externalModelCalls": 0,
+    "responseSha256": "sha256:c0bacc1d2cf94b8995e15da94487923c94bdfb71a95ef616ece0da975c870404",
+    "provider": "functional-fake-invoker"
+  },
+  "checkpoint": {
+    "checkpointProvided": false,
+    "checkpointResumed": false,
+    "validationCovered": false,
+    "note": "この証跡はfresh-call入力promptの比較だけであり、checkpointのpromptHash照合や再開経路を実行していません。既存comparison04の実モデルrunもこの新版checkpoint検証をカバーしません。"
+  },
+  "manifestIdAtPreparation": "eval:20261005-model-review-04",
+  "measurementNotes": [
+    "固定distとcoverage-buildの同じdevelopment A/B/C入力をproduction reviewSnapshotへ渡し、fake invokerが受けたfresh-call promptを比較しました。",
+    "実モデル、外部provider、攻撃操作、実サービス接続は使用していません。",
+    "prompt不一致は失敗として保存し、再出力filterやaliasで補正しません。"
+  ]
+}

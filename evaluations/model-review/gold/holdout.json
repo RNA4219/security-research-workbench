@@ -1,0 +1,13 @@
+{
+  "split": "holdout",
+  "cases": [
+    {"caseId":"b01","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/routes/documents.js","category":"authorization","lineStart":4,"lineEnd":4,"anchor":"repo.remove(id);"}]},
+    {"caseId":"b02","controlType":"hard-negative","expectedReview":{"requiresHumanConfirmation":false,"recheckPriorDecision":false},"findings":[]},
+    {"caseId":"b03","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/services/role.js","category":"input-validation","lineStart":2,"lineEnd":2,"anchor":"if (role) account.role = role;"}]},
+    {"caseId":"b04","controlType":"hard-negative","expectedReview":{"requiresHumanConfirmation":false,"recheckPriorDecision":false},"findings":[]},
+    {"caseId":"b05","controlType":"hard-negative","expectedReview":{"requiresHumanConfirmation":false,"recheckPriorDecision":false},"findings":[]},
+    {"caseId":"b06","controlType":"positive","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":false},"findings":[{"path":"src/services/session.js","category":"cryptography","lineStart":2,"lineEnd":2,"anchor":"return Buffer.from(`${userId}:${Date.now()}`).toString(\"base64url\");"}]},
+    {"caseId":"b07","controlType":"changed-assumption","expectedReview":{"requiresHumanConfirmation":true,"recheckPriorDecision":true},"findings":[{"path":"src/routes/export.js","category":"authorization","lineStart":2,"lineEnd":2,"anchor":"return actor.role === \"member\" && account.tenantId === actor.tenantId;"}]},
+    {"caseId":"b08","controlType":"unchanged-assumption","expectedReview":{"requiresHumanConfirmation":false,"recheckPriorDecision":false},"findings":[]}
+  ]
+}

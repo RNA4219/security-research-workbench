@@ -1,3 +1,5 @@
 # Frozen evidence hashes must survive checkout byte-for-byte on Windows and Linux.
 docs/testing/final-evidence/** -text
 docs/manual-bb/vulnerability-evidence/** -text
+# Captured evidence may intentionally include CRLF or terminal spacing.
+evaluations/** -text -whitespace

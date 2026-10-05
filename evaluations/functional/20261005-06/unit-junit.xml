@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="381" failures="0" errors="0" time="214.2613012">
+    <testsuite name="tests/bootstrap.test.ts" timestamp="2026-10-05T00:14:45.743Z" hostname="DESKTOP-HCPVLHM" tests="13" failures="0" errors="0" skipped="0" time="0.0521795">
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT 1023 では待受しない" time="0.034317">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT 65536 では待受しない" time="0.0010642">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT abc では待受しない" time="0.0007916">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="不正なPORT 4317.5 では待受しない" time="0.0008598">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="PORT undefined でループバックにbindし、終了時にDBを閉じる" time="0.0038395">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="PORT 4319 でループバックにbindし、終了時にDBを閉じる" time="0.001322">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="診断repo設定 { が不正なら起動せず、待受を開始しない" time="0.0012163">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="診断repo設定 null が不正なら起動せず、待受を開始しない" time="0.0009549">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="診断repo設定 [] が不正なら起動せず、待受を開始しない" time="0.0010194">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="診断repo設定 true が不正なら起動せず、待受を開始しない" time="0.0009458">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="診断repo設定 {&quot;product&quot;:12} が不正なら起動せず、待受を開始しない" time="0.001016">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="明示した診断repo設定 {} を起動設定に引き継ぐ" time="0.0014956">
+        </testcase>
+        <testcase classname="tests/bootstrap.test.ts" name="明示した診断repo設定 {&quot;product&quot;:&quot;C:/work/product&quot;,&quot;second&quot;:&quot;/work/second&quot;} を起動設定に引き継ぐ" time="0.0009725">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/browser-storage.test.ts" timestamp="2026-10-05T00:14:45.751Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="0.3921619">
+        <testcase classname="tests/browser-storage.test.ts" name="履歴は再起動しても復元され、同じIDは重複せず最新20件を残す" time="0.1464286">
+        </testcase>
+        <testcase classname="tests/browser-storage.test.ts" name="保存サイズを超える場合は古い履歴を間引き、1件でも大きすぎる場合は既存履歴を保つ" time="0.2006956">
+        </testcase>
+        <testcase classname="tests/browser-storage.test.ts" name="破損した履歴・上限超過・危険なリンクを受け入れず、明示削除で復旧する" time="0.0310095">
+        </testcase>
+        <testcase classname="tests/browser-storage.test.ts" name="保存領域の無効化・容量不足を呼出元に伝える" time="0.0100949">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/client-api.test.ts" timestamp="2026-10-05T00:14:45.752Z" hostname="DESKTOP-HCPVLHM" tests="1" failures="0" errors="0" skipped="0" time="0.0089754">
+        <testcase classname="tests/client-api.test.ts" name="通信が切れた取得・保存・ダウンロードに復旧案内を表示し、自動再送しない" time="0.0068642">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-engine.test.ts" timestamp="2026-10-05T00:14:45.753Z" hostname="DESKTOP-HCPVLHM" tests="23" failures="0" errors="0" skipped="0" time="41.5765599">
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; reads a pinned commit, ignores working-tree edits, and excludes unsupported and secret paths" time="1.1886688">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; honors cancellation and reports source file limits" time="1.2000249">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; resolves a user ref to a full immutable commit before taking its snapshot" time="1.3042796">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; excludes symbolic links, submodules, and non-UTF8 source blobs" time="1.7629591">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; caps source count and summarizes excess omitted paths" time="34.1268926">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; caps total snapshot bytes after enforcing each-file limits" time="1.206184">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; rejects a repository path containing an excluded segment" time="0.0020533">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; checks the resolved repository path before reading a directory symlink" time="0.0024958">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; propagates string abort reasons and rejects non-directory repository paths" time="0.3703236">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="snapshotRepository &gt; rejects malformed and option-like refs before invoking Git" time="0.3231979">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; finds disabled TLS validation with a stable fingerprint across comment shifts and clears it when fixed" time="0.0223382">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; detects weak hashing and sensitive Math.random but ignores comments and strings" time="0.001901">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; supports aliased hash imports and does not treat nested metadata or a shadowed https parameter as TLS settings" time="0.0033747">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; detects TLS environment overrides, direct request options, require crypto aliases, and sensitive random values" time="0.0026976">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; handles require-bound modules, computed member names, and default-parameter shadowing" time="0.0015055">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; keeps separate findings in one named function and leaves harmless settings unflagged" time="0.0019978">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; exposes syntax failures, unsupported files, and absent source as unassessed" time="0.0024996">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; parses lockfile v3 locally without requests unless dependency networking is enabled" time="0.0430061">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; marks unsupported lockfiles and network failures as unassessed" time="0.0016123">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; runs selected engine stages independently and marks skipped stages unavailable" time="0.0024594">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; rejects invalid snapshots and pre-aborted analysis" time="0.0005404">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; rejects file-hash and manifest tampering before returning results" time="0.0004373">
+        </testcase>
+        <testcase classname="tests/diagnostic-engine.test.ts" name="analyzeSnapshot &gt; reports matched advisories without a known fix as review-only guidance" time="0.0017877">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-feedback-evaluation.test.mjs" timestamp="2026-10-05T00:14:45.759Z" hostname="DESKTOP-HCPVLHM" tests="11" failures="0" errors="0" skipped="0" time="11.6961766">
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="feedback evidence gate &gt; 候補があってもpartial runを合格にしない" time="0.0042774">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="feedback evidence gate &gt; 候補があってもfailed runを合格にしない" time="0.0005417">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="feedback evidence gate &gt; 候補があってもstopped runを合格にしない" time="0.0003292">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="feedback evidence gate &gt; 欠けたモデル範囲・古いcommit・証跡エラー・呼出し欠落を合格にしない" time="0.001877">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="feedback evidence gate &gt; prompt内の固定参照資料が欠けていたら抽出成功にしない" time="0.0026115">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="feedback evidence gate &gt; 同一commitを名乗る別snapshot・改変原文・旧仕様を合格にしない" time="0.0008727">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="product diagnostic feedback evaluation &gt; contract modeで候補保持・同条件抑止・仕様変更再確認を公開API経由で検証する" time="4.398462">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="product diagnostic feedback evaluation &gt; 既定の厳密比較では文章が変わると確認待ちのまま失敗証跡を残す" time="3.0923993">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="product diagnostic feedback evaluation &gt; 人が明示したコード範囲なら文章変更を含めて再利用し、仕様変更は再確認する" time="4.1008134">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="product diagnostic feedback evaluation &gt; live modeはlocal provider設定がなければ固定応答へfallbackせず停止する" time="0.0774627">
+        </testcase>
+        <testcase classname="tests/diagnostic-feedback-evaluation.test.mjs" name="product diagnostic feedback evaluation &gt; 既存の出力先をDBや証跡ごと上書きしない" time="0.0125543">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-judgment-context.test.ts" timestamp="2026-10-05T00:14:45.762Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="18.2456319">
+        <testcase classname="tests/diagnostic-judgment-context.test.ts" name="診断判断の適用条件 provenance &gt; decisionへ観測時contextを保存し、旧形式の判断は保存しても未知のままにする" time="0.0192468">
+        </testcase>
+        <testcase classname="tests/diagnostic-judgment-context.test.ts" name="診断判断の適用条件 provenance &gt; 仕様revision変更後に旧判断をmodel入力へ残さず、同条件では再利用する" time="6.6662399">
+        </testcase>
+        <testcase classname="tests/diagnostic-judgment-context.test.ts" name="診断判断の適用条件 provenance &gt; source_scopeは文言変更を再利用し、根拠資料の公開改版後は再確認へ戻す" time="6.343564">
+        </testcase>
+        <testcase classname="tests/diagnostic-judgment-context.test.ts" name="診断判断の適用条件 provenance &gt; 旧source_scopeの出典revisionはhistoryを検証し、欠損資料は再利用しない" time="5.2135585">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-model-failures.test.ts" timestamp="2026-10-05T00:14:45.763Z" hostname="DESKTOP-HCPVLHM" tests="13" failures="0" errors="0" skipped="0" time="16.4686356">
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; 利用できないlocal providerではrunを作らず開始を拒否する" time="0.6548768">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; cloud同意なし・同意後の未提供状態をそれぞれ拒否する" time="0.55644">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; 案件scopeからproviderを外したrunを拒否する" time="0.3985999">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; local以外のprovider kindをモデル診断に使わせない" time="0.3810438">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; modelのJSON不正応答を成功扱いせず、モデルcoverageをunavailableにする" time="1.207368">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; 負のtoken usageをprovider応答不正として記録する" time="1.0046023">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; 非有限costをprovider応答不正として記録する" time="1.291102">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; 注入adapterなしでもendpointのOpenAI互換応答をモデル診断へ接続する" time="1.4248668">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; model timeoutを部分成功やcompletedにせずinterruptedとして記録する" time="2.2549695">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; maxPromptChars超過時はpromptを送らず停止記録だけを残す" time="1.0529887">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; maxCostUsdに達した後は次batchを呼ばず、部分coverageを残す" time="1.0169946">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; providerのmaxOutputTokensを有効budgetとinvoke引数に反映する" time="1.0807079">
+        </testcase>
+        <testcase classname="tests/diagnostic-model-failures.test.ts" name="診断serviceのmodel provider異常・予算境界 &gt; 保存済みmodel checkpointのbudget変更を再開時に拒否する" time="1.4417474">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-recovery-integrity.test.ts" timestamp="2026-10-05T00:14:45.766Z" hostname="DESKTOP-HCPVLHM" tests="8" failures="0" errors="0" skipped="0" time="15.7697886">
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; checkpoint identityが壊れているrunを再開せず、partialのまま保持する" time="1.4685884">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; 固定snapshotのcommitが壊れている再開はfailedになり、completed扱いにしない" time="1.2443283">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; 保存snapshotのJSONが壊れている再開はcheckpointを修復せず拒否する" time="1.2919976">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; checkpoint行がない旧形式のrunは保存済み結果を捏造せず、再計算してから終了する" time="2.4650622">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; 旧runでmodelReviewとmodel checkpointが欠けていても再開失敗を完了扱いにしない" time="1.4347183">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; model checkpoint不一致時は旧complete coverageを無効化し、旧候補を修正済みにしない" time="1.7811804">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; 再起動時にrunningレコードが壊れていれば自動修復せず起動を拒否する" time="1.281113">
+        </testcase>
+        <testcase classname="tests/diagnostic-recovery-integrity.test.ts" name="診断保存データの再開整合性 &gt; 最小固定snapshotでは全engineを完了し、completed runを再開できない" time="2.1161096">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-service-coverage.test.ts" timestamp="2026-10-05T00:14:45.768Z" hostname="DESKTOP-HCPVLHM" tests="8" failures="0" errors="0" skipped="0" time="20.5325107">
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; provider一覧は安全な識別情報だけを返し、local/cloud/manualの利用可能性を区別する" time="2.8909737">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; 製品登録時の対象refを初回runで再固定しても承認済みknowledgeを失効させない" time="3.3997735">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; 有効化したmodel providerの案件境界を拒否理由ごとに区別する" time="3.9438847">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; model findingとcoverageの変換はseverity・不確実性・停止状態を保持する" time="2.5062473">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; 停止済みmodel checkpointのcoverageは重複omissionと未収録pathを安全に集計する" time="2.6714375">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; record未生成の中断checkpointでもbudget変更のresumeを409で拒否する" time="3.9801821">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; 予定batch数は本番plannerのsource・batch・budget境界を反映する" time="0.0012169">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-coverage.test.ts" name="診断serviceの境界変換 &gt; 未実行model reviewの記録は旧製品設定とprovider種別を後方互換で表現する" time="1.1350566">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-service-review.test.ts" timestamp="2026-10-05T00:14:45.770Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="6.960797">
+        <testcase classname="tests/diagnostic-service-review.test.ts" name="診断serviceの境界と状態整合 &gt; 案件で静的診断と既知依存照合が許可されていなければrunを拒否する" time="0.2251813">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-review.test.ts" name="診断serviceの境界と状態整合 &gt; 設定がrun開始後に更新された場合、古い設定のrunをcompletedにしない" time="0.1770313">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-review.test.ts" name="診断serviceの境界と状態整合 &gt; 依存照合を無効化する更新中はinterrupted runを再開せず、外部照会を送らない" time="3.1331494">
+        </testcase>
+        <testcase classname="tests/diagnostic-service-review.test.ts" name="診断serviceの境界と状態整合 &gt; 保存済みengineVersionと現行engineが異なるrunを再開しない" time="0.2356792">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-store-ordering.test.ts" timestamp="2026-10-05T00:14:45.771Z" hostname="DESKTOP-HCPVLHM" tests="1" failures="0" errors="0" skipped="0" time="0.0384726">
+        <testcase classname="tests/diagnostic-store-ordering.test.ts" name="DiagnosticStore run ordering &gt; puts a resumed older run before a newer inserted run for latest/previous selection" time="0.0347777">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-store.test.ts" timestamp="2026-10-05T00:14:45.771Z" hostname="DESKTOP-HCPVLHM" tests="13" failures="0" errors="0" skipped="0" time="0.2545198">
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; enforces one queued/running run per product while allowing terminal and cross-product runs" time="0.0411394">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; keeps request IDs idempotent per product and rejects changed fingerprints" time="0.0142436">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; uses compare-and-swap revisions and reports absent or cross-product runs" time="0.0108526">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; summarizes every finding delta and latest incomplete coverage without changing persisted run data" time="0.0074577">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; persists pinned snapshots across reopen and recovers each active state exactly once" time="0.0693237">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; updates product configuration and linked workflow atomically with pinned revisions" time="0.0055191">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; advances only the product revision for schedule and no-op edits, then synchronizes dependency permission both ways" time="0.0053062">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; rolls back product and workflow creation as one transaction on a database failure" time="0.0024371">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; rolls back settings if the linked workflow CAS fails" time="0.0031965">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; rejects checkpoint access when the run is missing or the pinned identity differs" time="0.0060318">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; validates snapshot schema and binds each persisted engine stage to its matching coverage/findings" time="0.0077339">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; persists the fixed snapshot and separate engine results across store reopen" time="0.0747204">
+        </testcase>
+        <testcase classname="tests/diagnostic-store.test.ts" name="DiagnosticStore persistence and boundaries &gt; rejects checkpoint rows corrupted outside the validated store API" time="0.0036386">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/diagnostic-suppression-integration.test.ts" timestamp="2026-10-05T00:14:45.774Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="19.1686515">
+        <testcase classname="tests/diagnostic-suppression-integration.test.ts" name="診断とworkflow抑止の統合 &gt; 明示的人判断の同一context/evidenceだけを別枠抑止し、raw候補と履歴を残す" time="6.0959061">
+        </testcase>
+        <testcase classname="tests/diagnostic-suppression-integration.test.ts" name="診断とworkflow抑止の統合 &gt; decisionと最新observationのcontext不一致は抑止を再利用しない" time="4.7446378">
+        </testcase>
+        <testcase classname="tests/diagnostic-suppression-integration.test.ts" name="診断とworkflow抑止の統合 &gt; 人判断がcheckpoint作成後に変わったresumeを拒否する" time="3.3999168">
+        </testcase>
+        <testcase classname="tests/diagnostic-suppression-integration.test.ts" name="診断とworkflow抑止の統合 &gt; model provider条件が変わったrunでは同じ抑止を再利用しない" time="4.9252386">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/model-methodology-identity.test.ts" timestamp="2026-10-05T00:14:45.775Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="0.0331895">
+        <testcase classname="tests/model-methodology-identity.test.ts" name="model review methodology identity &gt; keeps a completed checkpoint identity stable and reuses it without a provider call" time="0.0227131">
+        </testcase>
+        <testcase classname="tests/model-methodology-identity.test.ts" name="model review methodology identity &gt; changes the planned identity when rendered prompt material changes" time="0.0044698">
+        </testcase>
+        <testcase classname="tests/model-methodology-identity.test.ts" name="model review methodology identity &gt; keeps diagnostic comparison identity stable while separating prompt changes" time="0.0005594">
+        </testcase>
+        <testcase classname="tests/model-methodology-identity.test.ts" name="model review methodology identity &gt; does not silently accept a checkpoint made from changed prompt inputs" time="0.0033137">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/model-review-evaluation.test.mjs" timestamp="2026-10-05T00:14:45.777Z" hostname="DESKTOP-HCPVLHM" tests="23" failures="0" errors="0" skipped="0" time="2.1112957">
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="keeps missing and invalid token counts unknown while preserving an actual zero" time="0.0041434">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="model review evaluation corpus &gt; keeps a product corpus split into development and holdout with six categories" time="0.0026759">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="model review evaluation corpus &gt; exposes only the intended context for A, B, and C" time="0.001716">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="deterministic matching and metrics &gt; counts duplicate re-output as a false positive while reporting it separately" time="0.0007471">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="deterministic matching and metrics &gt; keeps human confirmation and assumption-control counts in the metrics" time="0.001295">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="deterministic matching and metrics &gt; keeps category evaluation rates honest for mixed and fully unscored records" time="0.0016002">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="deterministic matching and metrics &gt; uses only measured boolean recheck values for misses and overreach" time="0.000801">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="deterministic matching and metrics &gt; does not inflate failed tasks into false negatives and reports the evaluated rate" time="0.0004103">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="deterministic matching and metrics &gt; treats partial, stopped, and unavailable coverage as unscored" time="0.0004437">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; rejects stale identity input hashes even when evaluation dataset hash matches" time="0.0063246">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; rejects missing engine files instead of skipping source identity checks" time="0.0391369">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; rejects a missing source-bundle input before any review invocation" time="0.3802854">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; rejects a source identity mismatch before invoking the engine" time="0.016382">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; requires repetitions to match the frozen manifest" time="0.0273642">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; requires non-empty unique conditions within the manifest allowlist" time="0.0504569">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; adapts the production reviewSnapshot contract and leaves queue status unavailable" time="0.0154513">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; keeps production prompt and raw invocation evidence when schema validation throws" time="0.2102673">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; rejects a non-frozen manifest before invoking the engine" time="0.0039679">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; saves every prompt, raw response, measured time, model, and usage value" time="0.6191331">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; fails records whose measured usage exceeds the frozen budget" time="0.4242146">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="runEvaluation preflight and raw evidence &gt; persists coverage/report and treats partial reviews as unscored" time="0.2247772">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="model review postrun evidence &gt; writes a failed checker record without changing the source run files" time="0.0259699">
+        </testcase>
+        <testcase classname="tests/model-review-evaluation.test.mjs" name="model review postrun evidence &gt; separates measurement completion from the effect decision and infers the split gold" time="0.0480881">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/model-review-integration.test.ts" timestamp="2026-10-05T00:14:45.781Z" hostname="DESKTOP-HCPVLHM" tests="8" failures="0" errors="0" skipped="0" time="18.0590109">
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; provider契約を守り、固定snapshotの検証済みモデルfindingをrunへ接続する" time="1.8413139">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; 承認されていない/失効した案件知識と条件不一致の過去判断をモデル入力へ渡さない" time="2.5995201">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; 過去判断は監査履歴全件ではなく現行findingの最新判断だけを入力する" time="2.1171064">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; 複数sourceRefsの承認知識を順序どおり固定し、rule更新後は根拠付き過去判断を除外する" time="2.3189462">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; 別findingの現行判断変更はモデル比較contextを変え、再確認を要求する" time="1.604481">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; 二つのmodel findingを同一条件で再判断しても抑止が相互失効し続けない" time="2.5048338">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; blockedまたは未分類sourceの過去判断をlocal modelへ送らない" time="0.8422731">
+        </testcase>
+        <testcase classname="tests/model-review-integration.test.ts" name="diagnostic serviceとlocal model reviewの統合 &gt; モデル停止時は保存済みbatchのpartial coverageをrunへ残す" time="1.0709046">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/model-review.test.ts" timestamp="2026-10-05T00:14:45.783Z" hostname="DESKTOP-HCPVLHM" tests="31" failures="0" errors="0" skipped="0" time="0.210171">
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; reviews several fixed batches and validates exact source plus approved references" time="0.0837913">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; allows a code-only review while making the missing knowledge limitation explicit" time="0.0054989">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; keeps indentation and trailing spaces when validating CRLF source citations" time="0.0023992">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; records an oversized source file as omitted without truncating it" time="0.0024433">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; does not send a prompt that exceeds the combined prompt budget" time="0.0017175">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects source citations and specification IDs that do not match the pinned input" time="0.0025588">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; reuses a matching checkpoint and rejects knowledge, provider, or source changes" time="0.0169262">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; records a bounded partial range and preserves a stop checkpoint" time="0.0068808">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; treats an already stopped review as stopped coverage without invoking the provider" time="0.0039397">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects negative or non-integral provider token usage instead of producing a report" time="0.0018402">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects omission ranges outside the exact batch source" time="0.0013111">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; retains completed batches after a later provider failure so explicit resume can reuse them" time="0.0037619">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; does not invoke a provider when no source files are available" time="0.0010573">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; records maxFiles and maxInputChars omissions without silently selecting extra source" time="0.0097465">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects an invalid batch size before any model call" time="0.0006713">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; stops after a known cost budget and records the unreviewed batch" time="0.0021666">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; derives cost only when both token counts and provider rates are known" time="0.0035265">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; passes only target and condition-matching prior judgments to the batch prompt" time="0.0028134">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects malformed model JSON and schema instances instead of treating them as empty findings" time="0.0032248">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects duplicate IDs, unknown references, and remediation without human review" time="0.0155178">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects a checkpoint containing a duplicated completed batch" time="0.003279">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; keeps a stop that races with provider completion as stopped coverage" time="0.0016421">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; preserves a model contract error without relabeling it as a provider transport error" time="0.0038203">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects ambiguous source and reference identities before invoking a model" time="0.0023274">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects invalid injected provider response contracts and non-Error failures" time="0.0078524">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; records an abort that arrives while the provider invocation is rejecting" time="0.0016212">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; validates omission end bounds and inverted ranges against the pinned source" time="0.0034503">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; rejects a malformed checkpoint before accepting any saved batch" time="0.0009686">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; reuses a checkpoint with usage at the cost ceiling and skips the remaining batch" time="0.0028179">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; keeps a completed one-batch review completed when cost reaches the ceiling at the end" time="0.0014233">
+        </testcase>
+        <testcase classname="tests/model-review.test.ts" name="model review contract &gt; uses the provider output cap when a budget override explicitly leaves it undefined" time="0.0026979">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/model-source-binding.test.ts" timestamp="2026-10-05T00:14:45.789Z" hostname="DESKTOP-HCPVLHM" tests="15" failures="0" errors="0" skipped="0" time="0.048225">
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; validates the exact pinned line and normalizes specification references" time="0.0167756">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; keeps the binding hash stable for wording-only model changes" time="0.0012155">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when path changes" time="0.0015946">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when line changes" time="0.0012695">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when source text changes" time="0.0035318">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when target version changes" time="0.001497">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when category changes" time="0.0011225">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when severity changes" time="0.0016197">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when specification references changes" time="0.001635">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when false-positive classification changes" time="0.0011959">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; changes the hash when uncertainty level changes" time="0.0014587">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; rejects a citation that is missing, moved, or not exact" time="0.0045894">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; requires an intact snapshot and the versioned binding fields" time="0.0035992">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; rejects duplicate snapshot paths before creating a binding" time="0.0011886">
+        </testcase>
+        <testcase classname="tests/model-source-binding.test.ts" name="model source binding &gt; rejects a snapshot whose manifest hash does not match its files" time="0.0010198">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/product-diagnostics-boundary.test.ts" timestamp="2026-10-05T00:14:45.792Z" hostname="DESKTOP-HCPVLHM" tests="13" failures="0" errors="0" skipped="0" time="18.5268369">
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="製品診断のAPI境界 &gt; 不正ID・未知製品・未知repo・schedule直起動を拒否する" time="0.1164704">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="製品診断のAPI境界 &gt; 終端runは停止・再開されず、partial runは最新workflow版から明示再開できる" time="0.9643138">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; active runを停止し、設定更新が旧診断を中断して新しい診断版を保存する" time="1.3443564">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; 明示scheduleだけを経過後に1回開始し、同じinterval要求を重複作成しない" time="1.1942846">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; Git ref解決中のcloseはschedule tickを待ち、後続runや解析を開始しない" time="0.2877181">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; 実行中に案件revisionが変わった診断をinterruptedとして具体理由付きで保存する" time="1.255166">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; 承認済み知識のhashをrunへ固定し、context追加後のpartial resumeを拒否する" time="1.2815256">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; restart resumeはsnapshotを再利用し、complete engine stageを再実行しない" time="1.3631312">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの停止・schedule lifecycle &gt; 消失確認済み指摘が再出現したらneeds_reviewに戻し、詳細履歴のdelta件数を分ける" time="3.3457515">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断storeのCAS・履歴・隔離 &gt; 製品更新のrevisionとworklow historyを一体で進め、scheduleのみでは診断版を変えない" time="0.005546">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断storeのCAS・履歴・隔離 &gt; runのrequestId冪等性を製品内に限定し、異なるpayloadと古いCASを拒否する" time="0.00719">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの設定境界 &gt; repo registryは不正ID、非Git path、禁止path、非root pathを拒否し、run開始条件を確認する" time="1.0132909">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-boundary.test.ts" name="診断serviceの設定境界 &gt; 既定workbench登録、registry上限、package fallback、detached HEADを扱う" time="3.1732361">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/product-diagnostics-review.test.ts" timestamp="2026-10-05T00:14:45.795Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="11.0306889">
+        <testcase classname="tests/product-diagnostics-review.test.ts" name="製品の実解析と既存案件の独立レビュー &gt; 実解析を根拠に判定し、修正版の再解析と通常機能試験を確認して人が完了する" time="3.4870682">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-review.test.ts" name="製品の実解析と既存案件の独立レビュー &gt; 初回・行移動・修正版を解析し、履歴と対象版を保持する" time="2.969704">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-review.test.ts" name="製品の実解析と既存案件の独立レビュー &gt; 同じCI要求を再解析せず、別内容での使い回しを拒否する" time="0.7791419">
+        </testcase>
+        <testcase classname="tests/product-diagnostics-review.test.ts" name="製品の実解析と既存案件の独立レビュー &gt; 製品を越えた結果の取得と古い設定による上書きを拒否する" time="0.7173775">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/product-diagnostics.test.ts" timestamp="2026-10-05T00:14:45.796Z" hostname="DESKTOP-HCPVLHM" tests="3" failures="0" errors="0" skipped="0" time="2.985619">
+        <testcase classname="tests/product-diagnostics.test.ts" name="製品診断の共有契約と中断履歴 &gt; 厳格入力でlocal repo IDだけを受け付け、CI requestIdとschedule境界を検証する" time="0.0227245">
+        </testcase>
+        <testcase classname="tests/product-diagnostics.test.ts" name="製品診断の共有契約と中断履歴 &gt; repository一覧からローカル絶対pathを返さない" time="0.037028">
+        </testcase>
+        <testcase classname="tests/product-diagnostics.test.ts" name="製品診断の共有契約と中断履歴 &gt; 再起動時にactive runをinterruptedへ移し、履歴を残す" time="0.0223539">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/provenance.test.ts" timestamp="2026-10-05T00:14:45.797Z" hostname="DESKTOP-HCPVLHM" tests="11" failures="0" errors="0" skipped="0" time="0.6373989">
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 非対応アダプターの失敗を隔離し、内部契約と保存データを維持する" time="0.0397416">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 複数Evidenceの参照を内部契約・Markdown・逆参照で保持する" time="0.0063272">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 未確認と値なしを区別し、不整合な値と根拠なしの検証済みを拒否する" time="0.0049479">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 比較レビューをAPI側で強制し、根拠の欠落したプロンプトを拒否する" time="0.0028911">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; sourceの更新で比較と要件を再確認対象にする" time="0.0025334">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; evidenceの更新で比較と要件を再確認対象にする" time="0.0044853">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; claimの更新で比較と要件を再確認対象にする" time="0.0021174">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; projectの更新で比較と要件を再確認対象にする" time="0.0015385">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 根拠不足・修正要求・却下を保存し、承認時刻と理由を記録する" time="0.0021865">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; v1 DBを原本・既存履歴を変更せず移行し、再起動でも移行を繰り返さない" time="0.0993625">
+        </testcase>
+        <testcase classname="tests/provenance.test.ts" name="Deep Researchの不足要件 &gt; 内部Schemaを公開し、外部通信なしで保存・再読込・出力できる" time="0.4683247">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/quality-chain.test.mjs" timestamp="2026-10-05T00:14:45.799Z" hostname="DESKTOP-HCPVLHM" tests="9" failures="0" errors="0" skipped="0" time="0.0080319">
+        <testcase classname="tests/quality-chain.test.mjs" name="同一ビルドの完全な証跡だけを受け付ける" time="0.0034999">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="古い手動結果を拒否してGateの成功を捏造しない" time="0.0005946">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="改変された要件を拒否してGateの成功を捏造しない" time="0.0003696">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="自動テスト失敗を拒否してGateの成功を捏造しない" time="0.0003085">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="手動ケース不足を拒否してGateの成功を捏造しない" time="0.0002783">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="静的指摘未解決を拒否してGateの成功を捏造しない" time="0.0002718">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="低カバレッジを拒否してGateの成功を捏造しない" time="0.0002793">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="実行後の未確定変更を拒否してGateの成功を捏造しない" time="0.0002896">
+        </testcase>
+        <testcase classname="tests/quality-chain.test.mjs" name="HATEの重複結果を拒否してGateの成功を捏造しない" time="0.000382">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/recalculate-model-review-metrics.test.mjs" timestamp="2026-10-05T00:14:45.801Z" hostname="DESKTOP-HCPVLHM" tests="2" failures="0" errors="0" skipped="0" time="0.0330837">
+        <testcase classname="tests/recalculate-model-review-metrics.test.mjs" name="recalculate model review metrics &gt; preserves confusion counts while correcting category and unavailable recheck metrics" time="0.0094835">
+        </testcase>
+        <testcase classname="tests/recalculate-model-review-metrics.test.mjs" name="recalculate model review metrics &gt; refuses to overwrite an existing sidecar" time="0.0212738">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/regression.test.ts" timestamp="2026-10-05T00:14:45.801Z" hostname="DESKTOP-HCPVLHM" tests="32" failures="0" errors="0" skipped="0" time="1.3520223">
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 0 文字" time="0.0083698">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 1 文字" time="0.0007332">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 199 文字" time="0.0004295">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 200 文字" time="0.0003302">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; プロジェクト名 201 文字" time="0.0005385">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 0 文字" time="0.0024798">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 1 文字" time="0.0005911">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 999999 文字" time="0.0002863">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 1000000 文字" time="0.0003193">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 資料本文 1000001 文字" time="0.0008968">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 値状態 known と空文字の整合" time="0.0022637">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 値状態 unknown と空文字の整合" time="0.0003616">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-02/12 入力の境界と決定表 &gt; 値状態 empty と空文字の整合" time="0.0003955">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 変更なし・タイトル変更は根拠の承認を失効させない" time="0.0243483">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 候補編集は関連承認を失効し、変更していないClaimと原本を維持する" time="0.0036856">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 要件編集・再レビューと旧形式の同じ出典からの再正規化" time="0.0133675">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; Claimの所属変更・項目重複を拒否する" time="0.0018961">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; Evidence unverified では確認済みClaimを保存できない" time="0.002536">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; Evidence disputed では確認済みClaimを保存できない" time="0.0014715">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 要件は未確認Claimを事実扱いせず、資料版不一致を出力しない" time="0.0016093">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; 不明IDをどの編集入口からも拒否し、元データを維持する" time="0.0028949">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-11/13/15 根拠と承認の回帰 &gt; v1候補移行で既知・未確認・値なしを区別し、v2は独立したコピーを返す" time="0.0053807">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-01/07/15 APIとトランザクション &gt; 不正入力の詳細、一覧、履歴、不明ID、サーバー内部例外を区別する" time="0.4413198">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-01/07/15 APIとトランザクション &gt; 一括取込の途中失敗・競合時も状態と履歴を変更せず、失敗原本は残す" time="0.2734991">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-01/07/15 APIとトランザクション &gt; 不正な旧プロジェクトが混在すると移行全体をロールバックする" time="0.0704949">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 0 を隔離し、同期済みとして記録しない" time="0.0599767">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 1 を隔離し、同期済みとして記録しない" time="0.0244003">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 2 を隔離し、同期済みとして記録しない" time="0.0441991">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 異常応答 3 を隔離し、同期済みとして記録しない" time="0.0088404">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-09 memx異常系と部分再試行（実ループバックHTTP） &gt; 途中成功後の再試行は未同期分だけ送る。各APIの結果を返す" time="0.306176">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-14 任意アダプターの不適合 &gt; missing-method の失敗後も内部契約を生成できる" time="0.0366007">
+        </testcase>
+        <testcase classname="tests/regression.test.ts" name="FR-14 任意アダプターの不適合 &gt; invalid-graph の失敗後も内部契約を生成できる" time="0.0073857">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/research.test.ts" timestamp="2026-10-05T00:14:45.809Z" hostname="DESKTOP-HCPVLHM" tests="35" failures="0" errors="0" skipped="0" time="1.3405679">
+        <testcase classname="tests/research.test.ts" name="同時調査を制限し、終了・失敗後は次の調査を受け付ける" time="0.5594822">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="過大な照合結果は上限を示し、Gitの修正コミットをnpm修正版に混ぜない" time="0.0175347">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="URLだけからコミット固定の依存照合と更新の確認事項を返す" time="0.0148152">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL http://github.com/a/b は通信前に拒否" time="0.0028714">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL https://github.com.evil.test/a/b は通信前に拒否" time="0.0009237">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL https://name:secret@github.com/a/b は通信前に拒否" time="0.0006407">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL https://github.com/a/b/tree/main は通信前に拒否" time="0.0005153">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL https://github.com/a/b?x=1 は通信前に拒否" time="0.0005647">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL https://github.com/a/.. は通信前に拒否" time="0.0009472">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL file:///tmp/x は通信前に拒否" time="0.0004782">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不正URL https://github.com/a/.git は通信前に拒否" time="0.0005565">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="URLの末尾.git、余白、末尾slashを正規化" time="0.0002968">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="GitHub HTTP 404 は結果を捏造しない" time="0.0008025">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="GitHub HTTP 403 は結果を捏造しない" time="0.0005307">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="GitHub HTTP 429 は結果を捏造しない" time="0.0020927">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="GitHub HTTP 500 は結果を捏造しない" time="0.0052537">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不一致・非公開・不正metadataを拒否 {&quot;full_name&quot;:&quot;other/repo&quot;}" time="0.0019678">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不一致・非公開・不正metadataを拒否 {&quot;private&quot;:true}" time="0.0027059">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="不一致・非公開・不正metadataを拒否 {&quot;archived&quot;:&quot;false&quot;}" time="0.0015611">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="lockfileなしは未対応、releaseなしはなしと表示する" time="0.0018675">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="commit未取得では依存ファイルを読まない" time="0.0129033">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="commit未取得では依存ファイルを読まない" time="0.0042339">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="archive・不明license・長期未更新は個別の確認事項を返す" time="0.003213">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="shrinkwrapを優先、問題なしでも用途確認と調査範囲を残す" time="0.002337">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="読めないlockを未照合にする {&quot;type&quot;:&quot;file&quot;,&quot;encoding&quot;:&quot;base64&quot;,&quot;content&quot;:&quot;eyJsb2NrZmlsZVZlcnNpb24iOjF9&quot;}" time="0.0017453">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="読めないlockを未照合にする {&quot;type&quot;:&quot;dir&quot;}" time="0.0016609">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="読めないlockを未照合にする {&quot;type&quot;:&quot;file&quot;,&quot;encoding&quot;:&quot;base64&quot;,&quot;content&quot;:&quot;!!!&quot;}" time="0.0013178">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="lock解析は重複版をまとめ、alias・開発用・未対応依存を区別する" time="0.0010247">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="400版を超えた分を未照合として数える" time="0.0066336">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="OSV不正応答は0件の完了にしない {}" time="0.0008744">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="OSV不正応答は0件の完了にしない {&quot;results&quot;:[]}" time="0.0006196">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="OSV不正応答は0件の完了にしない {&quot;results&quot;:[{},{},{}]}" time="0.0010421">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="OSV継続ページ・撤回・詳細不一致を区別し、別packageのfixを混ぜない" time="0.0020246">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="応答サイズをヘッダーとストリームの両方で制限し、空bodyも拒否" time="0.0146533">
+        </testcase>
+        <testcase classname="tests/research.test.ts" name="APIで保存・再起動後の読出し・Markdown出力ができ、不正idは拒否" time="0.6664257">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/review-queue-evaluation.test.mjs" timestamp="2026-10-05T00:14:45.817Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="0.1470708">
+        <testcase classname="tests/review-queue-evaluation.test.mjs" name="production review queue evaluation &gt; keeps opaque cases, gold controls, and a frozen production identity" time="0.0076068">
+        </testcase>
+        <testcase classname="tests/review-queue-evaluation.test.mjs" name="production review queue evaluation &gt; freezes queue03 as a new dataset with the other-finding judgment control" time="0.0029792">
+        </testcase>
+        <testcase classname="tests/review-queue-evaluation.test.mjs" name="production review queue evaluation &gt; counts queue state from production helper output and retains raw candidates" time="0.1328437">
+        </testcase>
+        <testcase classname="tests/review-queue-evaluation.test.mjs" name="production review queue evaluation &gt; does not turn a production helper error into a reusable queue result" time="0.0006612">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/vulnerability.test.ts" timestamp="2026-10-05T00:14:45.818Z" hostname="DESKTOP-HCPVLHM" tests="8" failures="0" errors="0" skipped="0" time="0.6444193">
+        <testcase classname="tests/vulnerability.test.ts" name="3ソースの事実・出典・ハッシュを分け、保存しても承認しない" time="0.0596391">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="未掲載と取得失敗を区別し、欠損EPSSをゼロにしない" time="0.0067326">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="不正な上流内容と過大応答を利用せず、全ソース障害は502にする" time="0.0101723">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="応答本文の上限・空本文・壊れたカタログを取得失敗にする" time="0.0049776">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="OSVの別名と欠損項目、KEVのCWE欠損を区別する" time="0.0022744">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="OSVの撤回と順序付き範囲イベントを保持する" time="0.0035717">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="上流の長い版一覧は省略を明示し、保存上限内に収める" time="0.0667119">
+        </testcase>
+        <testcase classname="tests/vulnerability.test.ts" name="APIは明示POSTまで通信せず、不正IDを外部へ渡さない" time="0.4871216">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workbench.test.ts" timestamp="2026-10-05T00:14:45.821Z" hostname="DESKTOP-HCPVLHM" tests="11" failures="0" errors="0" skipped="0" time="1.1359826">
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 資料の重複を防ぎ、更新で承認を失効させ、原文を保存する" time="0.0192695">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 一括取込は不明出典・重複ID・既存ID・自動承認を拒否する" time="0.0069628">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 同じ版から決定的で有効な契約を生成し、承認要件だけを含める" time="0.2640482">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; プロンプトは選択資料だけを含み、出力形式を指定する" time="0.0019338">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="要件と根拠の整合性 &gt; 受入条件・文字数・URLと未知フィールドを検証する" time="0.0047563">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="永続化と履歴 &gt; 再起動で復元し、古いrevisionでの上書きを拒否する" time="0.0408787">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="永続化と履歴 &gt; 将来版のDBを上書きしない" time="0.0174547">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="API &gt; 作成→資料→要件→承認→出力。誤入力と接続失敗はデータを壊さない" time="0.4284125">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="API &gt; Host・Origin・必須ヘッダー・サイズの制限" time="0.2736355">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="memxアダプター &gt; ループバックのみを受け付ける" time="0.0005947">
+        </testcase>
+        <testcase classname="tests/workbench.test.ts" name="memxアダプター &gt; 同期・検索・参照・読了・鮮度の契約と再試行を確認する" time="0.0747198">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-api.test.ts" timestamp="2026-10-05T00:14:45.824Z" hostname="DESKTOP-HCPVLHM" tests="7" failures="0" errors="0" skipped="0" time="2.9240309">
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; 版の競合、不正入力、案件越境を拒否し、原文と承認済みの版を履歴に残す" time="0.6500025">
+        </testcase>
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; URL調査から一度だけ案件を作成し、import失敗で案件を壊さない" time="0.4295814">
+        </testcase>
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; 手動runを保存・停止・再開し、比較の欠測を0にせず、別案件では読めない" time="0.3764846">
+        </testcase>
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; プロセスを閉じても手動引渡しの原文と進行状況を保持する" time="0.6132835">
+        </testcase>
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; 案件の情報区分・許可範囲の変更で旧条件の実行を停止する" time="0.2861136">
+        </testcase>
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; SQLite失敗で途中保存せず、revision競合と異案件への書換を拒否する" time="0.0070342">
+        </testcase>
+        <testcase classname="tests/workflow-api.test.ts" name="案件APIと永続化 &gt; 実行途中で失われたプロセスのcheckpointを検出し、二重保存や案件横断更新を拒否する" time="0.5570858">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-binding-provenance.test.ts" timestamp="2026-10-05T00:14:45.826Z" hostname="DESKTOP-HCPVLHM" tests="1" failures="0" errors="0" skipped="0" time="0.5187176">
+        <testcase classname="tests/workflow-binding-provenance.test.ts" name="公開APIは自己申告のコード対応情報を拒否し、通常の手動観測は保持する" time="0.5152902">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-domain-review.test.ts" timestamp="2026-10-05T00:14:45.826Z" hostname="DESKTOP-HCPVLHM" tests="4" failures="0" errors="0" skipped="0" time="0.0587105">
+        <testcase classname="tests/workflow-domain-review.test.ts" name="workflow domain regression review &gt; moves remediation verification to the current scope version after a version change" time="0.0282184">
+        </testcase>
+        <testcase classname="tests/workflow-domain-review.test.ts" name="workflow domain regression review &gt; does not complete remediation using an older pass after a later failed verification" time="0.0083159">
+        </testcase>
+        <testcase classname="tests/workflow-domain-review.test.ts" name="workflow domain regression review &gt; invalidates completed remediation when its verification evidence document changes" time="0.0070358">
+        </testcase>
+        <testcase classname="tests/workflow-domain-review.test.ts" name="workflow domain regression review &gt; reopens decisions that depend on a rule when the rule&apos;s source document changes" time="0.0122268">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-domain.test.ts" timestamp="2026-10-05T00:14:45.827Z" hostname="DESKTOP-HCPVLHM" tests="19" failures="0" errors="0" skipped="0" time="0.2135977">
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 作成時に独立した空状態を返し、strict command schemaで未知fieldを拒否する" time="0.0339552">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 重複資料と不存在の対象を扱い、失敗時に状態を保つ" time="0.0231388">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 資料を版/hash付きで保持し、内容変更で根拠のある知識・基準・判定・抑止を失効する" time="0.0259839">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 知識案の承認・却下と原文照合を守り、更新案が旧有効知識を上書きしない" time="0.0113969">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 知識の更新案は承認まで旧版を保ち、承認後に旧版を失効して新revisionを使う" time="0.0076734">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 知識新版の承認で旧判断・抑止・修正完了を再確認へ戻し、履歴を保持する" time="0.0139906">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 対象版が変わって失効した知識から現在版の更新案を作り直せる" time="0.0014924">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 問い合わせに案件・目的・有効版と情報区分を適用し、不足・矛盾を返す" time="0.0108315">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 判定基準の適用対象版は自由記述ではなく現在のtarget版に完全一致する" time="0.0019301">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 判定基準の承認は関連判断だけを再確認へ戻し、古い根拠は承認させない" time="0.0025608">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 判定基準の更新案も承認までv1を保ち、承認で参照した指摘だけを再確認へ戻す" time="0.0016394">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 判定基準新版の承認で修正完了を解除し、旧確認証跡を履歴として残す" time="0.0024392">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 再判断や案件版変更でも修正完了を再利用しない" time="0.012875">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 過去資料版や過去案件版の根拠から指摘を確定しない" time="0.0020652">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 同じ指摘を関連付け、条件付き抑止と期限・対象版・基準変更を適用する" time="0.0243591">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 診断用抑止helperは現行contextとevidenceが一致した人判断だけ再利用する" time="0.0051066">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; source_scopeは明示bindingの範囲だけ文言変更を許容し、binding変更で失効する" time="0.0062168">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; 修正を確認証跡と人の判断が揃うまで完了させない" time="0.0157122">
+        </testcase>
+        <testcase classname="tests/workflow-domain.test.ts" name="Workflowの共有domain &gt; ResearchReportを同一repoの別commitごとに未承認資料と指摘候補へ引き継ぐ" time="0.0068141">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-fields.test.ts" timestamp="2026-10-05T00:14:45.831Z" hostname="DESKTOP-HCPVLHM" tests="1" failures="0" errors="0" skipped="0" time="0.0133019">
+        <testcase classname="tests/workflow-fields.test.ts" name="根拠が空、または資料が見つからない場合を説明する" time="0.0116715">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-integration-review.test.ts" timestamp="2026-10-05T00:14:45.831Z" hostname="DESKTOP-HCPVLHM" tests="2" failures="0" errors="0" skipped="0" time="0.8572481">
+        <testcase classname="tests/workflow-integration-review.test.ts" name="workflow persistence and shutdown integration review &gt; workflow scope change stops an in-flight provider before returning" time="0.5088115">
+        </testcase>
+        <testcase classname="tests/workflow-integration-review.test.ts" name="workflow persistence and shutdown integration review &gt; onCloseはSQLite closeより先にactive providerを停止・checkpointする" time="0.3457722">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-run-review.test.ts" timestamp="2026-10-05T00:14:45.832Z" hostname="DESKTOP-HCPVLHM" tests="9" failures="0" errors="0" skipped="0" time="0.0629173">
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; manual runは未測定費用を0にせず、人のレビュー時間をunknownで保つ" time="0.0169463">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; 同一projectのmaxConcurrency=1を越えてproviderを同時起動しない" time="0.0286064">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; 応答を無視するproviderでもoperator stopがrunを期限内に収束させる" time="0.0021986">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; model config変更で再開するときは旧runのstep履歴に混在させない" time="0.0042159">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; 再起動後にprovider完了済み・reconcile未完了なら残りstepを再開する" time="0.0023683">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; resume時に保存済みelapsedMsをmaxDuration予算へ累積する" time="0.00355">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; manual待機runの人の回答で未測定費用を0へ置き換えない" time="0.0018044">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; test vectors remain local and contain no external prompt or attack payload" time="0.0002207">
+        </testcase>
+        <testcase classname="tests/workflow-run-review.test.ts" name="FR-18/26/27/30 runner境界の再現 &gt; 同じsnapshot fingerprintでも異なるqueryを同条件比較にしない" time="0.0005823">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/workflow-runner.test.ts" timestamp="2026-10-05T00:14:45.833Z" hostname="DESKTOP-HCPVLHM" tests="18" failures="0" errors="0" skipped="0" time="0.1441019">
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; manual prompt is checkpointed and only a valid response with current citations is accepted" time="0.0201604">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; restart recovery keeps completed steps and creates a separate run when the snapshot changed" time="0.0058887">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; stop aborts the active model call, and budgets and classifications block excess or disallowed work" time="0.0062782">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; caps retries, rejects model JSON and unknown citations, and refuses missing provider cost bounds" time="0.0083077">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; validates every classification and lifecycle edge before accepting a run transition" time="0.0115109">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; uses timeout and provider ownership safely across independent runner instances" time="0.0028731">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; retains actual provider cost on overrun and forks when model configuration changes" time="0.0051302">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; honors a per-project maxConcurrency=1 across runs" time="0.0034046">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; releases a reserved project slot when initial or resume checkpoint persistence fails" time="0.0027341">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; does not start reconciliation when the manual response reaches the step limit" time="0.0015287">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; reuses a completed provider response after restart without invoking it again" time="0.0031588">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="workflow runner &gt; compares only identical labeled conditions and leaves unavailable metrics null" time="0.0013361">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="operator-configured provider adapters &gt; applies explicit local JSON/thinking settings, preserves usage, and leaves other providers unchanged" time="0.0530997">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="operator-configured provider adapters &gt; accepts loopback local and allowlisted HTTPS cloud endpoints only" time="0.0009752">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="operator-configured provider adapters &gt; binds environment provider identity to a canonical endpoint without exposing secrets" time="0.0012856">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="operator-configured provider adapters &gt; creates a new run when only the environment endpoint changes" time="0.006513">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="operator-configured provider adapters &gt; rejects oversized provider responses" time="0.0037252">
+        </testcase>
+        <testcase classname="tests/workflow-runner.test.ts" name="operator-configured provider adapters &gt; sends a bounded OpenAI-compatible request and calculates cost only from valid usage" time="0.0018698">
+        </testcase>
+    </testsuite>
+</testsuites>

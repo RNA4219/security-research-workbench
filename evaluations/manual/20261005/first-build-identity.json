@@ -1,0 +1,12 @@
+{
+  "capturedAt": "2026-10-04T18:06:03.9987785Z",
+  "head": "1929d0871c4e3ae41864d84f47b3daa78917e332",
+  "purpose": "実モデル接続・画面受入。比較評価ではない",
+  "files": {
+    "dist/server/workflow-providers.js": "c08067166e5adba0a2b8e096d8226561a1b5e474703759984efa1ce40fece54a",
+    "dist/shared/product-diagnostics.js": "8bb01a4a95dc27c1d902d2ace9523e5363b5c3ea00f6db9d7677658c6197177b",
+    "dist/shared/model-review.js": "7e7885b7f47cdff862e7ce1bcc1617ce36fada8fed5eec4244a90d5f8be0d981",
+    "dist/server/diagnostic-service.js": "7a3455fe96e54d7e2ebb4810c49f69767ce6b60fa417b4aa2f1acf81b21cba66",
+    "dist/server/model-review.js": "cea5364761da5813e03b9d123f525d8b1d1840fcab21ce20b3fcae0e0e402980"
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.1",
+  "profile": "workflow",
+  "manifest_id": "eval:20261005-review-queue-04",
+  "task_id": "review-queue-20261005-04",
+  "owner": "security-research-workbench",
+  "purpose": "comparison",
+  "status": "completed",
+  "freeze_date": "2026-10-05",
+  "hypothesis": "同一の静的レビュー候補について、明示的人判断を使わないBより、現行条件をproduction evaluateFindingSuppressionで確認するCの方が、再確認が不要な候補だけを確認待ちから外し、条件変更や他findingの現行人判断変更を隠さない。 queue04はcoverage-buildの新production helperで再評価する。",
+  "action_delta": "Bは観測された候補に抑止判断を適用せず、Cは同一候補・同一fixture状態へproduction helperの評価結果だけを適用する。pastJudgmentsはproduction context hashの入力として扱い、独自の抑止判定やpastJudgmentIdsの存在だけによる除外は使わない。",
+  "negative_control": "期限切れ、対象版変更、仕様・知識・基準のcontext変更、evidence変更、旧hash欠落、基準失効、判断なし、fingerprint変更、source変更、他findingの現行人判断変更を含め、Cが再利用しないことを確認する。",
+  "identity": {
+    "legacy": {
+      "label": "B-no-judgment-queue",
+      "source_path": ".cache/review-queue-evaluation-04.mjs",
+      "source_revision": "dirty-bundle:review-queue-evaluation-04",
+      "source_sha256": "sha256:41844548cbb69a06a440f6ab4a92962d1e135e813724c5b1b362dd8f48ea31b5",
+      "input_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1"
+    },
+    "candidate": {
+      "label": "C-production-suppression",
+      "source_path": ".cache/coverage-build/server/workflow-domain.js",
+      "source_revision": "coverage-build:workflow-domain-04",
+      "source_sha256": "sha256:211c12db3100b48c5ed3ba433fa3b1e25b37e0065767c5814e0cc448cb959021",
+      "input_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1"
+    },
+    "runner": {
+      "id": "review-queue-evaluation/v2-04",
+      "sha256": "sha256:41844548cbb69a06a440f6ab4a92962d1e135e813724c5b1b362dd8f48ea31b5"
+    },
+    "production_helper": {
+      "label": "production-evaluateFindingSuppression",
+      "source_path": ".cache/coverage-build/server/workflow-domain.js",
+      "source_revision": "coverage-build:workflow-domain-04",
+      "source_sha256": "sha256:211c12db3100b48c5ed3ba433fa3b1e25b37e0065767c5814e0cc448cb959021",
+      "input_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1"
+    }
+  },
+  "evaluation": {
+    "dataset_id": "review-queue-corpus/v2",
+    "dataset_sha256": "sha256:35705aba1a374fbb28c295b637b954cd8c08764ebaddbbb9369a3a8bc41f95d1",
+    "measurement_unit": "task",
+    "primary_metric": "queue_reduction_rate",
+    "model_version": "not_used:production-workflow-helper",
+    "policy_version": "evaluateFindingSuppression/v1",
+    "configuration": {
+      "conditions": [
+        "B",
+        "C"
+      ],
+      "split": "queue-controls",
+      "case_count": 15,
+      "at": "2030-01-01T00:00:00.000Z",
+      "matching": "caseId+condition+candidateId",
+      "queue_definition": "!productionEvaluation.reusable",
+      "raw_candidate_required": true,
+      "production_exports": [
+        "hashFindingReviewContext",
+        "hashFindingEvidence",
+        "evaluateFindingSuppression"
+      ],
+      "past_judgment_negative_control": "q15/s15",
+      "human_time_measured": false,
+      "helper_build": ".cache/coverage-build/server/workflow-domain.js"
+    }
+  },
+  "external_mutations": {
+    "registry_frozen": true,
+    "submission_frozen": true
+  },
+  "sourceManifestId": "eval:20261005-review-queue-04",
+  "source": {
+    "artifactPath": "artifact.json",
+    "summaryPath": "summary.json",
+    "recordsPath": "records.jsonl",
+    "manifestPath": "manifest.json",
+    "preflightCheckPath": "preflight-check.json",
+    "artifactSha256": "sha256:942166a702e86486222efa75b2c2f2cd1fa459061252e24874d76729982c51f4",
+    "summarySha256": "sha256:0dccedd2d61bd3c2fc731966def7793287f792df9da318a574297f4c260108f4",
+    "recordsSha256": "sha256:a7a57832472cbad04611d3e0eda330f6f30cc7fbf0dfd8102d74fb1e341187b1",
+    "manifestSha256": "sha256:8a9a07ae18f86eff3b128d83461e726d2d1827e5c92c2117b545efe6674d4994",
+    "preflightCheckSha256": "sha256:ae5c55caa0022fac4f797c5800102437fec47e21fe9226108d388bca914025dc"
+  },
+  "outcome": {
+    "artifact_path": "artifact.json",
+    "artifact_sha256": "sha256:942166a702e86486222efa75b2c2f2cd1fa459061252e24874d76729982c51f4",
+    "records": 30,
+    "error_count": 0,
+    "crash_count": 0,
+    "timeout_count": 0,
+    "metrics": {
+      "queue_reduction_rate": 0.06666666666666667,
+      "c_reusable_f1": 1
+    },
+    "decision": "pass"
+  },
+  "postrun_evidence": {
+    "artifactVersion": "review-queue-postrun/v2",
+    "source": {
+      "artifact.json": "sha256:942166a702e86486222efa75b2c2f2cd1fa459061252e24874d76729982c51f4",
+      "summary.json": "sha256:0dccedd2d61bd3c2fc731966def7793287f792df9da318a574297f4c260108f4",
+      "records.jsonl": "sha256:a7a57832472cbad04611d3e0eda330f6f30cc7fbf0dfd8102d74fb1e341187b1",
+      "manifest.json": "sha256:8a9a07ae18f86eff3b128d83461e726d2d1827e5c92c2117b545efe6674d4994",
+      "preflight-check.json": "sha256:ae5c55caa0022fac4f797c5800102437fec47e21fe9226108d388bca914025dc"
+    },
+    "status": "completed",
+    "evaluationDecision": "pass",
+    "records": 30,
+    "errorCount": 0,
+    "rawCandidateCount": 30,
+    "holdout": "not_applicable",
+    "metrics": {
+      "records": 30,
+      "successfulRecords": 30,
+      "errorCount": 0,
+      "evaluationRate": 1,
+      "queueRequiredB": 15,
+      "queueRequiredC": 14,
+      "queueReductionCount": 1,
+      "queueReductionRate": 0.06666666666666667,
+      "cReusablePrecision": 1,
+      "cReusableRecall": 1,
+      "cReusableF1": 1,
+      "cFalseReuseCount": 0,
+      "cMissedReusableCount": 0,
+      "negativeControlLeakageCount": 0,
+      "goldMismatchCount": 0,
+      "byCondition": {
+        "B": {
+          "records": 15,
+          "successfulRecords": 15,
+          "errorCount": 0,
+          "queueRequiredCount": 15,
+          "reusableCount": 0,
+          "expectedReusableCount": 0,
+          "trueReusableCount": 0,
+          "falseReusableCount": 0,
+          "missedReusableCount": 0,
+          "goldMismatchCount": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "evaluationRate": 1
+        },
+        "C": {
+          "records": 15,
+          "successfulRecords": 15,
+          "errorCount": 0,
+          "queueRequiredCount": 14,
+          "reusableCount": 1,
+          "expectedReusableCount": 1,
+          "trueReusableCount": 1,
+          "falseReusableCount": 0,
+          "missedReusableCount": 0,
+          "goldMismatchCount": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "evaluationRate": 1
+        }
+      }
+    },
+    "measurementNotes": [
+      "Bは承認判断を参照しない観測状態、Cは新buildのproduction evaluateFindingSuppressionの結果を使います。独自抑止ロジックやpastJudgmentIdsの存在だけによる除外は使いません。",
+      "queueRequiredはproduction evaluation.reusableの否定であり、実際の人の所要時間ではありません。確認待ち件数はproxyです。",
+      "このartifactは同一候補に対するworkflow効果を測るもので、モデル精度の改善や人の時間短縮を証明しません。",
+      "gold mismatch、negative control leakage、helper errorがあればevaluation_decision=failのまま保存します。"
+    ]
+  }
+}

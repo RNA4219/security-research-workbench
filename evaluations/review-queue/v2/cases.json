@@ -1,0 +1,20 @@
+{
+  "split": "queue-controls",
+  "cases": [
+    {"caseId": "q01", "variant": "s01", "controlType": "same-condition"},
+    {"caseId": "q02", "variant": "s02", "controlType": "expiry-negative"},
+    {"caseId": "q03", "variant": "s03", "controlType": "target-negative"},
+    {"caseId": "q04", "variant": "s04", "controlType": "context-negative"},
+    {"caseId": "q05", "variant": "s05", "controlType": "context-negative"},
+    {"caseId": "q06", "variant": "s06", "controlType": "context-negative"},
+    {"caseId": "q07", "variant": "s07", "controlType": "evidence-negative"},
+    {"caseId": "q08", "variant": "s08", "controlType": "legacy-negative"},
+    {"caseId": "q09", "variant": "s09", "controlType": "rule-negative"},
+    {"caseId": "q10", "variant": "s10", "controlType": "judgment-negative"},
+    {"caseId": "q11", "variant": "s11", "controlType": "fingerprint-negative"},
+    {"caseId": "q12", "variant": "s12", "controlType": "decision-negative"},
+    {"caseId": "q13", "variant": "s13", "controlType": "judgment-negative"},
+    {"caseId": "q14", "variant": "s14", "controlType": "source-negative"},
+    {"caseId": "q15", "variant": "s15", "controlType": "other-judgment-negative"}
+  ]
+}

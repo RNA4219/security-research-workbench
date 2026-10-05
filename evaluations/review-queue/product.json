@@ -1,0 +1,47 @@
+{
+  "corpusVersion": "review-queue-corpus/v1",
+  "productId": "fixture-ledger",
+  "projectId": "review-queue-evaluation",
+  "at": "2030-01-01T00:00:00.000Z",
+  "scope": {
+    "target": "fixture-ledger",
+    "version": "commit-queue-001",
+    "purpose": "安全なレビュー候補の確認待ち再利用評価",
+    "ownership": "管理下のメモリ内fixtureのみを扱う",
+    "allowedProviderIds": ["manual"],
+    "allowedMethods": ["static-review", "manual-review"]
+  },
+  "specification": {
+    "revision": 1,
+    "text": "同じ対象版と承認済み根拠が維持されたレビュー候補だけを再利用できる。"
+  },
+  "document": {
+    "id": "doc-specification",
+    "title": "fixture仕様",
+    "body": "Specification revision one. The fixture keeps the approved review boundary explicit.",
+    "excerpt": "Specification revision one.",
+    "classification": "local"
+  },
+  "knowledge": {
+    "id": "knowledge-approved",
+    "content": "Approved knowledge for the current fixture review boundary."
+  },
+  "rule": {
+    "id": "rule-approved",
+    "content": "Approved rule for the current fixture target version.",
+    "applicability": "fixture-ledgerのcommit-queue-001"
+  },
+  "candidate": {
+    "id": "candidate-001",
+    "findingId": "finding-001",
+    "fingerprint": "fingerprint-001",
+    "engine": "fixture-static",
+    "ruleId": "rule-review-001",
+    "title": "レビュー候補",
+    "severity": "medium",
+    "path": "src/ledger.ts",
+    "evidence": "候補の根拠は固定メモリfixture内の安全なデータ操作です。",
+    "remediation": "担当者が仕様と根拠を再確認する。",
+    "advisoryUrl": null
+  }
+}

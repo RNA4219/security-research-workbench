@@ -1,0 +1,3 @@
+初回のcanonical checker起動は、pythonコマンドがWindows Storeのエイリアスへ解決され、終了コード9009で実行できなかった。
+その後、Codexに同梱されたPythonの絶対パスで同じpostrun-manifest.jsonを検査し、成功した。
+最終結果はpostrun-canonical-check.jsonを参照。この注記は初回コマンドのraw出力ではない。

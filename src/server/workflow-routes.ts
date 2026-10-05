@@ -53,6 +53,15 @@ export async function registerWorkflowRoutes(
     const body = z
       .strictObject({ revision, command: workflowCommand })
       .parse(req.body);
+    // Only the diagnostic service can attest that a binding was checked
+    // against the pinned Git snapshot. Public/manual observations cannot.
+    if (
+      body.command.type === "finding-observation" &&
+      body.command.modelSourceBinding !== undefined
+    )
+      throw new DomainError(
+        "コード範囲の検証情報は診断処理が生成します。手動では登録できません",
+      );
     const projectId = project(req.params);
     const next = workflows.command(projectId, body.revision, body.command);
     // 許可・原文・有効知識の更新後に、旧条件で後続の外部呼出しを始めない。

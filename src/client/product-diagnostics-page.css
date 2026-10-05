@@ -372,6 +372,35 @@
   border-top: 1px solid #dce5dc;
   padding-top: 12px;
 }
+.diagnostic-model-review {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid #dce5dc;
+  border-radius: 10px;
+  background: #f7faf7;
+  overflow-wrap: anywhere;
+}
+.diagnostic-model-review h4 {
+  margin-top: 0;
+}
+.diagnostic-model-review details,
+.diagnostic-finding details {
+  margin: 12px 0;
+  font-size: 13px;
+}
+.diagnostic-suppressed {
+  border: 1px solid #dce5dc;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f7faf7;
+}
+.diagnostic-suppressed > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.diagnostic-suppressed .diagnostic-finding {
+  margin-top: 12px;
+}
 .auxiliary-research > summary {
   font-size: 13px;
 }
