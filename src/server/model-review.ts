@@ -348,6 +348,56 @@ function buildPrompt(
   ].join("\n");
 }
 
+/**
+ * Identify the exact prompt material used by a review plan.
+ *
+ * The hash is derived from rendered prompts instead of a manually bumped
+ * contract constant. A change to the prompt template or its construction is
+ * therefore reflected in audit identity for source and bundled execution.
+ */
+export function modelReviewPromptIdentityHash(
+  promptHashes: readonly string[],
+): string {
+  return textHash(promptHashes.join("\n"));
+}
+
+/**
+ * Identity of the prompt methodology, independent of review input.
+ *
+ * The builder and its prompt-shaping helper sources are the implementation
+ * boundary that can be carried by a source file or production bundle without
+ * scanning private workspace files. This is intentionally separate from the
+ * rendered prompt hash: the latter changes with source and judgments and is
+ * used for checkpoint validation, while this value is used for method
+ * comparison and human-review provenance.
+ */
+export function modelReviewPromptMethodologyHash(): string {
+  return textHash(
+    stableJson({
+      promptBuilder: buildPrompt.toString(),
+      promptSourceLines: sourceLines.toString(),
+      promptStableJson: stableJson.toString(),
+      promptStableValue: stableValue.toString(),
+      promptBatchPlanner: planBatches.toString(),
+      promptPastJudgmentFilter: matchingPastJudgments.toString(),
+      promptTextHash: textHash.toString(),
+      schemaVersion: MODEL_REVIEW_SCHEMA_VERSION,
+    }),
+  );
+}
+
+function promptHashesForPlan(
+  snapshot: DiagnosticSnapshot,
+  input: ModelReviewInput,
+  provider: ModelReviewProvider,
+  plan: readonly PlannedBatch[],
+  pastJudgments: ModelReviewInput["pastJudgments"],
+) {
+  return plan.map((batch) =>
+    textHash(buildPrompt(snapshot, input, provider, batch, pastJudgments)),
+  );
+}
+
 function invocationChecked(
   value: ModelReviewInvocation,
 ): ModelReviewInvocation {
@@ -514,6 +564,7 @@ function identity(
   provider: ModelReviewProvider,
   plan: readonly PlannedBatch[],
   budget: ModelReviewBudget,
+  promptHashes: readonly string[],
 ): ReviewIdentity {
   return {
     snapshot: valueHash(snapshot),
@@ -531,6 +582,8 @@ function identity(
         fileHashes,
         inputChars,
       })),
+      promptHash: modelReviewPromptIdentityHash(promptHashes),
+      promptMethodologyHash: modelReviewPromptMethodologyHash(),
     }),
   };
 }
@@ -669,7 +722,7 @@ function reportFrom(
       model: textHash(observedModel),
       config: textHash(observedConfigVersion),
       plan: hashes.identity.plan,
-      prompt: textHash(hashes.prompt.join("\n")),
+      prompt: modelReviewPromptIdentityHash(hashes.prompt),
       response: textHash(hashes.response.join("\n")),
     },
     startedAt: startedAt.toISOString(),
@@ -792,12 +845,20 @@ export async function reviewSnapshot(
   );
   const planned = planBatches(parsedSnapshot, budget, options.batchSize);
   const matchedPast = matchingPastJudgments(parsedInput);
+  const plannedPromptHashes = promptHashesForPlan(
+    parsedSnapshot,
+    parsedInput,
+    provider,
+    planned.batches,
+    matchedPast,
+  );
   const identityValue = identity(
     parsedSnapshot,
     parsedInput,
     provider,
     planned.batches,
     budget,
+    plannedPromptHashes,
   );
   const checkpointBatches = new Map<number, ModelReviewCheckpointBatch>();
   let reused = false;
@@ -809,6 +870,7 @@ export async function reviewSnapshot(
       parsedInput,
       matchedPast,
       (batch) =>
+        plannedPromptHashes[batch.index] ??
         textHash(
           buildPrompt(
             parsedSnapshot,

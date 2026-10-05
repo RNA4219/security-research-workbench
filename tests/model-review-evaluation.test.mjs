@@ -172,6 +172,144 @@ describe("deterministic matching and metrics", () => {
     expect(metrics.humanConfirmationOverreach).toBe(1);
   });
 
+  it("keeps category evaluation rates honest for mixed and fully unscored records", () => {
+    const gold = new Map([
+      [
+        "category-boundary",
+        {
+          caseId: "category-boundary",
+          findings: [
+            {
+              path: "src/a.js",
+              category: "authorization",
+              lineStart: 2,
+              lineEnd: 2,
+              anchor: "return value;",
+            },
+          ],
+        },
+      ],
+    ]);
+    const completed = {
+      caseId: "category-boundary",
+      condition: "A",
+      status: "completed",
+      normalized: {
+        valid: true,
+        findings: [
+          {
+            path: "src/a.js",
+            category: "authorization",
+            lineStart: 2,
+            lineEnd: 2,
+            anchor: "return value;",
+          },
+        ],
+        requiresHumanConfirmation: false,
+        recheckPriorDecision: null,
+      },
+    };
+    const error = {
+      caseId: "category-boundary",
+      condition: "A",
+      status: "error",
+      normalized: null,
+    };
+    const mixed = calculateMetrics([completed, error], gold);
+    expect(mixed.truePositives).toBe(1);
+    expect(mixed.falsePositives).toBe(0);
+    expect(mixed.falseNegatives).toBe(0);
+    expect(mixed.byCondition.A.byCategory.authorization).toMatchObject({
+      records: 2,
+      successfulRecords: 1,
+      unscoredTaskCount: 1,
+      goldFindingCount: 2,
+      unscoredGoldFindingCount: 1,
+      evaluationRate: 0.5,
+      goldEvaluationRate: 0.5,
+      truePositives: 1,
+      falsePositives: 0,
+      falseNegatives: 0,
+    });
+
+    const allError = calculateMetrics([error], gold);
+    expect(allError.truePositives).toBe(0);
+    expect(allError.falsePositives).toBe(0);
+    expect(allError.falseNegatives).toBe(0);
+    expect(allError.byCondition.A.byCategory.authorization).toMatchObject({
+      records: 1,
+      successfulRecords: 0,
+      unscoredTaskCount: 1,
+      goldFindingCount: 1,
+      unscoredGoldFindingCount: 1,
+      evaluationRate: 0,
+      goldEvaluationRate: 0,
+      truePositives: 0,
+      falsePositives: 0,
+      falseNegatives: 0,
+    });
+  });
+
+  it("uses only measured boolean recheck values for misses and overreach", () => {
+    const gold = new Map(
+      ["true", "false", "null"].map((caseId) => [
+        caseId,
+        {
+          caseId,
+          controlType: "changed-assumption",
+          expectedReview: { recheckPriorDecision: true },
+          findings: [],
+        },
+      ]),
+    );
+    const base = (caseId, recheckPriorDecision) => ({
+      caseId,
+      condition: "A",
+      status: "completed",
+      normalized: {
+        valid: true,
+        findings: [],
+        requiresHumanConfirmation: false,
+        recheckPriorDecision,
+      },
+    });
+    const mixed = calculateMetrics(
+      [base("true", true), base("false", false), base("null", null)],
+      gold,
+    );
+    expect(mixed.recheckUnavailableCount).toBe(1);
+    expect(mixed.recheckMeasuredCount).toBe(2);
+    expect(mixed.goldRecheckCount).toBe(3);
+    expect(mixed.measuredGoldRecheckCount).toBe(2);
+    expect(mixed.predictedRecheckCount).toBe(1);
+    expect(mixed.changedAssumptionRecords).toBe(3);
+    expect(mixed.changedAssumptionMeasuredRecords).toBe(2);
+    expect(mixed.changedAssumptionMisses).toBe(1);
+    expect(mixed.changedAssumptionMissRate).toBe(0.5);
+    expect(mixed.recheckPriorDecisionOverreach).toBe(-1);
+
+    const allUnavailable = calculateMetrics(
+      [base("null", null)],
+      new Map([[
+        "null",
+        {
+          caseId: "null",
+          controlType: "changed-assumption",
+          expectedReview: { recheckPriorDecision: true },
+          findings: [],
+        },
+      ]]),
+    );
+    expect(allUnavailable.recheckUnavailableCount).toBe(1);
+    expect(allUnavailable.recheckMeasuredCount).toBe(0);
+    expect(allUnavailable.measuredGoldRecheckCount).toBe(0);
+    expect(allUnavailable.changedAssumptionRecords).toBe(1);
+    expect(allUnavailable.changedAssumptionMeasuredRecords).toBe(0);
+    expect(allUnavailable.changedAssumptionMisses).toBe(0);
+    expect(allUnavailable.changedAssumptionMissRate).toBeNull();
+    expect(allUnavailable.recheckPriorDecisionOverreach).toBeNull();
+  });
+
   it("does not inflate failed tasks into false negatives and reports the evaluated rate", () => {
     const gold = new Map([
       [

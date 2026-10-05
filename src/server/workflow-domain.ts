@@ -9,6 +9,7 @@ import {
   type FindingReviewContext,
   type FindingSuppressionEvaluation,
   type FindingSuppressionReason,
+  type SuppressionMatchPolicy,
   type Classification,
   type WorkflowDocument,
   type WorkflowFinding,
@@ -20,6 +21,10 @@ import {
   type WorkflowState,
   type WorkflowVerification,
 } from "../shared/workflow.js";
+import {
+  hashModelSourceBinding,
+} from "./model-source-binding.js";
+import type { ModelSourceBinding } from "../shared/model-source-binding.js";
 import type { ResearchReport } from "../shared/repository-research.js";
 
 const hash = (value: string) =>
@@ -59,6 +64,27 @@ const canonicalSourceRefs = (refs: readonly WorkflowSourceRef[]) =>
         left.revision - right.revision ||
         left.excerpt.localeCompare(right.excerpt),
     );
+
+const suppressionPolicy = (
+  suppression: { matchPolicy?: SuppressionMatchPolicy },
+): SuppressionMatchPolicy => suppression.matchPolicy ?? "exact_evidence";
+
+/**
+ * Persisted workflow rows can be older or partially migrated.  Treat an
+ * invalid binding as non-matching instead of allowing a source-scope policy
+ * to broaden its range accidentally.
+ */
+const sameModelSourceBinding = (
+  left: ModelSourceBinding | undefined,
+  right: ModelSourceBinding | undefined,
+) => {
+  if (!left || !right) return false;
+  try {
+    return hashModelSourceBinding(left) === hashModelSourceBinding(right);
+  } catch {
+    return false;
+  }
+};
 
 /**
  * Hash the complete approved context used by a diagnostic observation.
@@ -106,19 +132,25 @@ export function hashFindingReviewContext(context: FindingReviewContext) {
           (left, right) =>
             left.id.localeCompare(right.id) || left.revision - right.revision,
         ),
+      // A decision revision is an audit sequence, not an applicability
+      // condition.  Omitting it keeps two findings from invalidating one
+      // another forever when both judgments are re-recorded sequentially.
+      // Changes to target, judgment, reason, or evidence references still
+      // change the context hash and require a fresh review.
       pastJudgments: [...(context.pastJudgments ?? [])]
         .map((judgment) => ({
           findingId: judgment.findingId,
-          revision: judgment.revision,
           targetVersion: judgment.targetVersion,
           judgment: judgment.judgment,
           reason: judgment.reason,
           sourceRefs: canonicalSourceRefs(judgment.sourceRefs),
+          ruleRefs: [...(judgment.ruleRefs ?? [])].sort(
+            (left, right) =>
+              left.id.localeCompare(right.id) || left.revision - right.revision,
+          ),
         }))
         .sort(
-          (left, right) =>
-            left.findingId.localeCompare(right.findingId) ||
-            left.revision - right.revision,
+          (left, right) => left.findingId.localeCompare(right.findingId),
         ),
     }),
   );
@@ -186,6 +218,66 @@ const activeAndCurrent = (
 const applicableRule = (state: WorkflowState, item: WorkflowRule) =>
   activeAndCurrent(state, item) &&
   item.appliesToVersion === state.scope.version;
+
+/**
+ * Reopen a remediation after its review conditions changed.  Verification
+ * entries remain immutable audit history, while the cutoff forces completion
+ * to require a fresh proof under the current conditions.
+ */
+function reopenRemediation(remediation: WorkflowFinding["remediation"]) {
+  if (!remediation) return false;
+  const needsReverification =
+    remediation.status === "completed" || remediation.verifications.length > 0;
+  if (!needsReverification) return false;
+  const changed =
+    remediation.status !== "verification_pending" ||
+    remediation.completion !== undefined ||
+    remediation.reverificationRequiredAfter === undefined;
+  if (!changed) return false;
+  remediation.status = "verification_pending";
+  remediation.completion = undefined;
+  remediation.reverificationRequiredAfter = latestTimestamp(now(), [
+    remediation.reverificationRequiredAfter,
+    ...remediation.verifications.map(({ at }) => at),
+  ]);
+  return changed;
+}
+
+/**
+ * Invalidate the current review state while retaining decisions, suppressions
+ * and verification history for audit.  Knowledge dependencies were not
+ * persisted in older observation rows, so callers may conservatively apply
+ * this to every reviewed finding when a pinned context is superseded.
+ */
+function invalidateFindingReview(
+  state: WorkflowState,
+  finding: WorkflowFinding,
+  actor: string | undefined,
+  reason: string,
+  force = false,
+  emitEvent = true,
+) {
+  const hadActiveSuppression = finding.suppressions.some(
+    (suppression) => suppression.active,
+  );
+  const hadReviewState =
+    finding.judgment !== "unconfirmed" ||
+    hadActiveSuppression ||
+    finding.remediation?.status === "completed" ||
+    (finding.remediation?.verifications.length ?? 0) > 0;
+  if (!force && !hadReviewState) return false;
+  const judgmentChanged = finding.judgment !== "unconfirmed";
+  finding.judgment = "unconfirmed";
+  for (const suppression of finding.suppressions) suppression.active = false;
+  const remediationChanged = reopenRemediation(finding.remediation);
+  if (
+    emitEvent &&
+    (judgmentChanged || hadActiveSuppression || remediationChanged)
+  )
+    pushEvent(state, "finding-review-required", finding.id, actor, reason);
+  return judgmentChanged || hadActiveSuppression || remediationChanged;
+}
+
 const staleEntities = (state: WorkflowState, docId: string, reason: string) => {
   const staleRuleRefs = new Set(
     state.rules
@@ -217,21 +309,7 @@ const staleEntities = (state: WorkflowState, docId: string, reason: string) => {
         references(verification.evidence, docId),
       ) ?? false;
     if (affected || verificationAffected) {
-      finding.judgment = "unconfirmed";
-      for (const suppression of finding.suppressions)
-        suppression.active = false;
-      if (
-        finding.remediation &&
-        (finding.remediation.status === "completed" || verificationAffected)
-      )
-        finding.remediation.status = "verification_pending";
-      pushEvent(
-        state,
-        "finding-review-required",
-        finding.id,
-        undefined,
-        reason,
-      );
+      invalidateFindingReview(state, finding, undefined, reason, true);
     }
   }
 };
@@ -446,6 +524,17 @@ function reviewKnowledge(
       "新しい版が承認されました",
       parent.revision.toString(),
     );
+    // Observation rows historically stored only a context hash, not the
+    // knowledge revision list.  Until that dependency is explicit, a
+    // superseding approved knowledge version conservatively reopens every
+    // finding that carries review state so an old suppression cannot survive.
+    for (const finding of state.findings)
+      invalidateFindingReview(
+        state,
+        finding,
+        command.actor,
+        "承認済み知識の版が更新されました",
+      );
   }
   pushEvent(
     state,
@@ -588,15 +677,12 @@ function reviewRule(
           ),
         )
       ) {
-        finding.judgment = "unconfirmed";
-        for (const suppression of finding.suppressions)
-          suppression.active = false;
-        pushEvent(
+        invalidateFindingReview(
           state,
-          "finding-review-required",
-          finding.id,
+          finding,
           command.actor,
           "判定基準が更新されました",
+          true,
         );
       }
     }
@@ -692,6 +778,11 @@ function observeFinding(
   state: WorkflowState,
   command: WorkflowCommand & { type: "finding-observation" },
 ) {
+  if (
+    command.modelSourceBinding &&
+    command.modelSourceBinding.targetVersion !== command.targetVersion
+  )
+    throw new DomainError("観測のsource bindingと対象版が一致しません");
   refsFor(state, command.sourceRefs);
   const existing = state.findings.find(
     (item) =>
@@ -704,11 +795,20 @@ function observeFinding(
     const refsMatch = (left: WorkflowSourceRef[], right: WorkflowSourceRef[]) =>
       JSON.stringify(left) === JSON.stringify(right);
     const lastObservation = existing.observationHistory.at(-1);
+    const bindingChanged = Boolean(
+      lastObservation?.modelSourceBinding &&
+        command.modelSourceBinding &&
+        !sameModelSourceBinding(
+          lastObservation.modelSourceBinding,
+          command.modelSourceBinding,
+        ),
+    );
     const hashesMatch = Boolean(
       command.contextHash &&
       command.evidenceHash &&
       lastObservation?.contextHash === command.contextHash &&
-      lastObservation.evidenceHash === command.evidenceHash,
+      lastObservation.evidenceHash === command.evidenceHash &&
+      !bindingChanged,
     );
     const changed =
       !hashesMatch &&
@@ -718,9 +818,21 @@ function observeFinding(
         (lastObservation.contextHash ?? null) !==
           (command.contextHash ?? null) ||
         (lastObservation.evidenceHash ?? null) !==
-          (command.evidenceHash ?? null));
+          (command.evidenceHash ?? null) ||
+        bindingChanged);
+    const sourceScopeRetained = existing.suppressions.some((suppression) =>
+      suppression.active &&
+      suppressionPolicy(suppression) === "source_scope" &&
+      Boolean(command.contextHash) &&
+      suppression.contextHash === command.contextHash &&
+      sameModelSourceBinding(
+        suppression.modelSourceBinding,
+        command.modelSourceBinding,
+      ) &&
+      suppressionValid(state, existing, suppression),
+    );
     const observedAt = now();
-    if (changed) {
+    if (changed && !sourceScopeRetained) {
       existing.judgment = "unconfirmed";
       for (const suppression of existing.suppressions)
         suppression.active = false;
@@ -770,6 +882,9 @@ function observeFinding(
       sourceRefs: command.sourceRefs,
       ...(command.contextHash ? { contextHash: command.contextHash } : {}),
       ...(command.evidenceHash ? { evidenceHash: command.evidenceHash } : {}),
+      ...(command.modelSourceBinding
+        ? { modelSourceBinding: command.modelSourceBinding }
+        : {}),
     });
     if (command.sourceRefs.length)
       existing.sourceRefs = [
@@ -815,6 +930,9 @@ function observeFinding(
         sourceRefs: command.sourceRefs,
         ...(command.contextHash ? { contextHash: command.contextHash } : {}),
         ...(command.evidenceHash ? { evidenceHash: command.evidenceHash } : {}),
+        ...(command.modelSourceBinding
+          ? { modelSourceBinding: command.modelSourceBinding }
+          : {}),
       },
     ],
     judgment: "unconfirmed",
@@ -852,6 +970,11 @@ function decideFinding(
       throw new DomainError("判定に使う基準が有効ではありません");
     return ref;
   });
+  // Bind the human decision to the exact diagnostic observation that was
+  // reviewed.  The command API predates this provenance, so legacy/manual
+  // observations may not have hashes; those decisions remain auditable but
+  // are conservatively ineligible for model context reuse.
+  const observation = finding.observationHistory.at(-1);
   finding.judgment = command.judgment;
   finding.revision += 1;
   finding.decisions.push({
@@ -863,10 +986,18 @@ function decideFinding(
     sourceRefs: command.sourceRefs,
     ruleRefs: rules,
     at: now(),
+    ...(observation?.contextHash
+      ? { contextHash: observation.contextHash }
+      : {}),
+    ...(observation?.evidenceHash
+      ? { evidenceHash: observation.evidenceHash }
+      : {}),
+    ...(observation?.modelSourceBinding
+      ? { modelSourceBinding: observation.modelSourceBinding }
+      : {}),
   });
   for (const suppression of finding.suppressions) suppression.active = false;
-  if (finding.remediation && command.judgment !== "needs_action")
-    finding.remediation.status = "verification_pending";
+  reopenRemediation(finding.remediation);
   pushEvent(
     state,
     "finding-decided",
@@ -912,8 +1043,40 @@ function setSuppression(
   if (Date.parse(command.expiresAt) <= Date.now())
     throw new DomainError("抑止期限は未来にしてください");
   const observation = finding.observationHistory.at(-1);
+  const policy = command.matchPolicy ?? "exact_evidence";
+  if (policy === "source_scope") {
+    // A broad source-range policy is an explicit opt-in.  It can only be
+    // recorded when both the judged observation and the decision carry the
+    // same verified binding and the original context/evidence are retained.
+    if (
+      !observation?.modelSourceBinding ||
+      !decision.modelSourceBinding ||
+      !sameModelSourceBinding(
+        observation.modelSourceBinding,
+        decision.modelSourceBinding,
+      ) ||
+      observation.modelSourceBinding.targetVersion !== finding.targetVersion ||
+      !observation.contextHash ||
+      !observation.evidenceHash ||
+      decision.contextHash !== observation.contextHash ||
+      decision.evidenceHash !== observation.evidenceHash
+    )
+      throw new DomainError(
+        "コード範囲の抑止には検証済みsource bindingと判断時の根拠が必要です",
+      );
+  }
+  if (
+    policy === "exact_evidence" &&
+    observation?.modelSourceBinding &&
+    !sameModelSourceBinding(
+      observation.modelSourceBinding,
+      decision.modelSourceBinding,
+    )
+  )
+    throw new DomainError("抑止対象のsource bindingが人判断と一致しません");
   finding.suppressions.push({
     ...command,
+    matchPolicy: policy,
     decisionRevision: decision.revision,
     sourceRefs: decision.sourceRefs,
     active: true,
@@ -922,6 +1085,9 @@ function setSuppression(
       : {}),
     ...(observation?.evidenceHash
       ? { evidenceHash: observation.evidenceHash }
+      : {}),
+    ...(observation?.modelSourceBinding
+      ? { modelSourceBinding: observation.modelSourceBinding }
       : {}),
   });
   pushEvent(
@@ -1141,12 +1307,14 @@ export function applyWorkflowCommand(
         for (const item of state.rules)
           if (item.status === "active") item.status = "stale";
         for (const finding of state.findings) {
-          if (finding.judgment !== "unconfirmed")
-            finding.judgment = "unconfirmed";
-          for (const suppression of finding.suppressions)
-            suppression.active = false;
-          if (finding.remediation?.status === "completed")
-            finding.remediation.status = "verification_pending";
+          invalidateFindingReview(
+            state,
+            finding,
+            undefined,
+            "案件の対象・目的・実行範囲が更新されました",
+            true,
+            false,
+          );
         }
         pushEvent(
           state,
@@ -1355,15 +1523,39 @@ function suppressionValid(
   if (suppression.fingerprint !== finding.fingerprint) return false;
   if (finding.decisions.at(-1)?.revision !== suppression.decisionRevision)
     return false;
+  const policy = suppressionPolicy(suppression);
   const sourceRefsCurrent = suppression.sourceRefs.every((ref) => {
     const document = state.documents.find((item) => item.id === ref.docId);
+    if (!document) return false;
+    if (document.revision === ref.revision)
+      return document.body.includes(ref.excerpt);
+    // A source-scope suppression is deliberately tied to the verified model
+    // source binding.  Its human decision may cite an older generated report
+    // revision after a wording-only observation update; retain that audit
+    // source as long as the immutable history still contains the excerpt.
+    if (policy !== "source_scope") return false;
     return Boolean(
-      document &&
-      document.revision === ref.revision &&
-      document.body.includes(ref.excerpt),
+      document.history.find(
+        (version) =>
+          version.revision === ref.revision &&
+          version.body.includes(ref.excerpt),
+      ),
     );
   });
   if (!sourceRefsCurrent) return false;
+  if (
+    suppression.modelSourceBinding &&
+    (!sameModelSourceBinding(
+      suppression.modelSourceBinding,
+      finding.observationHistory.at(-1)?.modelSourceBinding,
+    ) ||
+      !sameModelSourceBinding(
+        suppression.modelSourceBinding,
+        finding.decisions.at(-1)?.modelSourceBinding,
+      ))
+  )
+    return false;
+  if (policy === "source_scope" && !suppression.modelSourceBinding) return false;
   return suppression.ruleRefs.every((ref) => {
     const rule = state.rules.find(
       (item) => item.id === ref.id && item.revision === ref.revision,
@@ -1382,7 +1574,11 @@ function suppressionValid(
 export function evaluateFindingSuppression(
   state: WorkflowState,
   finding: WorkflowFinding,
-  expected?: { contextHash?: string; evidenceHash?: string },
+  expected?: {
+    contextHash?: string;
+    evidenceHash?: string;
+    modelSourceBinding?: ModelSourceBinding;
+  },
   at = Date.now(),
 ): FindingSuppressionEvaluation {
   const active = [...finding.suppressions]
@@ -1400,7 +1596,82 @@ export function evaluateFindingSuppression(
     decisionRevision: latestDecision?.revision ?? null,
     judgment: latestDecision?.judgment ?? null,
     expiresAt: suppression?.expiresAt ?? null,
+    matchPolicy: suppressionPolicy(suppression ?? {}),
   });
+
+  /**
+   * Validate the persisted provenance after the ordinary target/rule checks.
+   * Exact evidence requires every hash to remain equal.  source_scope keeps
+   * the original evidence hashes for audit, but intentionally permits a new
+   * wording observation when the explicit source binding and context remain
+   * identical.
+   */
+  const expectedContext = (
+    suppression: WorkflowFinding["suppressions"][number],
+  ): FindingSuppressionEvaluation | null => {
+    if (expected === undefined) return null;
+    const policy = suppressionPolicy(suppression);
+    const lastObservation = finding.observationHistory.at(-1);
+    if (
+      !expected.contextHash ||
+      !expected.evidenceHash ||
+      !suppression.contextHash ||
+      !suppression.evidenceHash ||
+      !latestDecision?.contextHash ||
+      !latestDecision.evidenceHash ||
+      !lastObservation?.contextHash ||
+      !lastObservation.evidenceHash
+    )
+      return empty("unknown", "legacy_context_unknown", suppression);
+    if (latestDecision.contextHash !== lastObservation.contextHash)
+      return empty("unknown", "legacy_context_unknown", suppression);
+    if (suppression.contextHash !== expected.contextHash)
+      return empty("invalidated", "context_changed", suppression);
+    if (lastObservation.contextHash !== suppression.contextHash)
+      return empty("invalidated", "context_changed", suppression);
+
+    if (policy === "source_scope") {
+      if (
+        !suppression.modelSourceBinding ||
+        !expected.modelSourceBinding ||
+        !lastObservation.modelSourceBinding ||
+        !latestDecision.modelSourceBinding ||
+        !sameModelSourceBinding(
+          suppression.modelSourceBinding,
+          expected.modelSourceBinding,
+        ) ||
+        !sameModelSourceBinding(
+          suppression.modelSourceBinding,
+          lastObservation.modelSourceBinding,
+        ) ||
+        !sameModelSourceBinding(
+          suppression.modelSourceBinding,
+          latestDecision.modelSourceBinding,
+        )
+      )
+        return empty("invalidated", "binding_changed", suppression);
+      // Evidence is required as retained audit data, but source_scope does
+      // not compare it: the explicit binding is the user's broad opt-in.
+      return null;
+    }
+
+    if (latestDecision.evidenceHash !== lastObservation.evidenceHash)
+      return empty("unknown", "legacy_context_unknown", suppression);
+    if (suppression.evidenceHash !== expected.evidenceHash)
+      return empty("invalidated", "evidence_changed", suppression);
+    if (lastObservation.evidenceHash !== suppression.evidenceHash)
+      return empty("invalidated", "evidence_changed", suppression);
+    if (
+      suppression.modelSourceBinding &&
+      expected.modelSourceBinding &&
+      !sameModelSourceBinding(
+        suppression.modelSourceBinding,
+        expected.modelSourceBinding,
+      )
+    )
+      return empty("invalidated", "binding_changed", suppression);
+    return null;
+  };
 
   if (!active) {
     const previous = finding.suppressions.at(-1);
@@ -1421,32 +1692,8 @@ export function evaluateFindingSuppression(
       return empty("invalidated", "source_changed", previous);
     if (finding.judgment !== latestDecision.judgment)
       return empty("invalidated", "judgment_changed", previous);
-    if (expected !== undefined) {
-      const lastObservation = finding.observationHistory.at(-1);
-      if (
-        !previous.contextHash ||
-        !previous.evidenceHash ||
-        !expected.contextHash ||
-        !expected.evidenceHash
-      )
-        return empty("unknown", "legacy_context_unknown", previous);
-      if (previous.contextHash !== expected.contextHash)
-        return empty("invalidated", "context_changed", previous);
-      if (previous.evidenceHash !== expected.evidenceHash)
-        return empty("invalidated", "evidence_changed", previous);
-      if (
-        lastObservation &&
-        lastObservation.contextHash &&
-        lastObservation.contextHash !== previous.contextHash
-      )
-        return empty("invalidated", "context_changed", previous);
-      if (
-        lastObservation &&
-        lastObservation.evidenceHash &&
-        lastObservation.evidenceHash !== previous.evidenceHash
-      )
-        return empty("invalidated", "evidence_changed", previous);
-    }
+    const previousContext = expectedContext(previous);
+    if (previousContext) return previousContext;
     return empty("missing", "no_active_suppression", previous);
   }
 
@@ -1463,20 +1710,8 @@ export function evaluateFindingSuppression(
     return empty("invalidated", "source_changed", active);
   if (finding.judgment !== latestDecision.judgment)
     return empty("invalidated", "judgment_changed", active);
-
-  if (expected !== undefined) {
-    if (
-      !expected.contextHash ||
-      !expected.evidenceHash ||
-      !active.contextHash ||
-      !active.evidenceHash
-    )
-      return empty("unknown", "legacy_context_unknown", active);
-    if (active.contextHash !== expected.contextHash)
-      return empty("invalidated", "context_changed", active);
-    if (active.evidenceHash !== expected.evidenceHash)
-      return empty("invalidated", "evidence_changed", active);
-  }
+  const activeContext = expectedContext(active);
+  if (activeContext) return activeContext;
   return {
     reusable: true,
     status: "active",
@@ -1484,6 +1719,7 @@ export function evaluateFindingSuppression(
     decisionRevision: latestDecision.revision,
     judgment: latestDecision.judgment,
     expiresAt: active.expiresAt,
+    matchPolicy: suppressionPolicy(active),
   };
 }
 export function isFindingSuppressed(

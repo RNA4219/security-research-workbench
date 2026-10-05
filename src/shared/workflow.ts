@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { id, text, url } from "./model.js";
+import {
+  modelSourceBindingSchema,
+  type ModelSourceBinding,
+} from "./model-source-binding.js";
 
 export const classification = z.enum([
   "public",
@@ -107,7 +111,13 @@ export type FindingSuppressionReason =
   | "source_changed"
   | "context_changed"
   | "evidence_changed"
+  | "binding_changed"
   | "legacy_context_unknown";
+export const suppressionMatchPolicy = z.enum([
+  "exact_evidence",
+  "source_scope",
+]);
+export type SuppressionMatchPolicy = z.infer<typeof suppressionMatchPolicy>;
 export type FindingObservation = {
   observation: string;
   observedAt: string;
@@ -116,6 +126,8 @@ export type FindingObservation = {
   /** Optional hashes added for diagnostic findings; old workflow rows omit them. */
   contextHash?: string;
   evidenceHash?: string;
+  /** Verified model source identity; absent on legacy/static observations. */
+  modelSourceBinding?: ModelSourceBinding;
 };
 export type WorkflowSuppression = {
   decisionRevision: number;
@@ -130,6 +142,9 @@ export type WorkflowSuppression = {
   /** These fields are absent in legacy workflow data and then cannot be reused by diagnostics. */
   contextHash?: string;
   evidenceHash?: string;
+  /** Explicit source-range policy is opt-in; absent legacy rows are strict. */
+  matchPolicy?: SuppressionMatchPolicy;
+  modelSourceBinding?: ModelSourceBinding;
 };
 /**
  * Immutable approved context used to bind a diagnostic observation to the
@@ -175,6 +190,8 @@ export type FindingReviewContext = {
     judgment: Exclude<FindingJudgment, "unconfirmed">;
     reason: string;
     sourceRefs: WorkflowSourceRef[];
+    /** Rules selected by the human decision; absent only in legacy callers. */
+    ruleRefs?: { id: string; revision: number }[];
   }[];
 };
 export type FindingSuppressionEvaluation = {
@@ -184,6 +201,7 @@ export type FindingSuppressionEvaluation = {
   decisionRevision: number | null;
   judgment: Exclude<FindingJudgment, "unconfirmed"> | null;
   expiresAt: string | null;
+  matchPolicy: SuppressionMatchPolicy;
 };
 export type WorkflowFinding = {
   id: string;
@@ -204,6 +222,14 @@ export type WorkflowFinding = {
     sourceRefs: WorkflowSourceRef[];
     ruleRefs: { id: string; revision: number }[];
     at: string;
+    /**
+     * Review context captured from the observation that was being judged.
+     * Legacy decisions omit these fields and are never eligible for model
+     * context reuse.
+     */
+    contextHash?: string;
+    evidenceHash?: string;
+    modelSourceBinding?: ModelSourceBinding;
   }[];
   suppressions: WorkflowSuppression[];
   remediation?: WorkflowRemediation;
@@ -347,6 +373,7 @@ export const workflowCommand = z.discriminatedUnion("type", [
     sourceRefs: z.array(sourceRefSchema).max(50).default([]),
     contextHash: hashValue.optional(),
     evidenceHash: hashValue.optional(),
+    modelSourceBinding: modelSourceBindingSchema.optional(),
   }),
   z.strictObject({
     type: z.literal("finding-decision"),
@@ -367,6 +394,8 @@ export const workflowCommand = z.discriminatedUnion("type", [
     fingerprint: id,
     ruleRefs: ruleRefsSchema,
     expiresAt: z.iso.datetime(),
+    /** Omitted means the historical exact-evidence policy. */
+    matchPolicy: suppressionMatchPolicy.optional(),
   }),
   z.strictObject({
     type: z.literal("remediation-start"),

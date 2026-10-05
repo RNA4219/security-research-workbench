@@ -8,6 +8,7 @@ import type {
   WorkflowScope,
   WorkflowState,
   WorkflowVerification,
+  SuppressionMatchPolicy,
 } from "../shared/workflow.js";
 import type { ResearchSummary } from "../shared/repository-research.js";
 import type {
@@ -27,6 +28,10 @@ import {
 import "./workflow-page.css";
 
 type RunList = { runs: WorkflowRun[]; providers: WorkflowProviderSummary[] };
+const suppressionMatchPolicyLabels: Record<SuppressionMatchPolicy, string> = {
+  exact_evidence: "説明・根拠が同じ場合のみ",
+  source_scope: "指定したコード範囲の指摘",
+};
 const methodLabels: Record<string, string> = {
   "static-review": "静的レビュー",
   "known-issue-match": "既知問題との照合",
@@ -1827,6 +1832,26 @@ function FindingCard({
 }) {
   const [expiresAt, setExpiresAt] = useState("");
   const [suppressionReason, setSuppressionReason] = useState("");
+  const [matchPolicy, setMatchPolicy] =
+    useState<SuppressionMatchPolicy>("exact_evidence");
+  const latestObservation = item.observationHistory.at(-1);
+  const modelSourceBinding = latestObservation?.modelSourceBinding;
+  const canUseSourceScope = Boolean(
+    modelSourceBinding &&
+    latestObservation?.targetVersion === state.scope.version &&
+    modelSourceBinding.targetVersion === state.scope.version &&
+    item.targetVersion === state.scope.version,
+  );
+  const displayedMatchPolicy = canUseSourceScope
+    ? matchPolicy
+    : "exact_evidence";
+  const effectiveMatchPolicy: SuppressionMatchPolicy =
+    displayedMatchPolicy === "source_scope" && canUseSourceScope
+      ? "source_scope"
+      : "exact_evidence";
+  useEffect(() => {
+    setMatchPolicy("exact_evidence");
+  }, [item.id, canUseSourceScope]);
   const citation =
     source.docId && source.excerpt.trim()
       ? [
@@ -1979,6 +2004,36 @@ function FindingCard({
                 onChange={(e) => setSuppressionReason(e.target.value)}
               />
             </WorkflowField>
+            <WorkflowField label="抑止範囲">
+              <select
+                aria-label="抑止範囲"
+                value={displayedMatchPolicy}
+                onChange={(e) =>
+                  setMatchPolicy(e.target.value as SuppressionMatchPolicy)
+                }
+              >
+                <option value="exact_evidence">
+                  {suppressionMatchPolicyLabels.exact_evidence}
+                </option>
+                <option value="source_scope" disabled={!canUseSourceScope}>
+                  {suppressionMatchPolicyLabels.source_scope}
+                </option>
+              </select>
+            </WorkflowField>
+            <p className="wf-muted">
+              {displayedMatchPolicy === "source_scope" ? (
+                <>
+                  同じ固定版・コード箇所・種類・重大度・仕様参照の指摘を、説明や修正案の文章が変わっても期限まで対象にします。これは意味が同一かどうかを自動判定するものではなく、人が広い抑止範囲を選ぶ機能です。
+                </>
+              ) : (
+                "説明・根拠・修正案が同じ指摘だけを期限まで対象にします。"
+              )}
+            </p>
+            {!canUseSourceScope && (
+              <p className="wf-muted">
+                指定したコード範囲の抑止は、現行の観測に固定版とコード根拠の条件がある場合だけ選べます。
+              </p>
+            )}
             <WorkflowField label="抑止期限">
               <input
                 aria-label="抑止期限"
@@ -2002,6 +2057,7 @@ function FindingCard({
                       .filter((r) => r.status === "active")
                       .map(({ id, revision }) => ({ id, revision })),
                     expiresAt: new Date(expiresAt).toISOString(),
+                    matchPolicy: effectiveMatchPolicy,
                   }),
                 )
               }
@@ -2014,7 +2070,14 @@ function FindingCard({
         <p key={`${suppression.expiresAt}-${index}`}>
           抑止 {suppressionCurrent(suppression) ? "有効" : "失効・再確認"} ·{" "}
           {suppression.actor} · {suppression.reason} · 期限{" "}
-          {suppression.expiresAt}
+          {suppression.expiresAt} · 範囲{" "}
+          {
+            suppressionMatchPolicyLabels[
+              suppression.matchPolicy === "source_scope"
+                ? "source_scope"
+                : "exact_evidence"
+            ]
+          }
         </p>
       ))}
     </article>

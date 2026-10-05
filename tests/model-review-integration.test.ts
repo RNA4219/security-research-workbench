@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import { createApp } from "../src/server/app.js";
 import type { WorkflowProviderDefinition } from "../src/server/workflow-runner.js";
 import type {
@@ -31,6 +31,7 @@ const provider: WorkflowProviderDefinition = {
 let fixture: Awaited<ReturnType<typeof createDiagnosticFixture>>;
 let app: App;
 const prompts: string[] = [];
+let includeSecondaryFinding = false;
 
 function payloadFromPrompt(prompt: string) {
   const start = "BEGIN_REFERENCE_DATA_JSON\n";
@@ -72,36 +73,52 @@ function responseFor(prompt: string, includeFinding = true) {
   const line = file?.lines.find((entry) =>
     entry.text.includes("rejectUnauthorized: false"),
   );
+  const primaryFinding =
+    includeFinding && file && line
+      ? {
+          id: "model-static-observation",
+          category: "trust-boundary",
+          severity: "medium",
+          title: "通信設定の仕様照合候補",
+          rationale:
+            "固定snapshotの通信設定と製品仕様を担当者が照合する必要があります。",
+          path: file.path,
+          line: line.line,
+          originalText: line.text,
+          specRefIds: ["product-specification"],
+          relatedFixedFindingIds: [],
+          pastJudgmentIds: [],
+          remediation: {
+            guidance: "担当者が用途・仕様と通信設定を確認する。",
+            humanReviewRequired: true,
+          },
+          falsePositiveCandidate: false,
+          uncertainty: {
+            level: "medium",
+            reasons: ["モデル出力は候補であり安全性の証明ではありません。"],
+          },
+        }
+      : undefined;
+  const findings = primaryFinding
+    ? [
+        primaryFinding,
+        ...(includeSecondaryFinding
+          ? [
+              {
+                ...primaryFinding,
+                id: "model-secondary-observation",
+                category: "secondary-trust-boundary",
+                title: "別findingの仕様照合候補",
+                rationale:
+                  "別findingの現行判断がモデル入力の適用条件に影響します。",
+              },
+            ]
+          : []),
+      ]
+    : [];
   return JSON.stringify({
     schemaVersion: "1",
-    findings:
-      includeFinding && file && line
-        ? [
-            {
-              id: "model-static-observation",
-              category: "trust-boundary",
-              severity: "medium",
-              title: "通信設定の仕様照合候補",
-              rationale:
-                "固定snapshotの通信設定と製品仕様を担当者が照合する必要があります。",
-              path: file.path,
-              line: line.line,
-              originalText: line.text,
-              specRefIds: ["product-specification"],
-              relatedFixedFindingIds: [],
-              pastJudgmentIds: [],
-              remediation: {
-                guidance: "担当者が用途・仕様と通信設定を確認する。",
-                humanReviewRequired: true,
-              },
-              falsePositiveCandidate: false,
-              uncertainty: {
-                level: "medium",
-                reasons: ["モデル出力は候補であり安全性の証明ではありません。"],
-              },
-            },
-          ]
-        : [],
+    findings,
     omitted: [],
     limitations: [],
   });
@@ -178,6 +195,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await app?.close();
+});
+
+afterEach(() => {
+  includeSecondaryFinding = false;
 });
 
 describe("diagnostic serviceとlocal model reviewの統合", () => {
@@ -295,7 +316,11 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       scope: Record<string, unknown>;
       documents: { id: string; revision: number; body: string }[];
       knowledge: { id: string; status?: string }[];
-      findings: { id: string }[];
+      findings: {
+        id: string;
+        targetVersion: string;
+        sourceRefs: { docId: string; revision: number; excerpt: string }[];
+      }[];
     }>();
     const command = async (value: unknown) => {
       const response = await call(`${workflowUrl}/commands`, {
@@ -328,9 +353,6 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       actor: "reviewer",
       reason: "一時的な試験用知識",
     });
-    // Create a judgment while the source is still current, then change the
-    // source document.  The old judgment must become incompatible with the
-    // current source revision before the diagnostic starts.
     await command({
       type: "scope",
       value: { ...state.scope, version: fixture.commits.baseline },
@@ -355,37 +377,43 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       actor: "reviewer",
       reason: "現行版で承認",
     });
-    const oldFindingId = "old-model-judgment";
-    await command({
-      type: "finding-observation",
-      findingId: oldFindingId,
-      fingerprint: "old-model-fingerprint",
-      targetVersion: fixture.commits.baseline,
-      observation: "旧仕様を前提にした過去観測",
-      sourceRefs: [
-        {
-          docId: specification.id,
-          revision: 1,
-          excerpt: "TLS接続",
-        },
-      ],
+
+    // The judgment is created from a real diagnostic observation.  This
+    // supplies the saved context/evidence provenance instead of fabricating a
+    // hash on a hand-written legacy observation.
+    const bootstrapStarted = await call(`/api/products/${product.id}/runs`, {
+      trigger: "manual",
+      ref: "baseline",
     });
+    expect(bootstrapStarted.statusCode, bootstrapStarted.body).toBe(202);
+    const bootstrap = await waitForRun(
+      product.id,
+      bootstrapStarted.json<DiagnosticRun>().id,
+    );
+    const bootstrapModel = bootstrap.findings.find(
+      (finding) => finding.engine === "model",
+    );
+    expect(bootstrapModel?.workflowFindingId).toBeTruthy();
+    state = (await call(workflowUrl)).json();
+    const linkedFinding = state.findings.find(
+      (finding) => finding.id === bootstrapModel!.workflowFindingId,
+    )!;
+    expect(linkedFinding).toBeTruthy();
+    const oldFindingId = linkedFinding.id;
     await command({
       type: "finding-decision",
       findingId: oldFindingId,
       judgment: "accepted_known",
       actor: "reviewer",
-      reason: "旧仕様下では既知",
-      targetVersion: fixture.commits.baseline,
-      sourceRefs: [
-        {
-          docId: specification.id,
-          revision: 1,
-          excerpt: "TLS接続",
-        },
-      ],
+      reason: "現行仕様下では既知（試験用判断）",
+      targetVersion: linkedFinding.targetVersion,
+      sourceRefs: linkedFinding.sourceRefs,
       ruleRefs: [],
     });
+    // Create a judgment while the source is still current, then change the
+    // source document.  The old judgment must become incompatible with the
+    // current source revision before the next diagnostic starts.
+    prompts.length = 0;
     const activeStarted = await call(`/api/products/${product.id}/runs`, {
       trigger: "manual",
       ref: "baseline",
@@ -447,7 +475,11 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       revision: number;
       scope: Record<string, unknown>;
       documents: { id: string; revision: number; body: string }[];
-      findings: { id: string }[];
+      findings: {
+        id: string;
+        targetVersion: string;
+        sourceRefs: { docId: string; revision: number; excerpt: string }[];
+      }[];
     }>();
     const command = async (value: unknown) => {
       const response = await call(`${workflowUrl}/commands`, {
@@ -464,28 +496,36 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       type: "scope",
       value: { ...state.scope, version: fixture.commits.baseline },
     });
-    const sourceRef = {
-      docId: specification.id,
-      revision: specification.revision,
-      excerpt: "TLS接続",
-    };
-    const findingId = "latest-model-judgment";
-    await command({
-      type: "finding-observation",
-      findingId,
-      fingerprint: "latest-model-fingerprint",
-      targetVersion: fixture.commits.baseline,
-      observation: "同条件の過去観測",
-      sourceRefs: [sourceRef],
+    // Obtain provenance from an actual diagnostic observation before adding
+    // the two human judgments.  The latest judgment should be reusable while
+    // the audit history entry is retained but excluded from model context.
+    const bootstrapStarted = await call(`/api/products/${product.id}/runs`, {
+      trigger: "manual",
+      ref: "baseline",
     });
+    expect(bootstrapStarted.statusCode, bootstrapStarted.body).toBe(202);
+    const bootstrap = await waitForRun(
+      product.id,
+      bootstrapStarted.json<DiagnosticRun>().id,
+    );
+    const bootstrapModel = bootstrap.findings.find(
+      (finding) => finding.engine === "model",
+    );
+    expect(bootstrapModel?.workflowFindingId).toBeTruthy();
+    state = (await call(workflowUrl)).json();
+    const linkedFinding = state.findings.find(
+      (finding) => finding.id === bootstrapModel!.workflowFindingId,
+    )!;
+    expect(linkedFinding).toBeTruthy();
+    const findingId = linkedFinding.id;
     await command({
       type: "finding-decision",
       findingId,
       judgment: "accepted_known",
       actor: "reviewer",
       reason: "初回判断",
-      targetVersion: fixture.commits.baseline,
-      sourceRefs: [sourceRef],
+      targetVersion: linkedFinding.targetVersion,
+      sourceRefs: linkedFinding.sourceRefs,
       ruleRefs: [],
     });
     await command({
@@ -494,11 +534,12 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       judgment: "needs_action",
       actor: "reviewer",
       reason: "最新判断で再確認が必要",
-      targetVersion: fixture.commits.baseline,
-      sourceRefs: [sourceRef],
+      targetVersion: linkedFinding.targetVersion,
+      sourceRefs: linkedFinding.sourceRefs,
       ruleRefs: [],
     });
 
+    prompts.length = 0;
     const started = await call(`/api/products/${product.id}/runs`, {
       trigger: "manual",
       ref: "baseline",
@@ -531,6 +572,11 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       documents: { id: string; revision: number; body: string }[];
       knowledge: { id: string; revision: number; status?: string }[];
       rules: { id: string; revision: number; status?: string }[];
+      findings: {
+        id: string;
+        targetVersion: string;
+        sourceRefs: { docId: string; revision: number; excerpt: string }[];
+      }[];
     }>();
     const command = async (value: unknown) => {
       const response = await call(`${workflowUrl}/commands`, {
@@ -605,26 +651,39 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       actor: "reviewer",
       reason: "レビュー基準の原文を確認して承認",
     });
-    const findingId = "rule-backed-model-judgment";
-    await command({
-      type: "finding-observation",
-      findingId,
-      fingerprint: "rule-backed-model-fingerprint",
-      targetVersion: fixture.commits.baseline,
-      observation: "基準に照らして確認した過去観測",
-      sourceRefs: [sourceRefs[2]!, sourceRefs[0]!],
+    // Get a provenance-bearing observation from the real diagnostic flow, then
+    // attach the judgment to that finding through the public workflow API.
+    const bootstrapStarted = await call(`/api/products/${product.id}/runs`, {
+      trigger: "manual",
+      ref: "baseline",
     });
+    expect(bootstrapStarted.statusCode, bootstrapStarted.body).toBe(202);
+    const bootstrap = await waitForRun(
+      product.id,
+      bootstrapStarted.json<DiagnosticRun>().id,
+    );
+    const bootstrapModel = bootstrap.findings.find(
+      (finding) => finding.engine === "model",
+    );
+    expect(bootstrapModel?.workflowFindingId).toBeTruthy();
+    state = (await call(workflowUrl)).json();
+    const linkedFinding = state.findings.find(
+      (finding) => finding.id === bootstrapModel!.workflowFindingId,
+    )!;
+    expect(linkedFinding).toBeTruthy();
+    const findingId = linkedFinding.id;
     await command({
       type: "finding-decision",
       findingId,
       judgment: "accepted_known",
       actor: "reviewer",
       reason: "承認済みレビュー基準により既知と判断",
-      targetVersion: fixture.commits.baseline,
+      targetVersion: linkedFinding.targetVersion,
       sourceRefs: judgmentSourceRefs,
       ruleRefs: [{ id: ruleId, revision: 1 }],
     });
 
+    prompts.length = 0;
     const firstStarted = await call(`/api/products/${product.id}/runs`, {
       trigger: "manual",
       ref: "baseline",
@@ -731,6 +790,7 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
 
   it("別findingの現行判断変更はモデル比較contextを変え、再確認を要求する", async () => {
     prompts.length = 0;
+    includeSecondaryFinding = true;
     const product = await createProduct("モデル比較contextの判断境界");
     const firstStarted = await call(`/api/products/${product.id}/runs`, {
       trigger: "manual",
@@ -745,6 +805,12 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       (finding) => finding.engine === "model",
     );
     expect(firstModel).toBeTruthy();
+    const otherModel = first.findings.find(
+      (finding) =>
+        finding.engine === "model" &&
+        finding.fingerprint !== firstModel?.fingerprint,
+    );
+    expect(otherModel?.workflowFindingId).toBeTruthy();
     const firstContextHash = first.modelReview?.contextHash;
     const firstInputHash = first.modelReview?.inputHash;
     expect(firstContextHash).toMatch(/^[a-f0-9]{64}$/);
@@ -756,6 +822,11 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       revision: number;
       scope: Record<string, unknown>;
       documents: { id: string; revision: number; body: string }[];
+      findings: {
+        id: string;
+        targetVersion: string;
+        sourceRefs: { docId: string; revision: number; excerpt: string }[];
+      }[];
     }>();
     const command = async (value: unknown) => {
       const response = await call(`${workflowUrl}/commands`, {
@@ -765,34 +836,20 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       expect(response.statusCode, response.body).toBe(200);
       state = response.json();
     };
-    const specification = state.documents.find((document) =>
-      document.body.includes("TLS接続"),
+    const otherFinding = state.findings.find(
+      (finding) => finding.id === otherModel!.workflowFindingId,
     )!;
-    const sourceRef = {
-      docId: specification.id,
-      revision: specification.revision,
-      excerpt: "TLS接続",
-    };
-    await command({
-      type: "scope",
-      value: { ...state.scope, version: fixture.commits.baseline },
-    });
-    await command({
-      type: "finding-observation",
-      findingId: "other-current-judgment",
-      fingerprint: "other-current-fingerprint",
-      targetVersion: fixture.commits.baseline,
-      observation: "別findingの現行観測",
-      sourceRefs: [sourceRef],
-    });
+    expect(otherFinding).toBeTruthy();
+    // This decision is attached to the second finding observed by the real
+    // model diagnostic, so workflow-domain copies its valid provenance.
     await command({
       type: "finding-decision",
-      findingId: "other-current-judgment",
+      findingId: otherFinding.id,
       judgment: "accepted_known",
       actor: "reviewer",
       reason: "別findingの現行判断",
-      targetVersion: fixture.commits.baseline,
-      sourceRefs: [sourceRef],
+      targetVersion: otherFinding.targetVersion,
+      sourceRefs: otherFinding.sourceRefs,
       ruleRefs: [],
     });
 
@@ -815,6 +872,146 @@ describe("diagnostic serviceとlocal model reviewの統合", () => {
       fingerprint: firstModel!.fingerprint,
       delta: "needs_review",
     });
+  });
+
+  it("二つのmodel findingを同一条件で再判断しても抑止が相互失効し続けない", async () => {
+    prompts.length = 0;
+    includeSecondaryFinding = true;
+    const product = await createProduct("複数findingの判断context安定性");
+    const workflowUrl = `/api/projects/${product.linkedProjectId}/workflow`;
+    const startRun = async () => {
+      const started = await call(`/api/products/${product.id}/runs`, {
+        trigger: "manual",
+        ref: "baseline",
+      });
+      expect(started.statusCode, started.body).toBe(202);
+      return waitForRun(product.id, started.json<DiagnosticRun>().id);
+    };
+    type LinkedFinding = {
+      id: string;
+      fingerprint: string;
+      targetVersion: string;
+      sourceRefs: { docId: string; revision: number; excerpt: string }[];
+    };
+    type WorkflowResponse = {
+      revision: number;
+      findings: LinkedFinding[];
+    };
+    let state = (await call(workflowUrl)).json<WorkflowResponse>();
+    const command = async (value: unknown) => {
+      const response = await call(`${workflowUrl}/commands`, {
+        revision: state.revision,
+        command: value,
+      });
+      expect(response.statusCode, response.body).toBe(200);
+      state = response.json<WorkflowResponse>();
+    };
+    const applyJudgmentAndSuppression = async (
+      finding: LinkedFinding,
+      decisionSourceRefs = finding.sourceRefs,
+    ) => {
+      await command({
+        type: "finding-decision",
+        findingId: finding.id,
+        judgment: "accepted_known",
+        actor: "reviewer",
+        reason: "二つの候補を同一条件で確認済み",
+        targetVersion: finding.targetVersion,
+        sourceRefs: decisionSourceRefs,
+        ruleRefs: [],
+      });
+      await command({
+        type: "suppression",
+        findingId: finding.id,
+        actor: "reviewer",
+        reason: "同一条件の確認済み候補を再確認不要とする",
+        targetVersion: finding.targetVersion,
+        fingerprint: finding.fingerprint,
+        ruleRefs: [],
+        expiresAt: new Date(Date.now() + 86_400_000).toISOString(),
+      });
+    };
+
+    const first = await startRun();
+    const firstModels = first.findings.filter(
+      (finding) => finding.engine === "model",
+    );
+    expect(firstModels).toHaveLength(2);
+    state = (await call(workflowUrl)).json<WorkflowResponse>();
+    const firstLinked = firstModels.map((modelFinding) => {
+      const linked = state.findings.find(
+        (finding) => finding.id === modelFinding.workflowFindingId,
+      );
+      expect(linked).toBeTruthy();
+      if (!linked) throw new Error("model findingのworkflow linkがありません");
+      return linked;
+    });
+    for (const finding of firstLinked) await applyJudgmentAndSuppression(finding);
+
+    // Adding both decisions changes the observation context once.  The next
+    // run must request re-confirmation, because the observations predate the
+    // judgments; this is the expected first invalidation.
+    const invalidated = await startRun();
+    const invalidatedModels = invalidated.findings.filter(
+      (finding) => finding.engine === "model",
+    );
+    expect(invalidatedModels).toHaveLength(2);
+    expect(invalidatedModels).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          reviewDisposition: "confirmation_required",
+          suppression: expect.objectContaining({
+            status: "invalidated",
+            reason: "context_changed",
+            reused: false,
+          }),
+        }),
+      ]),
+    );
+
+    // Re-judge both findings after the invalidating observation.  Revisions
+    // advance in sequence, but the applicability context is unchanged; the
+    // next run must therefore reuse both suppressions together.
+    state = (await call(workflowUrl)).json<WorkflowResponse>();
+    const refreshed = firstModels.map((modelFinding) => {
+      const linked = state.findings.find(
+        (finding) => finding.id === modelFinding.workflowFindingId,
+      );
+      expect(linked).toBeTruthy();
+      if (!linked) throw new Error("再観測後のworkflow linkがありません");
+      return linked;
+    });
+    for (let index = 0; index < refreshed.length; index++)
+      await applyJudgmentAndSuppression(
+        refreshed[index]!,
+        firstLinked[index]!.sourceRefs,
+      );
+
+    const stable = await startRun();
+    const stableModels = stable.findings.filter(
+      (finding) => finding.engine === "model",
+    );
+    expect(stableModels).toHaveLength(2);
+    expect(stableModels).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          presentInAnalysis: true,
+          reviewDisposition: "suppressed_human",
+          suppression: expect.objectContaining({
+            status: "active",
+            reused: true,
+          }),
+        }),
+        expect.objectContaining({
+          presentInAnalysis: true,
+          reviewDisposition: "suppressed_human",
+          suppression: expect.objectContaining({
+            status: "active",
+            reused: true,
+          }),
+        }),
+      ]),
+    );
   });
 
   it("blockedまたは未分類sourceの過去判断をlocal modelへ送らない", async () => {

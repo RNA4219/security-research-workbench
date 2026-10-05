@@ -428,9 +428,12 @@ function blankCounts() {
     predictedRecheckCount: 0,
     goldRecheckCount: 0,
     recheckUnavailableCount: 0,
+    recheckMeasuredCount: 0,
+    measuredGoldRecheckCount: 0,
     negativeControlRecords: 0,
     negativeControlFalseAlarms: 0,
     changedAssumptionRecords: 0,
+    changedAssumptionMeasuredRecords: 0,
     changedAssumptionMisses: 0,
   };
 }
@@ -474,14 +477,16 @@ function finalizeCounts(counts) {
       counts.predictedHumanConfirmationCount -
       counts.goldHumanConfirmationCount,
     recheckPriorDecisionOverreach:
-      counts.predictedRecheckCount - counts.goldRecheckCount,
+      counts.recheckMeasuredCount === 0
+        ? null
+        : counts.predictedRecheckCount - counts.measuredGoldRecheckCount,
     negativeControlFalseAlarmRate: ratio(
       counts.negativeControlFalseAlarms,
       counts.negativeControlRecords,
     ),
     changedAssumptionMissRate: ratio(
       counts.changedAssumptionMisses,
-      counts.changedAssumptionRecords,
+      counts.changedAssumptionMeasuredRecords,
     ),
   };
 }
@@ -511,6 +516,10 @@ function calculateMetricsForRecords(records, goldByCase) {
     const changedAssumption = goldCase.controlType === "changed-assumption";
     if (negativeControl) totals.negativeControlRecords += 1;
     if (changedAssumption) totals.changedAssumptionRecords += 1;
+    const categorySeen = new Set([
+      ...goldFindings.map((finding) => finding.category),
+      ...(record.normalized?.findings ?? []).map((finding) => finding.category),
+    ]);
     if (record.status !== "completed" || !record.normalized?.valid) {
       totals.unscoredTaskCount += 1;
       totals.unscoredGoldFindingCount += goldFindings.length;
@@ -520,6 +529,24 @@ function calculateMetricsForRecords(records, goldByCase) {
       if (record.status === "timeout") totals.timeoutCount += 1;
       if (["partial", "stopped", "unavailable"].includes(record.status)) {
         totals.partialCount += 1;
+      }
+      for (const category of categorySeen) {
+        if (!byCategory.has(category)) byCategory.set(category, blankCounts());
+        const categoryCounts = byCategory.get(category);
+        const categoryGold = goldFindings.filter(
+          (finding) => finding.category === category,
+        );
+        categoryCounts.records += 1;
+        categoryCounts.goldFindingCount += categoryGold.length;
+        categoryCounts.unscoredTaskCount += 1;
+        categoryCounts.unscoredGoldFindingCount += categoryGold.length;
+        if (record.status === "error" || !record.normalized?.valid) {
+          categoryCounts.errorCount += 1;
+        }
+        if (record.status === "timeout") categoryCounts.timeoutCount += 1;
+        if (["partial", "stopped", "unavailable"].includes(record.status)) {
+          categoryCounts.partialCount += 1;
+        }
       }
       continue;
     }
@@ -536,8 +563,19 @@ function calculateMetricsForRecords(records, goldByCase) {
         (finding) => finding.requiresHumanConfirmation,
       ),
     );
-    const recheck = record.normalized.recheckPriorDecision === true;
-    if (record.normalized.recheckPriorDecision === null) {
+    const recheckValue = record.normalized.recheckPriorDecision;
+    const recheckMeasured = typeof recheckValue === "boolean";
+    const recheck = recheckMeasured && recheckValue;
+    if (recheckMeasured) {
+      totals.recheckMeasuredCount += 1;
+      if (expectedFlag(goldCase, "recheckPriorDecision")) {
+        totals.measuredGoldRecheckCount += 1;
+      }
+      if (changedAssumption) {
+        totals.changedAssumptionMeasuredRecords += 1;
+        if (!recheck) totals.changedAssumptionMisses += 1;
+      }
+    } else {
       totals.recheckUnavailableCount += 1;
     }
     if (human) totals.predictedHumanConfirmationCount += 1;
@@ -548,15 +586,11 @@ function calculateMetricsForRecords(records, goldByCase) {
     ) {
       totals.negativeControlFalseAlarms += 1;
     }
-    if (changedAssumption && !recheck) totals.changedAssumptionMisses += 1;
-    const categorySeen = new Set([
-      ...goldFindings.map((finding) => finding.category),
-      ...record.normalized.findings.map((finding) => finding.category),
-    ]);
     for (const category of categorySeen) {
       if (!byCategory.has(category)) byCategory.set(category, blankCounts());
       const categoryCounts = byCategory.get(category);
       categoryCounts.records += 1;
+      categoryCounts.successfulRecords += 1;
       const categoryGold = goldFindings.filter(
         (finding) => finding.category === category,
       );

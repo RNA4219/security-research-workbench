@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "functional-model-review-input-compare/v2",
+  "createdAt": "2026-10-04T23:49:20.723Z",
+  "status": "pass",
+  "baseline": {
+    "path": "evaluations/functional/model-review-input-compare-04/fixed-prompts.jsonl",
+    "sha256": "8ed51b34acc5ca5f802c58b40680fbb2e79501355c5cd67872dead9de4fd1afd"
+  },
+  "records": 27,
+  "mismatches": [],
+  "sources": {
+    "scripts/verify-model-review-prompts.mjs": "0c36c86b90ab74c72a492218389c5066dcc21b8c513acfa32751d2c412ef8894",
+    "scripts/model-review-evaluation.mjs": "77607bf11adb2bb1e3aa9c6005ad8fcad3874b843ccca588cfdfe87f944e7576",
+    "scripts/model-review-production-adapter.mjs": "3b512e670a3e71c7697d2929d44d85a7767c5a200fe0e5c54f02225f09de40fc",
+    "dist/server/model-review.js": "f6fccb8cacad016f23d995701e65077d86d4e4391404fe95f2e8ddae5a377eac",
+    "dist/shared/model-review.js": "b2a74fc1f692dc464685b06682870fd19ad18850824293ebfbb953630983a9d0",
+    "package-lock.json": "ce89fb15d25b9f6e8b1b7576595cd40a7c7740eb4156c8db03e0568bb7ec3d56"
+  },
+  "realModelUsed": false,
+  "externalModelCalls": 0,
+  "scope": "development 9 cases x A/B/Cの新規promptが凍結済み比較04と一致するかだけを検査する。人判断再利用・途中保存・精度の再評価ではない。"
+}

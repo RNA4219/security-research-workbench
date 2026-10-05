@@ -8,7 +8,11 @@ import {
   modelReviewCoverageSchema as providerModelReviewCoverageSchema,
   modelReviewReportSchema,
 } from "./model-review.js";
-import { findingJudgment, findingSuppressionStatus } from "./workflow.js";
+import {
+  findingJudgment,
+  findingSuppressionStatus,
+  suppressionMatchPolicy,
+} from "./workflow.js";
 
 export const diagnosticTrigger = z.enum(["manual", "ci", "schedule"]);
 export type DiagnosticTrigger = z.infer<typeof diagnosticTrigger>;
@@ -112,6 +116,8 @@ export const diagnosticSuppressionSchema = z.strictObject({
   judgment: findingJudgment.nullable(),
   expiresAt: z.string().datetime().nullable(),
   reused: z.boolean(),
+  /** Legacy API rows omit this and therefore remain strict by default. */
+  matchPolicy: suppressionMatchPolicy.optional(),
 });
 export type DiagnosticSuppression = z.infer<
   typeof diagnosticSuppressionSchema

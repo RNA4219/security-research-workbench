@@ -61,6 +61,7 @@ import {
   ModelReviewCheckpointError,
   createOpenAICompatibleModelReviewInvoker,
   modelReviewProviderFromWorkflowProvider,
+  modelReviewPromptMethodologyHash,
   plannedModelReviewBatchCount,
   reviewSnapshot,
 } from "./model-review.js";
@@ -68,6 +69,11 @@ import {
   invokeOpenAICompatible,
   workflowProvidersFromEnvironment,
 } from "./workflow-providers.js";
+import {
+  createModelSourceBinding,
+  hashModelSourceBinding,
+} from "./model-source-binding.js";
+import type { ModelSourceBinding } from "../shared/model-source-binding.js";
 import type {
   WorkflowProviderDefinition,
   WorkflowRunDependencies,
@@ -115,13 +121,18 @@ const diagnosticEngines: Extract<
  * effective model budget so a change to review conditions cannot be shown as
  * an unchanged model method.
  */
-const modelReviewContextHash = (
+export type ModelReviewMethodologyHashes = {
+  promptMethodologyHash?: string | null;
+};
+
+export const modelReviewContextHash = (
   input: ModelReviewInput,
   budget: ModelReviewBudget,
   provider: Pick<
     WorkflowProviderDefinition,
     "id" | "kind" | "model" | "configVersion" | "disableThinking"
   >,
+  methodology: ModelReviewMethodologyHashes = {},
 ) =>
   digest(
     JSON.stringify({
@@ -175,6 +186,9 @@ const modelReviewContextHash = (
         disableThinking: provider.disableThinking ?? false,
       },
       budget,
+      methodology: {
+        promptMethodologyHash: methodology.promptMethodologyHash ?? null,
+      },
     }),
   );
 const isForbiddenRepository = (id: string, root: string) =>
@@ -268,6 +282,18 @@ function repositoryEntries(
 function contentHash(value: string) {
   return digest(value);
 }
+
+const sameModelSourceBinding = (
+  left: ModelSourceBinding | undefined,
+  right: ModelSourceBinding | undefined,
+) => {
+  if (!left || !right) return false;
+  try {
+    return hashModelSourceBinding(left) === hashModelSourceBinding(right);
+  } catch {
+    return false;
+  }
+};
 
 export class ProductDiagnosticsService {
   readonly products: DiagnosticStore;
@@ -550,41 +576,36 @@ export class ProductDiagnosticsService {
         `${rule.revision}:${digest(rule.content)}:${rule.appliesToVersion}`,
       ]),
     );
-    // A past decision does not carry a separately persisted condition hash in
-    // the workflow contract.  Its source refs are therefore the conservative
-    // compatibility boundary: every cited document revision and excerpt must
-    // still match the current immutable workflow document.  This prevents a
-    // decision made against an earlier specification from being reused after
-    // that specification changed.
-    const currentDocuments = new Map(
-      state.documents.map((document) => [document.id, document]),
-    );
-    const sourceRefsAllowedForLocal = (refs: readonly WorkflowSourceRef[]) =>
-      refs.every((source) => {
-        const document = currentDocuments.get(source.docId);
-        return Boolean(
-          document &&
-          (document.classification === "public" ||
-            document.classification === "local"),
-        );
+    // Decisions are eligible only when their context hash was captured from
+    // the observation being judged and still matches the current context.
+    // This check includes the current specification, approved knowledge and
+    // rules, target version, methodology, and other applicable judgments.
+    // Unknown/legacy decisions are intentionally absent from this set.
+    const reviewContext = this.findingReviewContext(run, product, state);
+    const reviewJudgments = reviewContext.pastJudgments ?? [];
+    const eligibleDecisionKeys = new Set<string>();
+    for (const finding of state.findings) {
+      const decision = finding.decisions.at(-1);
+      if (!decision?.contextHash) continue;
+      const key = `${finding.id}\0${decision.revision}`;
+      if (
+        !reviewJudgments.some(
+          (judgment) =>
+            `${judgment.findingId}\0${judgment.revision}` === key,
+        )
+      )
+        continue;
+      const expectedContextHash = hashFindingReviewContext({
+        ...reviewContext,
+        // The finding's own decision is checked independently by the
+        // suppression evaluator and must not self-invalidate its context.
+        pastJudgments: reviewJudgments.filter(
+          (judgment) => judgment.findingId !== finding.id,
+        ),
       });
-    const sourceRefsStillCurrent = (refs: readonly WorkflowSourceRef[]) =>
-      refs.every((source) => {
-        const document = currentDocuments.get(source.docId);
-        return Boolean(
-          document &&
-          document.revision === source.revision &&
-          document.body.includes(source.excerpt),
-        );
-      });
-    const conditionsChangedAfter = (at: string) =>
-      state.events.some(
-        (event) =>
-          event.at > at &&
-          (event.type === "scope-changed" ||
-            event.type.startsWith("knowledge-") ||
-            event.type.startsWith("rule-")),
-      );
+      if (decision.contextHash === expectedContextHash)
+        eligibleDecisionKeys.add(key);
+    }
     const conditionHash = digest(
       JSON.stringify({
         targetVersion: run.commit,
@@ -607,19 +628,8 @@ export class ProductDiagnosticsService {
       if (!decision) return [];
       return [decision].flatMap((currentDecision) => {
         if (
-          currentDecision.targetVersion !== run.commit ||
-          !currentDecision.sourceRefs.length ||
-          !sourceRefsAllowedForLocal(currentDecision.sourceRefs) ||
-          !sourceRefsStillCurrent(currentDecision.sourceRefs) ||
-          conditionsChangedAfter(currentDecision.at) ||
-          currentDecision.ruleRefs.some(
-            (ref) =>
-              !currentRules.has(ref.id) ||
-              currentRules.get(ref.id) !==
-                `${ref.revision}:${digest(
-                  context.rules.find((rule) => rule.id === ref.id)?.content ??
-                    "",
-                )}:${context.rules.find((rule) => rule.id === ref.id)?.appliesToVersion ?? ""}`,
+          !eligibleDecisionKeys.has(
+            `${finding.id}\0${currentDecision.revision}`,
           )
         )
           return [];
@@ -737,6 +747,7 @@ export class ProductDiagnosticsService {
   private modelFindingToDiagnostic(
     finding: ModelReviewFinding,
     occurrence = 0,
+    snapshot?: Awaited<ReturnType<typeof snapshotRepository>>,
   ): DiagnosticFinding {
     const evidence = [
       finding.rationale,
@@ -784,6 +795,9 @@ export class ProductDiagnosticsService {
         requiresHumanConfirmation: true,
         recheckPriorDecision: true,
       },
+      ...(snapshot
+        ? { modelSourceBinding: createModelSourceBinding(finding, snapshot) }
+        : {}),
     };
   }
 
@@ -1489,7 +1503,7 @@ export class ProductDiagnosticsService {
             ].join("\0");
             const occurrence = modelFindingOccurrences.get(identity) ?? 0;
             modelFindingOccurrences.set(identity, occurrence + 1);
-            return this.modelFindingToDiagnostic(finding, occurrence);
+            return this.modelFindingToDiagnostic(finding, occurrence, snapshot);
           });
           const modelCoverage = this.modelReviewCoverageToDiagnostic(
             result.coverage,
@@ -1513,6 +1527,9 @@ export class ProductDiagnosticsService {
                 modelInput,
                 result.report.budget,
                 modelProvider,
+                {
+                  promptMethodologyHash: modelReviewPromptMethodologyHash(),
+                },
               ),
               budget: result.report.budget,
               coverage: result.coverage,
@@ -1888,6 +1905,9 @@ export class ProductDiagnosticsService {
             : false,
           schemaVersion: enabled ? MODEL_REVIEW_SCHEMA_VERSION : null,
           contractVersion: enabled ? MODEL_REVIEW_CONTRACT_VERSION : null,
+          promptMethodologyHash: enabled
+            ? modelReviewPromptMethodologyHash()
+            : null,
         },
       }),
     );
@@ -1933,6 +1953,20 @@ export class ProductDiagnosticsService {
         sourceRefs: item.sourceRefs,
       };
     });
+    const baseContext: Omit<FindingReviewContext, "pastJudgments"> = {
+      targetVersion: run.commit,
+      purpose: state.scope.purpose,
+      specificationRevision: run.specificationRevision,
+      specificationHash: digest(product.specification),
+      metadata: {
+        diagnosticMethodologyHash: this.findingReviewMethodologyHash(
+          run,
+          product,
+        ),
+      },
+      knowledge,
+      rules,
+    };
     const currentDocuments = new Map(
       state.documents.map((document) => [document.id, document]),
     );
@@ -1954,14 +1988,22 @@ export class ProductDiagnosticsService {
           document.body.includes(source.excerpt),
         );
       });
-    const conditionsChangedAfter = (at: string) =>
-      state.events.some(
-        (event) =>
-          event.at > at &&
-          (event.type === "scope-changed" ||
-            event.type.startsWith("knowledge-") ||
-            event.type.startsWith("rule-")),
-      );
+    const sourceRefsAvailableForScope = (
+      refs: readonly WorkflowSourceRef[],
+    ) =>
+      refs.every((source) => {
+        const document = currentDocuments.get(source.docId);
+        if (!document) return false;
+        if (document.revision === source.revision)
+          return document.body.includes(source.excerpt);
+        return Boolean(
+          document.history.find(
+            (version) =>
+              version.revision === source.revision &&
+              version.body.includes(source.excerpt),
+          ),
+        );
+      });
     const pinnedRules = new Map(run.rules.map((item) => [item.id, item]));
     const rulesCurrent = (refs: readonly { id: string; revision: number }[]) =>
       refs.every((ref) => {
@@ -1978,45 +2020,74 @@ export class ProductDiagnosticsService {
           current.appliesToVersion === run.commit,
         );
       });
-    const pastJudgments = state.findings.flatMap((finding) => {
-      if (finding.judgment === "unconfirmed") return [];
-      const decision = finding.decisions.at(-1);
-      if (
-        !decision ||
-        decision.targetVersion !== run.commit ||
-        !decision.sourceRefs.length ||
-        !sourceRefsAllowedForLocal(decision.sourceRefs) ||
-        !sourceRefsStillCurrent(decision.sourceRefs) ||
-        conditionsChangedAfter(decision.at) ||
-        !rulesCurrent(decision.ruleRefs)
-      )
-        return [];
-      return [
-        {
-          findingId: finding.id,
-          revision: decision.revision,
-          targetVersion: decision.targetVersion,
-          judgment: decision.judgment,
-          reason: decision.reason,
-          sourceRefs: decision.sourceRefs,
-        },
-      ];
-    });
-    return {
-      targetVersion: run.commit,
-      purpose: state.scope.purpose,
-      specificationRevision: run.specificationRevision,
-      specificationHash: digest(product.specification),
-      metadata: {
-        diagnosticMethodologyHash: this.findingReviewMethodologyHash(
-          run,
-          product,
-        ),
-      },
-      knowledge,
-      rules,
-      pastJudgments,
-    };
+    const candidates = state.findings
+      .flatMap((finding) => {
+        if (finding.judgment === "unconfirmed") return [];
+        const decision = finding.decisions.at(-1);
+        const observation = finding.observationHistory.at(-1);
+        const sourceScopeDecision = Boolean(
+          decision &&
+            finding.suppressions.some(
+              (suppression) =>
+                suppression.active &&
+                (suppression.matchPolicy ?? "exact_evidence") ===
+                  "source_scope" &&
+                suppression.decisionRevision === decision.revision &&
+                sameModelSourceBinding(
+                  suppression.modelSourceBinding,
+                  decision.modelSourceBinding,
+                ),
+            ),
+        );
+        // A decision without observation provenance is legacy/manual data.
+        // Keep it in workflow history, but do not let it become model context.
+        if (
+          !decision?.contextHash ||
+          !decision.evidenceHash ||
+          (sourceScopeDecision
+            ? !observation?.evidenceHash
+            : decision.evidenceHash !== observation?.evidenceHash) ||
+          decision.contextHash !== observation?.contextHash ||
+          decision.targetVersion !== run.commit ||
+          !decision.sourceRefs.length ||
+          !sourceRefsAllowedForLocal(decision.sourceRefs) ||
+          !(sourceScopeDecision
+            ? sourceRefsAvailableForScope(decision.sourceRefs)
+            : sourceRefsStillCurrent(decision.sourceRefs)) ||
+          !rulesCurrent(decision.ruleRefs)
+        )
+          return [];
+        if (
+          Boolean(decision.modelSourceBinding) !==
+            Boolean(observation?.modelSourceBinding) ||
+          (decision.modelSourceBinding &&
+            !sameModelSourceBinding(
+              decision.modelSourceBinding,
+              observation?.modelSourceBinding,
+            ))
+        )
+          return [];
+        return [{ findingId: finding.id, decision }];
+      })
+      .sort(
+        (left, right) =>
+          Date.parse(left.decision.at) - Date.parse(right.decision.at) ||
+          left.findingId.localeCompare(right.findingId),
+      );
+    // Keep every provenance-backed current judgment in the review context so
+    // a newly added judgment changes suppression context for existing
+    // findings.  Model input performs the stricter positive hash comparison
+    // below; unknown/legacy rows never enter this list.
+    const pastJudgments = candidates.map((candidate) => ({
+      findingId: candidate.findingId,
+      revision: candidate.decision.revision,
+      targetVersion: candidate.decision.targetVersion,
+      judgment: candidate.decision.judgment,
+      reason: candidate.decision.reason,
+      sourceRefs: candidate.decision.sourceRefs,
+      ruleRefs: candidate.decision.ruleRefs,
+    }));
+    return { ...baseContext, pastJudgments };
   }
 
   private async linkFindings(
@@ -2132,6 +2203,7 @@ export class ProductDiagnosticsService {
           ? evaluateFindingSuppression(state, existing, {
               contextHash,
               evidenceHash,
+              modelSourceBinding: item.finding.modelSourceBinding,
             })
           : undefined;
         const lastObservation = existing?.observationHistory.at(-1);
@@ -2160,6 +2232,9 @@ export class ProductDiagnosticsService {
             sourceRefs: [sourceRef],
             contextHash,
             evidenceHash,
+            ...(item.finding.modelSourceBinding
+              ? { modelSourceBinding: item.finding.modelSourceBinding }
+              : {}),
           });
         }
         const link = state.findings.find(
@@ -2171,6 +2246,7 @@ export class ProductDiagnosticsService {
           const evaluationAfter = evaluateFindingSuppression(state, link, {
             contextHash,
             evidenceHash,
+            modelSourceBinding: item.finding.modelSourceBinding,
           });
           // Keep the reason that caused a recheck even after observeFinding
           // has safely deactivated the old suppression.  The raw candidate is
@@ -2195,6 +2271,7 @@ export class ProductDiagnosticsService {
               judgment: evaluation.judgment,
               expiresAt: evaluation.expiresAt,
               reused: evaluation.reusable,
+              matchPolicy: evaluation.matchPolicy,
             },
           });
         }

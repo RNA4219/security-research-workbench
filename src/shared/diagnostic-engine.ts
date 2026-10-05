@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { modelSourceBindingSchema } from "./model-source-binding.js";
 
 export const ENGINE_VERSION = "0.2.0";
 export const diagnosticEngineNameSchema = z.enum([
@@ -33,6 +34,8 @@ export const diagnosticFindingSchema = z.strictObject({
       recheckPriorDecision: z.boolean(),
     })
     .optional(),
+  /** Verified source identity for model findings; old findings omit it. */
+  modelSourceBinding: modelSourceBindingSchema.optional(),
 });
 export type DiagnosticFinding = z.infer<typeof diagnosticFindingSchema>;
 

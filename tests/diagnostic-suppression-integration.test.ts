@@ -203,6 +203,9 @@ describe("診断とworkflow抑止の統合", () => {
     // finding's reuse, while the first finding's own decision remains the
     // revision checked by the strict suppression helper.
     state = workflows.get(product.linkedProjectId);
+    const currentReviewObservation = state.findings.find(
+      (finding) => finding.id === workflowFinding!.id,
+    )!.observationHistory.at(-1)!;
     state = workflows.command(product.linkedProjectId, state.revision, {
       type: "finding-observation",
       findingId: "other-context-finding",
@@ -210,6 +213,8 @@ describe("診断とworkflow抑止の統合", () => {
       targetVersion: completedFirst.commit!,
       observation: "別findingの現行観測",
       sourceRefs: workflowFinding!.sourceRefs,
+      contextHash: currentReviewObservation.contextHash,
+      evidenceHash: currentReviewObservation.evidenceHash,
     });
     state = workflows.command(product.linkedProjectId, state.revision, {
       type: "finding-decision",
@@ -265,6 +270,95 @@ describe("診断とworkflow抑止の統合", () => {
       presentInAnalysis: false,
       reviewDisposition: "confirmation_required",
       suppression: { status: "unknown", reused: false, reason: "not_observed" },
+    });
+  });
+
+  it("decisionと最新observationのcontext不一致は抑止を再利用しない", async () => {
+    const fixture = await createDiagnosticFixture();
+    store = new Store(":memory:");
+    service = new ProductDiagnosticsService(store, {
+      repositories: { fixture: fixture.directory },
+      scheduleIntervalMs: 0,
+    });
+    const product = service.createProduct(payload("corrupt judgment context"));
+    const first = await service.startRun(product.id, {
+      trigger: "manual",
+      ref: "baseline",
+    });
+    const completedFirst = await terminalRun(service, product.id, first.id);
+    const candidate = completedFirst.findings.find(
+      (finding) => finding.presentInAnalysis,
+    );
+    expect(candidate).toBeDefined();
+    const workflows = new WorkflowStore(store);
+    let state = workflows.get(product.linkedProjectId);
+    const linked = state.findings.find(
+      (finding) => finding.id === candidate!.workflowFindingId,
+    );
+    expect(linked).toBeDefined();
+    state = workflows.command(product.linkedProjectId, state.revision, {
+      type: "finding-decision",
+      findingId: linked!.id,
+      judgment: "accepted_known",
+      actor: "reviewer",
+      reason: "現行観測を確認済み",
+      targetVersion: completedFirst.commit!,
+      sourceRefs: linked!.sourceRefs,
+      ruleRefs: [],
+    });
+    state = workflows.command(product.linkedProjectId, state.revision, {
+      type: "suppression",
+      findingId: linked!.id,
+      actor: "reviewer",
+      reason: "同一観測の再確認不要",
+      targetVersion: completedFirst.commit!,
+      fingerprint: linked!.fingerprint,
+      ruleRefs: [],
+      expiresAt: "2099-01-01T00:00:00.000Z",
+    });
+
+    // Corrupt only the persisted decision provenance while retaining the
+    // observation and suppression records.  The workflow remains readable,
+    // but strict diagnostic reuse must report unknown instead of reusing it.
+    state = workflows.update(
+      product.linkedProjectId,
+      state.revision,
+      (current) => ({
+        ...current,
+        findings: current.findings.map((finding) =>
+          finding.id === linked!.id
+            ? {
+                ...finding,
+                decisions: finding.decisions.map((decision, index, all) =>
+                  index === all.length - 1
+                    ? { ...decision, contextHash: "f".repeat(64) }
+                    : decision,
+                ),
+              }
+            : finding,
+        ),
+      }),
+    );
+    expect(state.findings.find((finding) => finding.id === linked!.id)!.decisions.at(-1)).toMatchObject({
+      contextHash: "f".repeat(64),
+    });
+
+    const second = await service.startRun(product.id, {
+      trigger: "manual",
+      ref: "baseline",
+    });
+    const completedSecond = await terminalRun(service, product.id, second.id);
+    const reused = completedSecond.findings.find(
+      (finding) => finding.fingerprint === candidate!.fingerprint,
+    );
+    expect(reused).toMatchObject({
+      presentInAnalysis: true,
+      reviewDisposition: "confirmation_required",
+      suppression: expect.objectContaining({
+        status: "unknown",
+        reason: "legacy_context_unknown",
+        reused: false,
+      }),
     });
   });
 

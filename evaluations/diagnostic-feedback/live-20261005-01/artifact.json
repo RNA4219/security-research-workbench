@@ -1,0 +1,58 @@
+{
+  "artifactVersion": "diagnostic-feedback-evaluation/v1",
+  "mode": "live",
+  "gate": {
+    "status": "fail",
+    "failure": "provider moduleが許可済みbuild root外です",
+    "modelCandidateRequired": true,
+    "rawCandidatesRequired": true,
+    "humanTimeMeasured": false,
+    "realModelUsed": false,
+    "recheckPriorDecisionProvidedByModel": false
+  },
+  "scope": {
+    "purpose": "本番ProductDiagnosticsServiceの保存済みhuman suppressionが同一条件だけで確認待ちを別枠化するlive評価",
+    "interpretation": "確認待ち件数はproxyであり、人の所要時間短縮・モデル精度改善・幅広さの証拠へ読み替えない。固定ruleとモデル候補が重なるためworkflow効果だけを測定する。",
+    "humanJudgmentNotice": "workflowへ記録した判断はテスト用の判断であり、実利用者の判定ではない。"
+  },
+  "fixture": {
+    "repositoryId": "fixture",
+    "commit": null,
+    "root": "fixture",
+    "sourceSnapshot": null,
+    "sourceSnapshotSha256": null
+  },
+  "database": "diagnostics.sqlite",
+  "productId": null,
+  "execution": {
+    "modelReviewBudget": {
+      "maxBatches": 100,
+      "maxFiles": 500,
+      "maxInputChars": 10000000,
+      "maxBatchChars": 12000,
+      "maxPromptChars": 20000,
+      "maxOutputTokens": 2048
+    },
+    "modelReviewTimeoutMs": 120000,
+    "pollIntervalMs": 200,
+    "runWaitTimeoutMs": 135000,
+    "actualModelReviewBudgets": []
+  },
+  "provider": null,
+  "runtime": null,
+  "phases": [],
+  "workflowCommands": [],
+  "humanJudgments": [],
+  "workflowSnapshots": [],
+  "feedbackChecks": {
+    "sameConditionSuppression": null,
+    "specificationReconfirmation": null
+  },
+  "invocations": {
+    "count": 0,
+    "path": "raw-invocations.json",
+    "promptHashes": [],
+    "responseHashes": [],
+    "modelInputReferences": []
+  }
+}
